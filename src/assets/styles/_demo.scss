@@ -1,0 +1,907 @@
+/* Demo Styles */
+
+//Vars
+$assetPath: "../images/";
+html,
+body {
+    height: 100%;
+}
+
+body.ems-authentication-page .container-scroller {
+    height: 100%;
+}
+
+.LoginBody {
+    .page-body-wrapper {
+        padding-top: 0 !important;
+    }
+}
+
+div#notificationMsg {
+    font-size: 20px;
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    z-index: 999999;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    /* for vertical scrollbars */
+    height: 10px;
+    /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+span.NormalFontHR {
+    font-size: 35px;
+    padding-left: 9px;
+    position: relative;
+    bottom: 5px;
+}
+
+.badge {
+    border-radius: 0.15rem;
+    font-size: 0.95rem;
+    padding: 4px 12px;
+    width: 100%;
+}
+
+.badge-cancel {
+    color: #fff;
+    background-color: #969696;
+    border: 1px solid #969696;
+}
+
+.badge.max-width-label {
+    max-width: 105px!important;
+}
+
+#loader {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: hsla(0, 0%, 100%, .7);
+    #img_loader {
+        background-image: url('https://techcronus.com/staging/EMS/API/resources/assets/images/EMS-gif.gif');
+        // background-image: url('http://192.168.1.106/projects/Ang-Admin-Panel/New-EMS/src/assets/images/EMS-gif.gif');
+        background-size: 116px 116px;
+        background-position: 50%;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+    }
+}
+
+.form-control {
+    resize: auto !important;
+    &::disabled {
+        background-color: #a7d7ff !important;
+    }
+}
+
+.form-control[readonly] {
+    background-color: #a7d7ff;
+}
+
+.HR-Management-login {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+
+.border-custom-main {
+    border-radius: 15px;
+    background: linear-gradient(90deg, #156BA3 -24.91%, #5AC6C6 100%);
+    padding: 2px;
+    .border-custom-sub {
+        background-color: #ffffff;
+        border-radius: 12px;
+    }
+}
+
+a.AddHolidayAtag {
+    .AddHoliday {
+        background: linear-gradient(90deg, #156BA3 -24.91%, #5AC6C6 100%);
+        padding: 8px 12px;
+        border-radius: 50px;
+        font-weight: 600;
+        color: #ffffff;
+        letter-spacing: 0.3px;
+        font-size: 15px;
+        cursor: pointer;
+        &:hover {
+            color: #ffffff;
+            background: linear-gradient(90deg, #156BA3 -24.91%, #5AC6C6 100%);
+        }
+    }
+}
+
+.accordion {
+    .card {
+        border: 0 !important;
+        margin-bottom: 0 !important;
+        .card-body {
+            font-size: 18px !important;
+            padding: 0 20px !important;
+            font-weight: 600 !important;
+            color: #4a4a4a !important;
+            .nav-link {
+                padding: 8px 0 8px 40px !important;
+                color: #4a4a4a !important;
+                font-size: 16px !important;
+            }
+        }
+        .card-header {
+            a {
+                padding: 0 !important;
+                i {
+                    margin-right: 1.15rem !important;
+                    width: 16px !important;
+                    line-height: 1 !important;
+                    font-size: 18px !important;
+                    color: #156BA3 !important
+                }
+                span {
+                    color: #4a4a4a;
+                    display: inline-block;
+                    font-size: 16px;
+                    line-height: 1;
+                    vertical-align: middle;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+
+body.custom-event-calendar-ui .fc-event-container .fc-content .fc-time {
+    display: none !important;
+}
+
+.Leave_Approved {
+    color: #00ce68;
+    font-size: 20px;
+}
+
+.Leave_Rejected {
+    color: #e65251;
+    font-size: 20px;
+}
+
+.Leave_View {
+    color: #000000;
+    font-size: 20px;
+}
+
+.Leave_Edit {
+    color: #2289DC;
+    font-size: 20px;
+}
+
+button.btn.btn-link {
+    width: 100% !important;
+    padding: 16px 20px !important;
+    text-align: left !important;
+}
+
+button.btn.btn-link.collapsed {
+    a {
+        &:after {
+            content: "\f107";
+            font-family: FontAwesome;
+            color: #156BA3 !important;
+        }
+    }
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.form-control.form-control-lg.LeaveStatusSelect {
+    padding: 5px 10px!important;
+}
+
+button.btn.btn-link {
+    a {
+        &:after {
+            content: '\f106';
+            font-family: FontAwesome;
+            position: absolute;
+            right: 0;
+            top: 4px;
+            font-weight: 600;
+            color: #156BA3;
+        }
+    }
+}
+
+button.btn.cancelBtn {
+    color: #000000 !important;
+}
+
+::ng-deep li.paginate_button .page-item:hover {
+    color: #ffffff !important;
+}
+
+a.general-custom-link {
+    font-size: 18px;
+    float: right;
+    font-weight: 600;
+    color: #156BA3;
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+}
+
+.signInBtn {
+    background-color: #156BA3;
+    color: #ffffff;
+    opacity: 1 !important;
+}
+
+button.btn {
+    font-size: 18px!important;
+}
+
+.form-group {
+    label {
+        font-size: 18px!important;
+        padding-top: 5px;
+    }
+}
+
+.form-control {
+    border: 1px solid #f2f2f2;
+    font-family: "Calibri", sans-serif;
+    font-size: 1.12rem !important;
+    padding: 1.45rem 0.75rem !important;
+    line-height: 14px;
+}
+
+::ng-deep .form-control:disabled {
+    background-color: #5ac6c6!important;
+    color: #ffffff !important;
+}
+
+// ::ng-deep .form-control[readonly] {
+//     background-color: #5ac6c6!important;
+//     color: #ffffff !important;
+// }
+// Add spacing to Boostrap components for demo purpose
+.template-demo {
+    >.btn {
+        @extend .mt-2;
+        @extend .mr-2;
+    }
+    >.btn-toolbar {
+        @extend .mt-2;
+        @extend .mr-2;
+    }
+    >.btn-group {
+        @extend .mt-2;
+        @extend .mr-2;
+        .btn {
+            margin: 0 !important;
+        }
+    }
+    .progress {
+        margin-top: 1.5rem;
+    }
+    .circle-progress {
+        @extend .mt-2;
+    }
+    >h2,
+    >h3,
+    >h4,
+    >h5,
+    >h6,
+    >h1 {
+        border-top: 1px solid $border-color;
+        padding: 0.5rem 0 0;
+    }
+    .ul-slider {
+        &.noUi-horizontal {
+            margin-top: 2rem;
+        }
+        &.noUi-vertical {
+            margin-right: 2rem;
+        }
+    }
+    .dropdown {
+        display: inline-block;
+        @extend .mr-2;
+        margin-bottom: 0.5rem;
+    }
+    .dropup {
+        display: inline-block;
+        @extend .mr-2;
+        margin-top: 0.5rem;
+    }
+    nav {
+        .breadcrumb {
+            margin-bottom: 1.375rem;
+        }
+        &:last-child {
+            .breadcrumb {
+                margin-bottom: 0;
+            }
+        }
+    }
+    .editable-form {
+        >.form-group {
+            border-bottom: 1px solid $border-color;
+            padding-bottom: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+    }
+    .circle-progress {
+        padding: 15px;
+    }
+    .circle-progress-block {
+        @extend .mb-3;
+        @extend .px-2;
+    }
+}
+
+.demo-modal {
+    position: static;
+    display: block;
+    .modal-dialog {
+        margin-top: 0 !important;
+        &.modal-lg {
+            max-width: 100%;
+        }
+    }
+}
+
+.loader-demo-box {
+    @extend .border;
+    @extend .border-secondary;
+    @extend .rounded;
+    width: 100%;
+    height: 200px;
+    @extend .d-flex;
+    @extend .align-items-center;
+}
+
+.AddEmployeeBtn {
+    font-size: 18px;
+}
+
+.profile_pic_employee {
+    max-width: 40px !important;
+    min-width: 40px !important;
+    width: 40px!important;
+    max-height: 40px !important;
+    min-height: 40px !important;
+    height: 40px!important;
+    border: 2px solid #fff !important;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.2) !important;
+}
+
+table.CustomTableViewEmployee {
+    th {
+        border-top: none !important;
+    }
+    td {
+        border-top: none !important;
+        border-bottom: 10px solid #ffffff !important;
+    }
+}
+
+table.CustomTableViewEmployee.CustomTableViewEmployeeAnother {
+    th {
+        border-top: none !important;
+    }
+    td {
+        border-top: none !important;
+        border-bottom: 5px solid #ffffff;
+        padding: 10px 7px !important;
+        font-size: 15px !important;
+        letter-spacing: 0.4px;
+    }
+}
+
+.HexagonProfileImage {
+    width: 130px;
+    height: 130px;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-top: 3px solid #08B4F8;
+    border-radius: 100%;
+    border-left: 3px solid #08B4F8;
+    background: #e1ecff;
+    background-image: linear-gradient(to left bottom, #d6eef6, #dff0fa, #e7f3fc, #eff6fe, #f6f9ff);
+    .profile_pic_modal_employee {
+        height: 100%;
+        width: 100%;
+        border-radius: 100%;
+    }
+}
+
+.ViewEmployeeName {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
+.ViewEmployeeRoll {
+    color: #6c757d;
+}
+
+i.ProfileSMDIIcons {
+    font-size: 25px;
+    position: relative;
+    top: 5px;
+    margin-right: 5px;
+    color: #08B4F8;
+}
+
+.modal {
+    .modal-dialog.modal-custom {
+        .modal-content {
+            .modal-body {
+                padding: 20px 20px;
+            }
+        }
+    }
+}
+
+label.customModalUserStatusBadge {
+    position: absolute;
+    left: 10px;
+    width: auto;
+}
+
+label.customModalServiceStatusBadge {
+    position: absolute;
+    right: 10px;
+    width: auto;
+}
+
+a.Mobile-Email-Profile {
+    color: #08B4F8;
+}
+
+.main-panel.pl-0 {
+    padding-left: 0 !important;
+}
+
+.alert.alert-danger.p-2 {
+    padding: 3px 10px!important;
+    font-size: 14px !important;
+    margin-bottom: 0 !important;
+    border: none !important;
+}
+
+
+/* Add Employee SCSS start */
+
+.accordion {
+    .card {
+        .card-body {
+            .nav-link.AddSuperiorAtag {
+                cursor: pointer !important;
+            }
+        }
+    }
+}
+
+select.custom-Select {
+    padding: 5px 10px !important;
+    background: #ffffff;
+    color: #000000;
+    // -webkit-appearance: none !important;
+    // -moz-appearance: none !important;
+    // appearance: none !important;
+    // background: #ffffff url(https://image.flaticon.com/icons/png/512/36/36669.png) no-repeat right center;
+    // background-size: 13px;
+    // background-position-x: 95%;
+}
+
+select.form-control.custom-Select-2 {
+    padding: 5px 10px !important;
+    background: #ffffff;
+    color: #000000;
+    // -webkit-appearance: none !important;
+    // -moz-appearance: none !important;
+    // appearance: none !important;
+    // background: #ffffff url(https://image.flaticon.com/icons/png/512/36/36669.png) no-repeat right center;
+    // background-size: 13px;
+    // background-position-x: 95%;
+}
+
+select.form-control.custom-Select-Multiple {
+    padding: 10px !important;
+    background: #ffffff;
+    color: #000000;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    option {
+        padding: 2px 2px 2px 7px;
+        border-radius: 5px;
+        margin-bottom: 4px;
+    }
+}
+
+.card.addSalaryMainDiv {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.card.addSalaryMainDiv h5.title {
+    color: #0268bf;
+    font-weight: 700;
+    font-size: 1.57em;
+    margin-top: 10px;
+}
+
+.card.add_updateSalaryMainDiv {
+    margin-top: 10px;
+}
+
+.card.add_updateSalaryMainDiv h5.title {
+    color: #0268bf;
+    font-weight: 700;
+    font-size: 1.57em;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.card.addSalaryMainDiv .row {
+    align-self: center;
+}
+
+.tbl_salary input {
+    padding: 5px !important;
+    margin: 5px;
+}
+
+.tbl_salary button {
+    margin: 10px;
+}
+
+.card.addEmployeeMainDiv {
+    border-radius: 20px !important;
+    box-shadow: 4px 4px 10px -4px rgba(0, 0, 0, .8);
+    .card-header {
+        background-color: transparent;
+        padding: 15px 15px 0;
+        border: 0;
+        .title {
+            font-weight: 700;
+            font-size: 1.35em;
+            line-height: 1.4em;
+            color: #156BA3;
+        }
+    }
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.form-control:disabled {
+    background-color: #a7d7ff !important;
+}
+
+table.CustomTableViewEmployee {
+    .SuperiorThTd {
+        padding: 20px 7px !important;
+    }
+    .SecondSuperiorName {
+        padding: 5px 0 !important;
+    }
+}
+
+.card.card-statistics {
+    border: 2px solid #5AC6C6;
+    border-radius: 5px;
+}
+
+// css for datatable
+table.dataTable tbody tr {
+    background-color: transparent !important;
+}
+
+table.dataTable thead th {
+    padding: 13px 0px !important;
+    border-bottom: none !important;
+}
+
+.table.dataTable tbody td {
+    padding: 13px 10px !important;
+}
+
+table.dataTable thead .sorting_desc_disabled,
+table.dataTable thead .sorting_asc_disabled,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting {
+    background-image: none !important;
+}
+
+table.dataTable.no-footer {
+    border-bottom: none !important;
+    width: 100% !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0 !important;
+}
+
+div.dataTables_wrapper div.dataTables_processing {
+    display: none !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    background-color: snow !important;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    background-color: snow !important;
+}
+
+// CSS For Event Calendar
+.fc-toolbar.fc-header-toolbar {
+    margin-bottom: 10px;
+    padding: 0 15px;
+    background: transparent;
+    border-radius: 0;
+}
+
+.fc-toolbar.fc-header-toolbar {
+    .fc-left {
+        h2 {
+            font-size: 20px;
+            margin: 0;
+            color: #156BA3;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    }
+    .fc-right {
+        button.fc-prev-button.fc-button.fc-button-primary {
+            border-radius: 44px;
+            margin-right: 10px;
+            padding: 8px;
+            background: linear-gradient(90deg, #156BA3 -24.91%, #5AC6C6 100%);
+            border-color: #5AC6C6;
+            &:hover {
+                background: linear-gradient(120deg, #5AC6C6, #277FD6);
+                border-color: #277FD6;
+            }
+        }
+        button.fc-next-button.fc-button.fc-button-primary {
+            border-radius: 44px;
+            padding: 8px;
+            background: linear-gradient(90deg, #156BA3 -24.91%, #5AC6C6 100%);
+            border-color: #5AC6C6;
+            &:hover {
+                background: linear-gradient(120deg, #5AC6C6, #277FD6);
+                border-color: #277FD6;
+            }
+        }
+        button.fc-today-button.fc-button.fc-button-primary {
+            border-radius: 15px;
+            padding: 8px;
+            background: linear-gradient(90deg, #156BA3 -24.91%, #5AC6C6 100%);
+            border-color: #5AC6C6;
+            text-transform: capitalize;
+            font-weight: 600;
+            letter-spacing: 1.0px;
+            &:hover {
+                background: linear-gradient(120deg, #5AC6C6, #156BA3);
+                border-color: #277FD6;
+            }
+            &:disabled {
+                cursor: not-allowed;
+            }
+        }
+    }
+}
+
+.fc-row.fc-widget-header {
+    th.fc-day-header.fc-widget-header {
+        padding: 5px;
+        background: #f3f3f3;
+        color: #156BA3;
+    }
+}
+
+.fc-event,
+.fc-event-dot {
+    padding: 2px;
+    border-color: #ffffff;
+    border-radius: 4px;
+    margin: 0;
+    .fc-content {
+        span.fc-title {
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            font-size: 14px;
+        }
+    }
+}
+
+.fc-unthemed td.fc-today {
+    background: #a3b9cc !important;
+}
+
+.form-control {
+    border: 1px solid #ced4da !important;
+}
+
+h6.EMS-UserName {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.EMS-TaskName {
+    font-size: 18px;
+    letter-spacing: 0.3px;
+}
+
+span.EMS-ProjectNameDevider {
+    border-bottom: 2px solid #5AC6C6;
+    padding-bottom: 7px;
+}
+
+span.EMS-ProjectNameDevider.EMS-ProjectDescription {
+    border-bottom: none;
+    padding-bottom: 7px;
+    .TaskDescription {
+        p {
+            display: inline;
+            font-size: 18px;
+            overflow-wrap: anywhere;
+        }
+    }
+}
+
+.card {
+    .card-body.EMS-CustomCardBody {
+        padding: 0 !important;
+    }
+}
+
+.EMS-CommentDescription {
+    p {
+        margin-bottom: 0;
+        font-size: 14px;
+        white-space: normal;
+        line-height: 22px;
+        text-align: left;
+    }
+    font-size: 14px;
+    white-space: normal;
+    line-height: 22px;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    nav.navbar.default-layout button.btn.btn-light {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+    }
+    .new-ui-ems-clock-calendar button.btn {
+        padding: 10px 10px !important;
+        font-size: 14px !important;
+        font-weight: 600;
+    }
+    .new-ui-ems-clock-calendar .fc-toolbar {
+        display: block !important;
+        padding: 0 !important;
+    }
+    .new-ui-ems-clock-calendar .fc-toolbar .fc-left,
+    .new-ui-ems-clock-calendar .fc-toolbar .fc-right {
+        width: 100% !important;
+        margin-bottom: 20px;
+    }
+    .new-ui-ems-clock-calendar .fc-scroller.fc-day-grid-container {
+        height: 100% !important;
+    }
+    .new-ui-ems-clock-calendar .fc-view-container {
+        width: 750px !important;
+        padding-right: 15px;
+    }
+    body.custom-clock-calendar-ui .card-body.new-ui-ems-clock-calendar {
+        overflow-x: scroll !important;
+    }
+    body.custom-clock-calendar-ui .fc-view-container .fc-event .fc-content span.fc-title,
+    .fc-event-dot .fc-content span.fc-title {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 365px) {
+    .navbar .navbar-brand-wrapper {
+        width: 50px !important;
+    }
+    .navbar .navbar-brand-wrapper .brand-logo-mini img {
+        width: calc(70px - 30px) !important;
+        height: 60px;
+    }
+    .navbar .navbar-menu-wrapper .navbar-nav {
+        li.nav-item.dropdown {
+            margin: 0 !important;
+        }
+    }
+    .new-ui-ems-clock-calendar button.btn {
+        padding: 10px !important;
+        font-size: 14px !important;
+        font-weight: 600;
+    }
+    .new-ui-ems-clock-calendar button.btn {
+        padding: 8px !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+    }
+}
+
+body.custom-clock-calendar-ui .modal.new-clock-modal {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.btn {
+    color: #fff !important;
+}
+
+.disabledColor {
+    background-color: #5AC6C6 !important;
+    color: #ffffff !important;
+}
+
+.navbar-menu-wrapper button.btn {
+    color: #000000 !important;
+}
+
+.mdi-home:before {
+    color: #5AC6C6 !important;
+}
+
+.mdi-pen:before {
+    color: #156BA3 !important;
+}
+
+.mdi-file-excel:before,
+.mdi-eye:before {
+    color: #156BA3 !important;
+}
+
+::ng-deep .fc-event {
+    border-color: #fff !important;
+}
+
+@media screen and (max-width: 479px) {
+    button.btn.btn-link {
+        a {
+            &:after {
+                content: '\f106';
+                font-family: FontAwesome;
+                position: absolute;
+                right: -11px !important;
+                top: 4px;
+                font-weight: 600;
+                color: #156BA3;
+            }
+        }
+    }
+}

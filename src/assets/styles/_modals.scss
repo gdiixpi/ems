@@ -1,0 +1,44 @@
+/* Modals */
+
+.modal {
+    .modal-dialog {
+        margin-top: calc(#{$navbar-height} + 30px);
+        .modal-content {
+            background: #e1ecff;
+            background-image: linear-gradient(to left bottom, #d6eef6, #dff0fa, #e7f3fc, #eff6fe, #f6f9ff);
+            .modal-header {
+                padding: $modal-header-padding-y $modal-header-padding-x;
+                border-bottom: none !important;
+                .modal-title {
+                    color: #156BA3 !important;
+                    font-size: 25px !important;
+                    font-weight: 600 !important;
+                    letter-spacing: 0.3px !important;
+                }
+                .close {
+                    background: linear-gradient(90deg, #156BA3 -24.91%, #5AC6C6 100%);
+                    color: #ffffff;
+                    padding: 0 !important;
+                    margin: 0 -16px 0 auto !important;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50px;
+                    opacity: .95 !important;
+                    span {
+                        font-size: 25px;
+                        font-weight: 600;
+                        color: #ffffff;
+                        position: relative;
+                        bottom: 3px;
+                    }
+                }
+            }
+            .modal-body {
+                padding: $modal-body-padding-y $modal-body-padding-x;
+            }
+            .modal-footer {
+                padding: $modal-footer-padding-y $modal-footer-padding-x;
+            }
+        }
+    }
+}

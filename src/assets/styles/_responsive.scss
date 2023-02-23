@@ -1,0 +1,225 @@
+    @media (max-width: 991px) {
+        .navbar {
+            .navbar-brand-wrapper {
+                .brand-logo {
+                    display: none;
+                }
+                .brand-logo-mini {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+    
+    @media (max-width: 1440px) {
+        .sidebar {
+            width: 255px !important;
+        }
+        .main-panel {
+            padding-left: 255px !important;
+        }
+        .navbar {
+            .navbar-brand-wrapper {
+                width: 255px !important;
+                .navbar-brand {
+                    img {
+                        width: calc(255px - 105px) !important;
+                    }
+                }
+            }
+        }
+        .table {
+            td,
+            th {
+                font-size: 14px !important;
+                padding: 10px 7px !important;
+            }
+        }
+        .card {
+            .card-body {
+                padding: 15px !important;
+            }
+        }
+        .card-title {
+            font-size: 18px!important;
+        }
+        a.AddholidayAtag {
+            .Addholiday {
+                padding: 6px 10px !important;
+                font-size: 13px !important;
+            }
+        }
+        span.NormalFontHR {
+            font-size: 25px !important;
+            bottom: 7px !important;
+        }
+        .badge {
+            padding: 4px 6px !important;
+        }
+        .modal {
+            .modal-dialog {
+                .modal-content {
+                    .modal-header {
+                        .close {
+                            width: 25px !important;
+                            height: 25px !important;
+                            span {
+                                font-size: 20px !important;
+                                bottom: 4px !important;
+                            }
+                        }
+                        .modal-title {
+                            font-size: 21px !important;
+                        }
+                    }
+                }
+            }
+        }
+        form {
+            .form-group {
+                label {
+                    font-size: 14px !important;
+                }
+            }
+            .form-control {
+                font-size: 15px !important;
+                padding: 12px !important;
+            }
+        }
+    }
+    
+    @media screen and (max-width: 991px) {
+        .row-offcanvas {
+            position: relative;
+            -webkit-transition: all .25s ease-out;
+            -o-transition: all .25s ease-out;
+            transition: all .25s ease-out;
+            &.row-offcanvas-right {
+                right: 0;
+                .sidebar-offcanvas {
+                    right: -100%; // 12 columns
+                }
+                &.active {
+                    right: calc(50% + 30px); // 6 columns
+                    .sidebar-offcanvas {
+                        right: calc(-50% - 15px); // 6 columns
+                    }
+                }
+            }
+            &.row-offcanvas-left {
+                left: 0;
+                .sidebar-offcanvas {
+                    left: -100%; // 12 columns
+                }
+                &.active {
+                    left: 50%; // 6 columns
+                    .sidebar-offcanvas {
+                        left: -50%; // 6 columns
+                    }
+                }
+            }
+            .sidebar-offcanvas {
+                position: absolute;
+                top: 0;
+                width: calc( 50% + 30px); // 6 columns
+            }
+        }
+        .navbar {
+            .navbar-brand-wrapper {
+                width: 75px !important;
+            }
+        }
+        .main-panel {
+            padding-left: 0 !important;
+        }
+    }
+    
+    @media (min-width: 576px) {
+        .modal-dialog.modal-custom {
+            max-width: 455px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .content-wrapper {
+            padding: 0.5rem !important;
+        }
+        a.btn.AddEmployeeBtn {
+            font-size: 13px;
+        }
+        div#ViewEmployeeTable_wrapper {
+            .row {
+                &:first-child {
+                    .col-sm-12.col-md-6 {
+                        &:first-child {
+                            padding-right: 0;
+                            div#ViewEmployeeTable_length {
+                                label {
+                                    float: left
+                                }
+                            }
+                        }
+                        &:last-child {
+                            padding-left: 0;
+                            div#ViewEmployeeTable_filter {
+                                label {
+                                    float: left
+                                }
+                            }
+                        }
+                    }
+                }
+                &:last-child {
+                    .col-sm-12.col-md-5 {
+                        padding-right: 0;
+                        padding-top: 0;
+                        padding-bottom: 20px;
+                    }
+                    .col-sm-12.col-md-7 {
+                        padding-left: 0;
+                        ul.pagination {
+                            float: left;
+                            margin: 0px auto 19px;
+                        }
+                    }
+                }
+            }
+        }
+        .Leave-Filters {
+            button.btn {
+                margin-bottom: 15px;
+                font-size: 15px;
+            }
+        }
+    }
+    
+    @media only screen and (min-width: 1920px) and (-ms-high-contrast: none) {
+        select.form-control.custom-Select-2,
+        select.custom-Select {
+            height: 49px;
+        }
+        .EMS-CommentDescription {
+            font-size: 18px !important;
+        }
+    }
+    /*css for IE EDGE*/
+    
+    @media only screen and (min-width: 1920px) and (-ms-ime-align:auto) {
+        select.form-control.custom-Select-2,
+        select.custom-Select {
+            height: 49px;
+        }
+        .EMS-CommentDescription {
+            font-size: 18px !important;
+        }
+    }
+    
+    @media screen and (min-width: 1920px) {
+        select.form-control.custom-Select-2,
+        select.custom-Select {
+            height: 49px;
+        }
+        .EMS-CommentDescription {
+            font-size: 18px !important;
+        }
+    }
