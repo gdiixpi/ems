@@ -1,0 +1,256 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+            <!-- Custom Code Start -->
+            <div class="row grid-margin">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body table-background">
+                            <div class="Leave-Filters mb-4">
+                                <button class="btn btn-primary mr-2" (click)="openModalLeaveFilter(LeaveFilterTemplate)"><i class="mdi mdi-filter"></i>Leave Filter</button>
+                                <button class="btn btn-success mr-2" (click)="viewCurrentMonthLeave('currentMonthLeave')"><i class="mdi mdi-account-check"></i>View Current Month Leave</button>
+                                <!-- <button class="btn btn-danger" (click)="onViewInactiveUserLeave()"><i class=" mdi mdi-account-remove "></i>View Inactive User Leave</button> -->
+                            </div>
+                            <div class="table-responsive ">
+                                <table datatable [dtOptions]="dtOptions" class="table CustomTableViewEmployee table-bordered" id="ViewEmployeeTable">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center sorting_asc_disabled sorting_desc_disabled"> # </th>
+                                            <th> Employee Name </th>
+                                            <th> From Date </th>
+                                            <th> End Date </th>
+                                            <th> Leave Type </th>
+                                            <th class="text-center "> Total Days </th>
+                                            <th class="text-center"> Paid Leaves </th>
+                                            <th class="text-center"> Unpaid Leaves </th>
+                                            <th> Leave Status </th>
+                                            <th class="text-center sorting_asc_disabled sorting_desc_disabled"> Action </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="viewleave?.length != 0">
+                                        <tr *ngFor="let user_viewleave of viewleave; let i = index;">
+                                            <td class="text-center">{{i+1}}</td>
+                                            <td>{{ user_viewleave.user_name }}</td>
+                                            <td>{{ user_viewleave.from_dt | date : 'MMM d, yyyy' }}</td>
+                                            <td>
+                                                {{ user_viewleave.end_dt | date : 'MMM d, yyyy' }}
+                                                <span *ngIf="user_viewleave.end_dt == null">{{ user_viewleave.from_dt | date : 'MMM d, yyyy' }}</span>
+                                            </td>
+                                            <td>
+                                                <span *ngIf="user_viewleave.leave_type == 1"> Full Day </span>
+                                                <span *ngIf="user_viewleave.leave_type == 0"> 
+                                                Half Day 
+                                                <span *ngIf="user_viewleave.half_leave_type == 0">
+                                                    <b>(</b> 1<sup>st</sup> Half <b>)</b>
+                                                </span>
+                                                <span *ngIf="user_viewleave.half_leave_type == 1">
+                                                    <b>(</b> 2<sup>nd</sup> Half <b>)</b>
+                                                </span>
+                                                </span>
+                                            </td>
+                                            <td class="text-center">{{ user_viewleave.total_days }}</td>
+                                            <td class="text-center">{{ user_viewleave.paid_leave }}</td>
+                                            <td class="text-center">{{ user_viewleave.unpaid_leave }}</td>
+                                            <td class="text-center">
+                                                <label *ngIf="user_viewleave.leave_status == 0" class="badge badge-warning">Pending</label>
+                                                <label *ngIf="user_viewleave.leave_status == 1" class="badge badge-success">Approved</label>
+                                                <label *ngIf="user_viewleave.leave_status == 2" class="badge badge-danger">Rejected</label>
+                                                <label *ngIf="user_viewleave.leave_status == 3" class="badge badge-cancel">Cancel</label>
+                                            </td>
+                                            <td class="text-center">
+                                                <span>
+                                                    <a href="javascript:;" (click)="openViewLeaveModal(viewLeave, 
+                                                    user_viewleave.id, 
+                                                    user_viewleave.user_id, 
+                                                    user_viewleave.user_name,
+                                                    user_viewleave.from_dt, 
+                                                    user_viewleave.end_dt,
+                                                    user_viewleave.created_dt,  
+                                                    user_viewleave.total_days,
+                                                    user_viewleave.leave_type, 
+                                                    user_viewleave.half_leave_type, 
+                                                    user_viewleave.paid_leave, 
+                                                    user_viewleave.unpaid_leave,
+                                                    user_viewleave.leave_status, 
+                                                    user_viewleave.reason, 
+                                                    user_viewleave.reject_reason
+                                                    )" class="Leave_View" placement="left" ngbTooltip="View Leave">
+                                                        <i class="mdi mdi-eye Leave_View"></i>
+                                                    </a>
+                                                </span>
+                                                <span *ngIf="user_viewleave.leave_status == 0">&nbsp; &nbsp;
+                                                    <a href="javascript:;" (click)="openCancelModal(cancelLeave, user_viewleave.leave_id, user_viewleave.user_id)" class="Leave_Rejected" placement="left" ngbTooltip="Cancel Leave">
+                                                        <i class="mdi mdi-close-circle Leave_Rejected"></i>
+                                                    </a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                    <tbody *ngIf="viewleave?.length == 0">
+                                        <tr>
+                                            <td colspan="10" class="text-center">There are no any active leave.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Leave filter modal start -->
+            <ng-template #LeaveFilterTemplate>
+                <div class="modal-header">
+                    <h2 class="modal-title pull-left">Leave Filter</h2>
+                    <button type="button" class="close pull-right LeaveFilterClose" aria-label="Close" (click)="modalRef.hide()">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    <form class="forms-sample" #leaveFilter="ngForm" (ngSubmit)="onLeaveFilter(leaveFilter.value,'datawithfilter')" id="leaveFilterForm">
+                        <div class="form-group row">
+                            <label for="leave_status" class="col-sm-4 col-form-label">Leave Status</label>
+                            <div class="col-sm-8">
+                                <select class="form-control form-control-lg LeaveStatusSelect" id="leave_status" name="leave_status" #leave_status="ngModel" ngModel>
+                                    <option selected value>-- Select --</option>
+                                    <option value="0">Pending</option>
+                                    <option value="1">Approved</option>
+                                    <option value="2">Rejected</option>
+                                    <option value="3">Cancel</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="start_date" class="col-sm-4 col-form-label">Start Date</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="start_date" placeholder="mm/dd/yyyy" autocomplete="off" id="start_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="{ isAnimated: true }" #start_date="ngModel" ngModel />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="end_date" class="col-sm-4 col-form-label">End Date</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="end_date" placeholder="mm/dd/yyyy" autocomplete="off" id="end_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="{ isAnimated: true }" #end_date="ngModel" ngModel />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success mr-2">Submit</button>
+                        <button type="button" class="btn btn-light cancelBtn HolidayClose" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
+                    </form>
+                </div>
+            </ng-template>
+            <!-- Leave filter modal end -->
+
+            <!-- Cancel leave modal start -->
+            <ng-template #cancelLeave>
+                <div class="modal-header">
+                    <h5 class="modal-title">Leave Cancel</h5>
+                    <button type="button" class="close pull-right cancelLeaveClose" aria-label="Close" (click)="modalRef.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure want to cancel leave?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning token-purchase text-white" (click)="confirmCancel()">Yes</button>
+                    <button type="button" class="btn btn-primary" (click)="declineCancel()">No</button>
+                </div>
+            </ng-template>
+            <!-- Cancel leave modal end -->
+
+            <!-- View leave modal start -->
+            <ng-template #viewLeave>
+                <div class="modal-header">
+                    <h5 class="modal-title">Leave Details: {{ viewUserData.viewLeaveUserName }}</h5>
+                    <button type="button" class="close pull-right viewLeaveClose" aria-label="Close" (click)="modalRef.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pt-1">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <!-- <tr>
+                                    <th> User ID </th>
+                                    <td> {{ viewUserData.ViewLeaveUserId }} </td>
+                                </tr>
+                                <tr>
+                                    <th> User Name </th>
+                                    <td> {{ viewUserData.viewLeaveUserName }} </td>
+                                </tr> -->
+                                <tr>
+                                    <th> From Date </th>
+                                    <td> {{ viewUserData.viewLeaveFromDate | date : 'MMM d, yyyy' }} </td>
+                                </tr>
+                                <tr>
+                                    <th> End Date </th>
+                                    <td>
+                                        {{ viewUserData.viewLeaveEndDate | date : 'MMM d, yyyy' }}
+                                        <span *ngIf="viewUserData.viewLeaveEndDate == null">{{ viewUserData.viewLeaveFromDate | date : 'MMM d, yyyy' }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th> Apply Date </th>
+                                    <td> {{ viewUserData.viewLeaveApplyDate | date : 'MMM d, yyyy' }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Total Days </th>
+                                    <td> {{ viewUserData.viewLeaveTotalDays }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Leave Type </th>
+                                    <td>
+                                        <span *ngIf="viewUserData.viewLeaveType == 1"> Full Day </span>
+                                        <span *ngIf="viewUserData.viewLeaveType == 0"> 
+                                                Half Day 
+                                                <span *ngIf="viewUserData.viewLeaveHalfType == 0">
+                                                    <b>(</b> 1<sup>st</sup> Half <b>)</b>
+                                                </span>
+                                        <span *ngIf="viewUserData.viewLeaveHalfType == 1">
+                                                    <b>(</b> 2<sup>nd</sup> Half <b>)</b>
+                                                </span>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th> Paid Leave </th>
+                                    <td> {{ viewUserData.viewLeavePidLeave }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Unpaid Leave </th>
+                                    <td> {{ viewUserData.viewLeaveUnpaidLeave }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Leave Status </th>
+                                    <td>
+                                        <label *ngIf="viewUserData.viewLeaveStatus == 0" class="badge badge-warning max-width-label">Pending</label>
+                                        <label *ngIf="viewUserData.viewLeaveStatus == 1" class="badge badge-success max-width-label">Approved</label>
+                                        <label *ngIf="viewUserData.viewLeaveStatus == 2" class="badge badge-danger max-width-label">Rejected</label>
+                                        <label *ngIf="viewUserData.viewLeaveStatus == 3" class="badge badge-cancel max-width-label">Cancel</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th> Leave Reason </th>
+                                    <td> {{ viewUserData.viewLeaveReason }} </td>
+                                </tr>
+                                <tr *ngIf="viewUserData.viewLeaveStatus == 2">
+                                    <th> Rejected Reason </th>
+                                    <td> {{ viewUserData.viewLeaveRejectReason }} </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </ng-template>
+            <!-- View leave modal end -->
+
+            <!-- Custom Code End -->
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

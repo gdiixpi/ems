@@ -1,0 +1,210 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath">
+            </app-breadcrumbs>
+            <!-- Custom Code Start -->
+            <div class="row grid-margin">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body table-background project_report">
+                            <form class="forms-sample mb-4" #applyFilter="ngForm" (ngSubmit)="onapplyFilterSubmit(applyFilter.value)" id="applyFilterForm">
+                                <div class="row">
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="project_name">Project Name</label>
+                                            <select class="form-control custom-Select" id="project_name" name="project_name" #project_name="ngModel" ngModel>
+                                                <option value="" selected>-- Select Project --</option>
+                                                <option *ngFor="let user_Projects of viewprojects;" value="{{ user_Projects.id }}">
+                                                {{ user_Projects.project_name }}</option>
+                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="status">Status</label>
+                                            <select class="form-control custom-Select" id="status" name="status" #status="ngModel" ngModel>
+                                                <option value="" selected>-- Select Status --</option>
+                                                <option value="1">Open</option>
+                                                <option value="2">Done</option>
+                                                <option value="3">Re-open</option>
+                                                <option value="4">Completed</option>
+                                                <option value="5">Cancelled</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="priority">Priority</label>
+                                            <select class="form-control custom-Select" id="priority" name="priority" #priority="ngModel" ngModel>
+                                                <option value="" selected>-- Select Priority --</option>
+                                                <option value="1">Low</option>
+                                                <option value="2">Medium</option>
+                                                <option value="3">High</option>
+                                                <option value="4">Urgent</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="label">Label</label>
+                                            <select class="form-control custom-Select" id="label" name="label" #label="ngModel" ngModel>
+                                                    <option value="" selected>-- Select Label --</option>
+                                                    <option value="1">Task</option>
+                                                    <option value="2">Bug</option>
+                                                    <option value="3">Change</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group mb-md-0">
+                                            <label for="from_date">From Date</label>
+                                            <input type="text" name="from_date" autocomplete="off" placeholder="mm/dd/yyyy" id="from_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #from_date="ngModel" ngModel />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group mb-md-0">
+                                            <label for="to_date">To Date</label>
+                                            <input type="text" name="to_date" autocomplete="off" placeholder="mm/dd/yyyy" id="to_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #to_date="ngModel" ngModel />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-md-6 col-12 align-self-center">
+                                        <div class="form-group text-center mb-0 mt-md-4">
+                                            <button type="submit" class="btn btn-success mr-3">Filter</button>
+                                            <button type="reset" class="btn btn-warning mr-3" (click)="reset(applyFilter)">Reset</button>
+                                            <button class="btn btn-success" *ngIf="userDatas(userData.access_type,'admin&manager')" (click)="goToAddTaskPage()">Add Task</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="divider my-4"></div>
+                            <div class="table-responsive">
+                                <table datatable [dtOptions]="dtOptions" data-page-length='25' class="table CustomTableViewEmployee" id="ViewEmployeeTable">
+                                    <thead>
+                                        <tr>
+                                            <th class="w-15 text-center sorting_asc_disabled sorting_desc_disabled">#</th>
+                                            <th class="priority">Priority</th>
+                                            <th class="projectName">Project Name</th>
+                                            <th>Task Name</th>
+                                            <!-- <th class="workingHrs">Working Hours</th> -->
+                                            <th class="estimatedHrs">Estimated Hours</th>
+                                            <th class="deadline">Deadline</th>
+                                            <th>Label</th>
+                                            <th>Status</th>
+                                            <th class="w-15 text-center sorting_asc_disabled sorting_desc_disabled">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="viewTaskProject?.length != 0">
+                                        <tr *ngFor="let user_viewTaskProject of viewTaskProject; let i = index;">
+                                            <td>{{i+1}}</td>
+                                            <td>
+                                                <i *ngIf="user_viewTaskProject.priority == 1" class="fa fa-angle-down font-weight-bold text-primary pl-2 FontSize20" placement="top" ngbTooltip="Low"></i>
+                                                <i *ngIf="user_viewTaskProject.priority == 2" class="fa fa-arrows-alt font-weight-bold text-success pl-2 FontSize20" placement="top" ngbTooltip="Medium"></i>
+                                                <i *ngIf="user_viewTaskProject.priority == 3" class="fa fa-angle-up font-weight-bold text-danger pl-2 FontSize20" placement="top" ngbTooltip="High"></i>
+                                                <i *ngIf="user_viewTaskProject.priority == 4" class="fa fa-angle-double-up font-weight-bold text-danger pl-2 FontSize20" placement="top" ngbTooltip="Urgent"></i>
+                                            </td>
+                                            <td>
+                                                <a routerLink="/projectdetails/{{ user_viewTaskProject.project_id }}" class="EMS-ProjectTaskLink">
+                                                  {{ user_viewTaskProject.project_name }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <p class="maxWidthTaskName mb-0">{{ user_viewTaskProject.task_name }}</p>
+                                            </td>
+                                            <!-- <td class="TotalHoursCount" *ngIf="user_viewTaskProject.working_hours != null; else NoWorkingHours">
+                                                {{ user_viewTaskProject.working_hours }}</td>
+                                            <ng-template #NoWorkingHours>
+                                                <td class="TotalHoursCount">-</td>
+                                            </ng-template> -->
+                                            <td class="text-center">{{ user_viewTaskProject.estimated_time }}</td>
+                                            <td class="pl-0">{{ user_viewTaskProject.deadline | date : 'MMM d, yyyy' }}</td>
+                                            <td>
+                                                <label *ngIf="user_viewTaskProject.label == 1" class="font-weight-bold text-danger mb-0">Task</label>
+                                                <label *ngIf="user_viewTaskProject.label == 2" class="font-weight-bold text-info mb-0">Bug</label>
+                                                <label *ngIf="user_viewTaskProject.label == 3" class="font-weight-bold text-warning mb-0">Change</label>
+                                            </td>
+                                            <td class="">
+                                                <label *ngIf="user_viewTaskProject.status == 1" class="badge badge-warning w-95-c">Open</label>
+                                                <label *ngIf="user_viewTaskProject.status == 2" class="badge badge-info w-95-c">Done</label>
+                                                <label *ngIf="user_viewTaskProject.status == 3" class="badge badge-danger w-95-c">Re-open</label>
+                                                <label *ngIf="user_viewTaskProject.status == 4" class="badge badge-success w-95-c">Completed</label>
+                                                <label *ngIf="user_viewTaskProject.status == 5" class="badge badge-cancel w-95-c">Cancelled</label>
+                                                <label *ngIf="user_viewTaskProject.status == 6" class="badge badge-primary w-95-c">On-hold</label>
+                                            </td>
+                                            <td class="project-actions text-center">
+                                                <span *ngIf="userDatas(userData.access_type,'admin&manager') && user_viewTaskProject.status != 4 && user_viewTaskProject.memeber_id == user_viewTaskProject.assign_id">
+                                                      <a routerLink="/edittask/{{user_viewTaskProject.task_id}}/" class="Leave_Edit" placement="left"
+                                                        ngbTooltip="Edit Task">
+                                                        <i class="mdi mdi-pen Leave_Edit"></i>
+                                                      </a>
+                                                      </span> &nbsp;
+                                                <span>
+                                                        <a routerLink="/addcomment/{{ user_viewTaskProject.task_id }}/{{user_viewTaskProject.project_id}}"
+                                                          class="Leave_View" placement="left" ngbTooltip="Add Comment">
+                                                          <i class="fa fa-comments-o Leave_View"></i>
+                                                        </a>
+                                                      </span>
+                                                <span *ngIf="userDatas(userData.access_type,'admin&manager') && user_viewTaskProject.memeber_id == user_viewTaskProject.assign_id">
+                                                        <a href="javascript:; " (click)="openDeleteModal(deleteTask, user_viewTaskProject.task_id) "
+                                                          class="Leave_View " placement="left " ngbTooltip="Delete Task ">
+                                                          <i class="mdi mdi-delete ml-2 Leave_Rejected "></i>
+                                                        </a>
+                                                 </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="viewTaskProject.length==0 ">
+                                        <tr>
+                                            <td colspan="10 " class="text-center ">No matching records found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- <ng-template #NoFilterData>
+                                    <table datatable class="table CustomTableViewEmployee ">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-15 text-center sorting_asc_disabled sorting_desc_disabled ">#</th>
+                                                <th>Priority</th>
+                                                <th>Project Name</th>
+                                                <th>Task Name</th>
+                                                <th>Working Hours</th>
+                                                <th>Estimated Hours</th>
+                                                <th>Label</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tr>
+                                            <td colspan="9 " class="text-center dataTables_empty ">No matching records found</td>
+                                        </tr>
+                                    </table>
+                                </ng-template> -->
+                                <!-- <table datatable [dtOptions]="dtOptions " class="table CustomTableViewEmployee " id="ViewEmployeeTable " *ngIf="temp_var "></table> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Delete Task confirm modal start -->
+            <ng-template #deleteTask>
+                <div class="modal-header ">
+                    <h5 class="modal-title ">Delete Task</h5>
+                    <button type="button " class="close pull-right SaveCardTemplateClose TaskDeleteClose " aria-label="Close " (click)="modalRef.hide() ">
+            <span aria-hidden="true ">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body ">
+                    Are you sure want to delete task?
+                </div>
+                <div class="modal-footer ">
+                    <button type="button " class="btn btn-warning token-purchase text-white " (click)="confirm() ">Yes</button>
+                    <button type="button " class="btn btn-primary " (click)="decline() ">No</button>
+                </div>
+            </ng-template>
+            <!-- Delete Task confirm modal end -->
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath">
+            </app-breadcrumbs>
+            <!-- Custom Code Start -->
+            <div class="row grid-margin">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body table-background">
+
+                            <div class="table-responsive">
+                                <table datatable [dtOptions]="dtOptions" class="table CustomTableViewEmployee dataTable" data-page-length="10">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center sorting_asc_disabled sorting_desc_disabled"> # </th>
+                                            <th> Employee Name </th>
+                                            <th> Primary Superiors </th>
+                                            <th class="sorting_asc_disabled sorting_desc_disabled"> Secondary Superiors </th>
+                                            <th class="text-center sorting_asc_disabled sorting_desc_disabled"> Action </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="viewsuperiors?.length != 0">
+                                        <tr *ngFor="let view_superiors of viewsuperiors; let i = index;">
+                                            <td class="text-center SuperiorThTd">{{i+1}}</td>
+                                            <td class="SuperiorThTd">{{ view_superiors.user_name }}</td>
+                                            <td class="SuperiorThTd">{{ view_superiors.primary_sup_name.first_name }} {{ view_superiors.primary_sup_name.last_name }}</td>
+                                            <td>
+                                                <span *ngFor="let superiorNname of view_superiors?.superior_name">
+                          <div class="SecondSuperiorName"> {{ superiorNname.first_name }} {{ superiorNname.last_name }}
+                          </div>
+                        </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="javascript:;" (click)="EditSuperiorModalOpen(editSuperiors, i,view_superiors.superior)" placement="top" ngbTooltip="Edit Superior">
+                                                    <i class="mdi mdi-pen Leave_Edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                    <tbody *ngIf="viewsuperiors?.length == 0">
+                                        <tr>
+                                            <td colspan="5" class="no-data-available text-center">There are no employee records.</td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Edit Superior modal start -->
+            <ng-template #editSuperiors>
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Superior</h5>
+                    <button type="button" class="close editSuperiorsClose" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <form class="forms-sample" #editSuperiors="ngForm" (ngSubmit)="onEditSubmit(editSuperiors.value)" id="editSuperiorsForm">
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <input type="hidden" name="edit_superior_id" id="edit_superior_id" class="form-control EMS-Form-Controal" #edit_superior_id="ngModel" ngModel="{{ viewUserData.id }}" />
+                                <input type="hidden" name="edit_employee_id" id="edit_employee_id" class="form-control EMS-Form-Controal" #edit_employee_id="ngModel" ngModel="{{ viewUserData.user_id }}" />
+                                <label for="assignEmployee" class="col-form-label">Select Employee <span
+                    class="text-danger">*</span></label>
+                                <select class="form-control custom-Select-2" disabled id="assignEmployee" name="assignEmployee" #assignEmployee="ngModel" required ngModel="{{viewUserData.user_id}}">
+                  <option value="" selected>-- Select --</option>
+                  <option *ngFor="let assign_Non_Employee of userNonSuperiors;"
+                    value="{{ assign_Non_Employee.user_id }}">{{ assign_Non_Employee.first_name }} {{
+                    assign_Non_Employee.last_name }}</option>
+                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label for="primarySuperior" class="col-form-label">Select Primary Superior <span
+                    class="text-danger">*</span></label>
+                                <select (change)="onChange($event.target.value)" class="form-control custom-Select-2" id="primarySuperior" name="primarySuperior" #primarySuperior="ngModel" required ngModel="{{viewUserData.primary_superior_id}}">
+                  <!-- <select (change)="onChange($event.target.value)" class="form-control custom-Select-2" id="primarySuperior" name="primarySuperior" #primarySuperior="ngModel" ngModel [ngClass]="{ 'is-invalid': editSuperior.submitted && primarySuperior.invalid }" required> -->
+                  <option value="" disabled selected>-- Select --</option>
+                  <option *ngFor="let primary_Superior of uesrSuperiors;" value="{{ primary_Superior.id }}">{{
+                    primary_Superior.first_name }} {{ primary_Superior.last_name }}</option>
+                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12" id="second_div">
+                                <label for="secondarySuperior" class="col-form-label">Select Secondary Superior <span
+                    class="text-danger">*</span></label>
+                                <!-- <select multiple class="form-control custom-Select-Multiple" id="secondarySuperior" name="secondarySuperior" #secondarySuperior="ngModel" ngModel> -->
+                                <select multiple class="form-control custom-Select-Multiple" id="secondarySuperior" name="secondarySuperior" #secondarySuperior="ngModel" ngModel [ngClass]="{ 'is-invalid': editSuperiors.submitted && secondarySuperior.invalid }" required>
+                  <option value="" disabled selected>-- Select --</option>
+                  <option *ngFor="let primary_Superior of uesrSuperiorsSecond;" value="{{ primary_Superior.id }}">{{
+                    primary_Superior.first_name }} {{ primary_Superior.last_name }}
+                  </option>
+                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success mr-2" [disabled]="!editSuperiors.form.valid">Submit</button>
+                        <button type="button" class="btn cancelBtn btn-light  SuperiorsClose" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
+                    </form>
+                </div>
+            </ng-template>
+            <!-- Edit superior modal start -->
+            <!-- Custom Code End -->
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

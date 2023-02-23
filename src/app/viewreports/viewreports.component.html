@@ -1,0 +1,90 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+            <div class="row" *ngIf="userDatas(userData.access_type,'all')">
+                <div class="col-lg-3 col-md-3">
+                    <button class="btn btn-primary mb-3" (click)="goToAddReport()">Add Timesheet</button>
+                </div>
+            </div>
+            <!-- Custom Code Start -->
+            <div class="row grid-margin">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body table-background project_report">
+                            <div class="table-responsive">
+                                <!-- <table class="table table-hover js-basic-example dataTable table-custom m-b-0"> -->
+                                <table datatable [dtOptions]="dtOptions" class="table CustomTableViewEmployee" id="ViewEmployeeTable">
+                                    <thead>
+                                        <tr>
+                                            <th class="w-15 text-center sorting_asc_disabled sorting_desc_disabled">#</th>
+                                            <th class="maxWidthName">Name</th>
+                                            <th class="maxWidthDate">Date</th>
+                                            <th>Task Update Date</th>
+                                            <th>Hours</th>
+                                            <!-- <th class="w-135 text-center sorting_asc_disabled sorting_desc_disabled">Document Link</th> -->
+                                            <th class="w-90 text-center sorting_asc_disabled sorting_desc_disabled">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="viewTask.length != 0;">
+                                        <tr *ngFor="let user_viewTask of viewTask; let i = index;">
+                                            <td>{{i+1}}</td>
+                                            <td class="project-title">
+                                                {{ user_viewTask.username }}
+                                            </td>
+                                            <td>{{ user_viewTask.date | date : 'd MMM, yyyy' }}</td>
+                                            <td>{{ user_viewTask.updated_at | date : 'd MMM, yyyy' }}</td>
+                                            <td class="text-capitalize">{{ user_viewTask.total_hours }}</td>
+                                            <td class="project-actions text-center">
+                                                <span *ngIf="user_viewTask.status == 0">
+                                                        <a routerLink="/editreports/{{ user_viewTask.task_id }}" class="Leave_Edit" placement="left" ngbTooltip="Edit Timesheet">
+                                                        <i class="mdi mdi-pen Leave_Edit"></i>
+                                                    </a>
+                                                </span> &nbsp;
+                                                <span>
+                                                    <a routerLink="/reportdetails/{{ user_viewTask.task_id }}" class="Leave_View"  placement="left" ngbTooltip="View Timesheet">
+                                                        <i class="mdi mdi-eye Leave_View"></i>
+                                                    </a>
+                                                </span>
+                                                <span *ngIf="userData.user_id == user_viewTask.user_id">
+                                                    <a href="javascript:;"  (click)="openDeleteModal(deleteTimesheet, user_viewTask.task_id)" class="Leave_View"  placement="left" ngbTooltip="Delete Timesheet">
+                                                        <i class="mdi mdi-delete ml-2 Leave_Rejected"></i>
+                                                    </a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="viewTask?.length == 0">
+                                        <tr>
+                                            <td colspan="9" class="text-center">No matching records found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Delete holiday confirm modal start -->
+            <ng-template #deleteTimesheet>
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Timesheet</h5>
+                    <button type="button" class="close pull-right SaveCardTemplateClose TaskDeleteClose" aria-label="Close" (click)="modalRef.hide()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure want to delete report?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning token-purchase text-white" (click)="confirm()">Yes</button>
+                    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+                </div>
+            </ng-template>
+            <!-- Delete holiday confirm modal end -->
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

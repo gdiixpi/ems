@@ -1,0 +1,81 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+  <app-sidebar></app-sidebar>
+  <div class="main-panel w-100">
+    <div class="content-wrapper">
+      <!-- Custom Code Start -->
+      <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle"
+        [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+      <div class="row">
+        <div class="col-md-12 col-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body customPadding table-background">
+              <div class="content">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card addEmployeeMainDiv">
+                      <div class="card-body">
+                        <form class="forms-sample" [formGroup]="addWfhDetailForm"
+                          (ngSubmit)="onAddDetails(addWfhDetailForm.value)" id="addWfhDetailForm">
+                          <div class="row">
+                            <div class="col-md-6 pr-1">
+                              <div class="form-group">
+                                <label for="wfh_start_date">Start Date<span class="text-danger">*</span></label>
+                                <input type="text" formControlName="wfh_start_date" [daysDisabled]="[6,0]"
+                                  [minDate]="minDatestartDate" (bsValueChange)="show_start_days($event,'start')"
+                                  autocomplete="off" placeholder="mm/dd/yyyy" class="form-control EMS-Form-Controal"
+                                  bsDatepicker [bsConfig]="bsConfig" required
+                                  [ngClass]="{ 'is-invalid': submitted && f.wfh_start_date.errors }" />
+                                <div *ngIf="submitted && f.wfh_start_date.errors" class="invalid-feedback">
+                                  <div *ngIf="f.wfh_start_date.errors.required">Please enter start date</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6 pl-1">
+                              <div class="form-group">
+                                <label for="wfh_end_date">End Date<span class="text-danger">*</span></label>
+                                <input type="text" formControlName="wfh_end_date" [daysDisabled]="[6,0]"
+                                  [minDate]="minDateendDate" [maxDate]="maxDateendDate" autocomplete="off"
+                                  placeholder="mm/dd/yyyy" (bsValueChange)="show_start_days($event,'end')"
+                                  class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" required
+                                  [ngClass]="{ 'is-invalid': submitted && f.wfh_end_date.errors }" />
+                                <div *ngIf="submitted && f.wfh_end_date.errors" class="invalid-feedback">
+                                  <div *ngIf="f.wfh_end_date.errors.required">Please enter start date</div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-group textArea">
+                                <label for="reason">Reason<span class="text-danger">*</span></label>
+                                <ck-editor [config]="config" formControlName="reason" kin="moono-lisa" required
+                                  language="en" [fullPage]="false"
+                                  [ngClass]="{ 'is-invalid': submitted && f.reason.errors }"></ck-editor>
+                                <div *ngIf="submitted && f.reason.errors" class="invalid-feedback">
+                                  <div *ngIf="f.reason.errors.required">Please enter start date</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 text-center">
+                              <button type="submit" class="btn btn-success mr-2"
+                                [disabled]="!addWfhDetailForm.valid">Save</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

@@ -1,0 +1,397 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper">
+  <app-sidebar></app-sidebar>
+  <div class="main-panel w-100">
+    <div class="content-wrapper">
+      <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath">
+      </app-breadcrumbs>
+      <!-- Custom Code Start -->
+      <div class="row grid-margin">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body table-background">
+              <div class="Leave-Filters mb-4">
+                <a routerLink="/addemployee" placement="bottom" ngbTooltip="Add Employee"
+                  class="btn btn-success AddEmployeeBtn mr-2"><i class="mdi mdi-plus-circle-outline"></i>
+
+                </a>
+                <a href="javascript:;" (click)="openConfirmModal(monthlyLeave,'monthlyLeave')" placement="bottom"
+                  ngbTooltip="Add Monthly Leave" class="btn btn-primary AddEmployeeBtn mr-2"><i
+                    class="mdi mdi-calendar-plus"></i>
+
+                </a>
+                <a href="javascript:;" (click)="openConfirmModal(generateslip,'SalarySlip')" placement="bottom"
+                  ngbTooltip="Generate Salary Slip" class="btn btn-primary AddEmployeeBtn mr-2"><i
+                    class="mdi mdi-file-outline"></i>
+
+                </a>
+                <a href="javascript:;" (click)="openConfirmModal(generateslip,'SalarySheet')"
+                  ngbTooltip="Monthly Salary Sheet" class="btn btn-primary AddEmployeeBtn mr-2"><i
+                    class="mdi mdi-cash-usd"></i>
+
+                </a>
+                <a href="javascript:;" (click)="openConfirmModal(generateslip,'PFSheet')" placement="bottom"
+                  ngbTooltip="Monthly PF Sheet" class="btn btn-primary AddEmployeeBtn  mr-2"><i
+                    class="mdi  mdi-file-powerpoint"></i>
+
+                </a>
+
+                <li class="nav-item dropdown d-none d-xl-inline-block" placement="bottom" ngbTooltip="Filter"
+                  ngbDropdown>
+                  <a class="btn btn-primary AddEmployeeBtn" id="UserDropdown" ngbDropdownToggle><i
+                      class="mdi mdi-filter"></i></a>
+
+                  <div class="dropdown-menu dropdown-menu-right navbar-dropdown cursor-pointer" ngbDropdownMenu
+                    aria-labelledby="UserDropdown">
+                    <a class="dropdown-item mt-2" (click)="openModalLeaveFilter('All')">
+                      ALL Employee
+                    </a>
+                    <a class="dropdown-item mt-2" (click)="openModalLeaveFilter('activeEmployee')">
+                      Active Employee
+                    </a>
+                    <a class="dropdown-item" (click)="openModalLeaveFilter('inactiveEmployee')">
+                      Inactive Employee
+                    </a>
+                    <a class="dropdown-item" (click)="openModalLeaveFilter('deleteEmployee')">
+                      Delete Employee
+                    </a>
+                  </div>
+                </li>
+              </div>
+              <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" class="table CustomTableViewEmployee dataTable"
+                  data-page-length="10">
+                  <thead>
+                    <tr>
+                      <th class="text-center sorting_asc_disabled sorting_desc_disabled"> # </th>
+                      <th class="text-center sorting_asc_disabled sorting_desc_disabled"> Profile Image </th>
+                      <th> First Name </th>
+                      <th> Last Name </th>
+                      <th> Email </th>
+                      <th> Leave Balance</th>
+                      <!-- <th> Department </th> -->
+                      <th> Service Status </th>
+                      <th> User Status </th>
+                      <th class="text-center sorting_asc_disabled sorting_desc_disabled"> Action </th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="viewemployee?.length != 0">
+                    <tr *ngFor="let admin_viewemployee of viewemployee; let i = index;">
+                      <td class="text-center">{{admin_viewemployee.id + 1 }}</td>
+                      <td class="text-center">
+                        <a href="javascript:;" class="popupImage"
+                          (click)="openProfileImageModal(enlargePrfile, admin_viewemployee.user_id, admin_viewemployee.profile_pic)">
+                          <img
+                            [src]=" admin_viewemployee?.profile_pic == '' ?  'assets/images/faces/face1.jpg' :profilepic() + admin_viewemployee.user_id+ '/'+ admin_viewemployee.profile_pic "
+                            alt=" profile image" class="img-fluid profile_pic_employee">
+                        </a>
+                      </td>
+                      <td>{{admin_viewemployee.first_name }}</td>
+                      <td>{{admin_viewemployee.last_name }}</td>
+                      <td>{{ admin_viewemployee.email }}</td>
+                      <td class="text-center">{{admin_viewemployee.leaves}}</td>
+                      <td>
+                        <label *ngIf="admin_viewemployee.service_status == 1" class="text-black mb-0">Probation</label>
+                        <label *ngIf="admin_viewemployee.service_status == 2" class="text-black mb-0">Confirmed</label>
+                        <label *ngIf="admin_viewemployee.service_status == 3" class="text-black mb-0">Trainee</label>
+                        <label *ngIf="admin_viewemployee.service_status == 4" class="text-black mb-0">Notice</label>
+                      </td>
+                      <td class="text-center">
+                        <label *ngIf="admin_viewemployee.user_status == 0" class="badge badge-danger">Inactive</label>
+                        <label *ngIf="admin_viewemployee.user_status == 1" class="badge badge-success">Active</label>
+                        <label *ngIf="admin_viewemployee.user_status == 9" class="badge badge-warning">Delete</label>
+                      </td>
+                      <td class="text-center">
+                        <span>
+                          <a routerLink="/editemployee/{{ admin_viewemployee.user_id }}" class="Leave_Edit"
+                            placement="left" ngbTooltip="Edit Employee">
+                            <i class="mdi mdi-pen Leave_Edit"></i>
+                          </a>
+                        </span> &nbsp; &nbsp;
+                        <span>
+                          <a href="javascript:;" (click)="openViewEmployeeModal(viewEmployee, i)" class="Leave_View"
+                            placement="left" ngbTooltip="View Employee">
+                            <i class="mdi mdi-eye Leave_View"></i>
+                          </a>
+                        </span> &nbsp; &nbsp;
+                        <span>
+                          <a href="javascript:;"
+                            (click)="opendeleteUserModal(deleteEmployee, admin_viewemployee.user_id, admin_viewemployee.user_status)"
+                            class="Leave_Rejected" placement="left" ngbTooltip="Delete Employee">
+                            <i class="mdi mdi-delete Leave_Rejected"></i>
+                          </a>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="viewemployee?.length == 0">
+                    <tr>
+                      <td colspan="9" class="no-data-available text-center">No data!</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+
+            <!-- <div class="card-body table-background">
+                            <div class="Leave-Filters mb-4">
+                                <a routerLink="/addemployee" class="btn btn-success AddEmployeeBtn mr-2"><i
+                                        class="mdi mdi-plus-circle-outline"></i>
+                                    Add Employee
+                                </a>
+                                <a href="javascript:;" (click)="openmonthlyLeaveModal(monthlyLeave)" class="btn btn-primary AddEmployeeBtn mr-2"><i class="mdi mdi-calendar-plus"></i>
+                                    Add Monthly Leave
+                                </a>
+                                <a href="javascript:;" (click)="generateSalarySlip()" class="btn btn-primary AddEmployeeBtn"><i class="mdi mdi-calendar-plus"></i>
+                                    Generate Salary Slip
+                                </a>
+                            </div>
+                            <div class="table-responsive ">
+                                <table datatable class="table CustomTableViewEmployee" data-page-length='25' id="ViewEmployeeTable" *ngIf="temp_var">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center sorting_asc_disabled sorting_desc_disabled"> # </th>
+                                            <th class="text-center sorting_asc_disabled sorting_desc_disabled"> Profile Image </th>
+                                            <th> First Name </th>
+                                            <th> Last Name </th>
+                                            <th> Email </th>
+                                            <th class="text-center" style="width: 125px !important;"> Leave Balance
+                                            </th>
+                                            <th> Department </th>
+                                            <th> Service Status </th>
+                                            <th> User Status </th>
+                                            <th class="text-center sorting_asc_disabled sorting_desc_disabled"> Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let admin_viewemployee of viewemployee; let i = index;">
+                                            <td class="text-center">{{i+1}}</td>
+                                            <td class="text-center">
+                                                <a href="javascript:;" class="popupImage" (click)="openProfileImageModal(enlargePrfile, admin_viewemployee.user_id, admin_viewemployee.new_profile_pic)">
+                                                    <img src="{{admin_viewemployee.new_profile_pic}}" alt="profile image" class="img-fluid profile_pic_employee">
+                                                </a>
+                                            </td>
+                                            <td>{{ admin_viewemployee.first_name }}</td>
+                                            <td>{{ admin_viewemployee.last_name }}</td>
+                                            <td>{{ admin_viewemployee.email }}</td>
+                                            <td class="text-center">{{ admin_viewemployee.leaves }}</td>
+
+                                            <td>{{ admin_viewemployee.dept_name }}</td>
+                                            <td>{{ admin_viewemployee.service_status }}</td>
+                                            
+                                            <td>
+                                                <label *ngIf="admin_viewemployee.service_status == 1" class="text-black">Probation</label>
+                                                <label *ngIf="admin_viewemployee.service_status == 2" class="text-black">Confirmed</label>
+                                                <label *ngIf="admin_viewemployee.service_status == 3" class="text-black">Trainee</label>
+                                                <label *ngIf="admin_viewemployee.service_status == 4" class="text-black">Notice</label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label *ngIf="admin_viewemployee.user_status == 0" class="badge badge-danger">Inactive</label>
+                                                <label *ngIf="admin_viewemployee.user_status == 1" class="badge badge-success">Active</label>
+                                                <label *ngIf="admin_viewemployee.user_status == 9" class="badge badge-warning">Delete</label>
+                                            </td>
+                                            <td class="text-center">
+                                                <span>
+                                                    <a routerLink="/editemployee/{{ admin_viewemployee.user_id }}"
+                                                        class="Leave_Edit" placement="left" ngbTooltip="Edit Employee">
+                                                        <i class="mdi mdi-pen Leave_Edit"></i>
+                                                    </a>
+                                                </span> &nbsp; &nbsp;
+                                                <span>
+                                                    <a href="javascript:;"
+                                                        (click)="openViewEmployeeModal(viewEmployee, i)"
+                                                        class="Leave_View" placement="left" ngbTooltip="View Employee">
+                                                        <i class="mdi mdi-eye Leave_View"></i>
+                                                    </a>
+                                                </span> &nbsp; &nbsp;
+                                                <span>
+                                                    <a href="javascript:;"
+                                                        (click)="opendeleteUserModal(deleteEmployee, admin_viewemployee.user_id)"
+                                                        class="Leave_Rejected" placement="left"
+                                                        ngbTooltip="Delete Employee">
+                                                        <i class="mdi mdi-delete Leave_Rejected"></i>
+                                                    </a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Enlarge profile image modal start -->
+      <ng-template #enlargePrfile>
+        <div class="modal-header pb-0">
+          <button type="button" class="close pull-right rejectLeaveClose" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body pt-0">
+          <img src="{{ViewEmployeeImage}}" alt="Enlarge Employee Image" class="img-fluid w-100 h-100">
+        </div>
+      </ng-template>
+      <!-- Enlarge profile image modal end -->
+
+      <!-- View Employee modal start -->
+      <ng-template #viewEmployee>
+        <div class="modal-header mb-4">
+          <div class="HexagonProfileImage">
+            <img
+              [src]=" viewUserData?.profile_pic == '' ?  'assets/images/faces/face1.jpg' :profilepic() + viewUserData.user_id+ '/'+ viewUserData.profile_pic "
+              alt=" profile image" class="img-fluid profile_pic_employee" alt="profile image"
+              class="mb-3 img-fluid profile_pic_modal_employee">
+          </div>
+          <!-- <button type="button" class="close pull-right viewLeaveClose" aria-label="Close" (click)="modalRef.hide()">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+          <label *ngIf="viewUserData.user_status == 0"
+            class="badge badge-danger customModalUserStatusBadge">Inactive</label>
+          <label *ngIf="viewUserData.user_status == 1"
+            class="badge badge-success customModalUserStatusBadge">Active</label>
+          <label *ngIf="viewUserData.user_status == 9"
+            class="badge badge-warning customModalUserStatusBadge">Delete</label>
+          <label *ngIf="viewUserData.service_status == 1"
+            class="badge badge-warning customModalServiceStatusBadge">Probation</label>
+          <label *ngIf="viewUserData.service_status == 2"
+            class="badge badge-primary customModalServiceStatusBadge">Confirmed</label>
+          <label *ngIf="viewUserData.service_status == 3"
+            class="badge badge-danger customModalServiceStatusBadge">Trainee</label>
+        </div>
+        <div class="modal-body">
+          <h3 class="text-center ViewEmployeeName mt-3 mb-1">{{viewUserData.first_name}} {{viewUserData.last_name}}
+          </h3>
+          <h4 class="text-center ViewEmployeeRoll mb-0">{{viewUserData.role_name}}</h4>
+          <h4 class="text-center mb-2"><i class="mdi mdi-map-marker-radius ProfileSMDIIcons"></i>
+            {{viewUserData.address}}
+          </h4>
+          <div class="table-responsive ">
+            <table class="table CustomTableViewEmployee CustomTableViewEmployeeAnother">
+              <tbody>
+                <tr>
+                  <td class="font-weight-bold">Email Address</td>
+                  <td><a href="mailto:{{viewUserData.email}}" class="Mobile-Email-Profile">{{viewUserData.email}}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Mobile Number</td>
+                  <td><a href="tel:{{viewUserData.mobile_number}}"
+                      class="Mobile-Email-Profile">{{viewUserData.mobile_number}}</a></td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Birth Date</td>
+                  <td>{{ viewUserData.dob | date : 'MMM d, yyyy' }}</td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Gender</td>
+                  <td>{{viewUserData.gender}}</td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Department</td>
+                  <td>{{viewUserData.dept_name}}</td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Leave Balance</td>
+                  <td>{{viewUserData.leaves}}</td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Joining Date</td>
+                  <td>{{viewUserData.joining_date | date : 'MMM d, yyyy'}}</td>
+                </tr>
+                <tr *ngIf="viewUserData.appraisal_date">
+                  <td class="font-weight-bold">Apprisal Date</td>
+                  <td>{{viewUserData.appraisal_date | date : 'MMM d, yyyy'}}</td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">
+                    <span *ngIf="viewUserData.service_status == 1">Probation Date</span>
+                    <span *ngIf="viewUserData.service_status == 2">Confirmation Date</span>
+                  </td>
+                  <td>
+                    <span *ngIf="viewUserData.service_status == 1">{{viewUserData.probation_date | date : 'MMM d,
+                      yyyy'}}</span>
+                    <span *ngIf="viewUserData.service_status == 2">{{viewUserData.confirmation_date | date : 'MMM d,
+
+                      yyyy'}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-template>
+      <!-- View Employee modal end -->
+
+      <!-- Generate slip confirm modal start -->
+      <ng-template #generateslip>
+        <div class="modal-header">
+          <h5 class="modal-title">{{message}}</h5>
+          <button type="button" class="close pull-right SaveCardTemplateClose EmployeeDeleteClose" aria-label="Close"
+            (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to {{message}}?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning token-purchase text-white" *ngIf="SalarySlip"
+            (click)="confirm('SalarySlip')">Yes</button>
+          <button type="button" class="btn btn-warning token-purchase text-white" *ngIf="SalarySheet"
+            (click)="confirm('SalarySheet')">Yes</button>
+          <button type="button" class="btn btn-warning token-purchase text-white" *ngIf="pfSheet"
+            (click)="confirm('PFSheet')">Yes</button>
+          <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+        </div>
+      </ng-template>
+      <!-- Generate slip confirm modal end -->
+
+      <!-- Delete User confirm modal start -->
+      <ng-template #deleteEmployee>
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Employee</h5>
+          <button type="button" class="close pull-right SaveCardTemplateClose EmployeeDeleteClose" aria-label="Close"
+            (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this employee?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning token-purchase text-white"
+            (click)="confirm('delete')">Yes</button>
+          <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+        </div>
+      </ng-template>
+      <!-- Delete User confirm modal end -->
+
+      <!-- Add Monthly Leave confirm modal start -->
+      <ng-template #monthlyLeave>
+        <div class="modal-header">
+          <h5 class="modal-title">{{message}}</h5>
+          <button type="button" class="close pull-right SaveCardTemplateClose monthlyLeaveClose" aria-label="Close"
+            (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure want to add monthly leave for all active user?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning token-purchase text-white"
+            (click)="confirmAddMonthlyLeave()">Yes</button>
+          <button type="button" class="btn btn-primary" (click)="declineAddMonthlyLeave()">No</button>
+        </div>
+      </ng-template>
+      <!-- Add Monthly Leave confirm modal end -->
+
+      <!-- Custom Code End -->
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

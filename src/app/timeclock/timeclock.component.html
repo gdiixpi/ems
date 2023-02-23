@@ -1,0 +1,180 @@
+<!-- <app-navbar></app-navbar>
+    <div class="container-fluid page-body-wrapper h-100">
+      <app-sidebar></app-sidebar>
+      <div class="main-panel w-100">
+          <div class="content-wrapper">
+              <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+          </div>
+          <div class='app'>
+            <div class='app-top'>
+            <button class="btn btn-light mr-2 mt-2" [disabled]="Breakindisabled" (click)="Breakin()">Break-In</button>
+            <button class="btn btn-light mr-2 mt-2" [disabled]="Breakoutdisabled" (click)="BreakOut()">Break-Out</button>
+            <button class="btn btn-light mr-2 mt-2" (click)="showbreakmodal()">Add Break</button>
+            </div>
+    
+            <full-calendar defaultView="dayGridMonth" #fullcalendar [editable]="true" [events]="calendarEvents"
+            [header]="options.header" [customButtons]="options.customButtons"
+            [plugins]="options.plugins" (dateClick)="handleDateClick($event)"
+            [columnHeaderHtml]="options.columnHeaderHtml"></full-calendar>
+    
+    
+          </div>
+          <app-footer></app-footer>
+      </div>
+    </div> -->
+
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <div class="content-wrapper">
+                <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath">
+                </app-breadcrumbs>
+                <div class="col-md-4" *ngIf="temp_var">
+                    <div class="form-group">
+                        <label for="department">Employee Name</label>
+                        <ng-container>
+                            <select class="form-control custom-Select" id="emp" name="department" (change)="Setuser()">
+                          <option value="" selected>-- Select Employee--</option>
+                          <option *ngFor="let admin_viewemployee of viewemployee; let i = index;" value="{{ admin_viewemployee.user_id }}">
+                            {{ admin_viewemployee.first_name }}  {{ admin_viewemployee.last_name }}
+                          </option>
+                      </select>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body table-background new-ui-ems-clock-calendar">
+                            <div class="mb-4 breakbuttons" *ngIf="showbttons">
+                                <div *ngIf="!Breakindisabled" style="display: initial;">
+                                    <button class="btn btn-success mr-2" [disabled]="Breakindisabled" (click)="Breakin()">
+                        <i class="fa fa-clock-o mr-1"></i> Break-In
+                      </button>
+                                </div>
+                                <div *ngIf="!Breakoutdisabled" style="display: initial;">
+                                    <button class="btn btn-danger mr-2" [disabled]="Breakoutdisabled" (click)="BreakOut()">
+                        <i class="fa fa-ban mr-1"></i> Break-Out
+                      </button>
+                                </div>
+                                <div *ngIf="!Breakdisabled" style="display: initial;">
+                                    <button class="btn btn-primary mr-0" [disabled]="Breakdisabled" (click)="showbreakmodal()">
+                        <i class="fa fa-coffee mr-1"></i> Add Break
+                      </button>
+                                </div>
+                            </div>
+                            <full-calendar defaultView="dayGridMonth" #fullcalendar [editable]="true" [events]="calendarEvents" [header]="options.header" [customButtons]="options.customButtons" [plugins]="options.plugins" (dateClick)="handleDateClick($event)" (eventClick)="handleDateClick($event)"
+                                [columnHeaderHtml]="options.columnHeaderHtml"></full-calendar>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal new-clock-modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Working Details</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="hide()">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div>
+                    <div *ngIf="temp_var">
+                        <label class="col-form-label">Add Entry</label>
+                        <div class="row" style="border:1px solid grey;margin:4px;padding-bottom:5px;">
+                            <div class="col-md-4">
+                                <label class="col-form-label">Log_Type</label>
+                                <select class="form-control custom-Select" id="actiontype" style="height:48px;">
+                      <option value="" selected>Select Type</option>
+                      <option  value="log-in">ClockIn</option>
+                      <option  value="break-in">BreakIn</option>
+                      <option  value="break-out">BreakOut</option>
+                      <option  value="log-out">ClockOut</option>
+                    </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Select Time</label>
+                                <ngb-timepicker [(ngModel)]="time3" [meridian]="meridian3"></ngb-timepicker>
+                            </div>
+                            <div class="col-md-4" style="margin-top:7.5%;">
+                                <button type="submit" class="btn btn-success mr-2" (click)="AddEntry()">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" *ngIf="detaillist != ''">
+                            <thead>
+                                <th>Log_Type</th>
+                                <th>Log_Time</th>
+                                <th>Action</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let detail of detaillist">
+                                    <td>{{detail.log_type}}</td>
+                                    <td>{{detail.logtime | date:'short':'medium'}}</td>
+                                    <td [style.display]="showdeleteicon ? 'block' : 'none'" style="text-align:center;" *ngIf="temp_var == false && (detail.log_type == 'break-in' || detail.log_type == 'break-out')"><a (click)="Deleterecord(detail._id)"><i class="mdi mdi-delete"></i></a></td>
+                                    <td style="text-align:center;" *ngIf="temp_var"><a (click)="Deleterecord(detail._id)"><i class="mdi mdi-delete"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr />
+                    <strong>{{nomessage}}</strong>
+                    <strong>{{totalworkinghours}}</strong>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="hide()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal new-clock-modal" id="breakmodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Break</h4>
+                <button type="button" class="close" data-dismiss="modal" (click)="hidebreakmodal()">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label for="start_date" class="col-sm-4 col-form-label">Select Date</label>
+                        <!-- <input type="text" name="start_date" placeholder="mm/dd/yyyy" id="start_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="{ isAnimated: true }" #start_date="ngModel" ngModel /> -->
+                        <input type="text" name="start_date" autocomplete="off" placeholder="mm/dd/yyyy" id="start_date" class="form-control EMS-Form-Controal" readonly value="{{convertTZdate()}}" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Select Breakin Time</label>
+                        <ngb-timepicker [(ngModel)]="time1" [meridian]="meridian1"></ngb-timepicker>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Select BreakOut Time</label>
+                        <ngb-timepicker [(ngModel)]="time2" [meridian]="meridian2"></ngb-timepicker>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success mr-2" (click)="AddBreak()">Submit</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="hidebreakmodal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

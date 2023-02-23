@@ -1,0 +1,51 @@
+.FontSize20 {
+    font-size: 20px;
+}
+
+.w-95-c {
+    max-width: 95px;
+}
+
+.EMS-ProjectTaskLink {
+    color: #000000;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    &:hover {
+        color: #007bff;
+        text-decoration: none;
+    }
+}
+
+::ng-deep .priority {
+    width: 123px !important;
+}
+
+::ng-deep .projectName {
+    width: 200px !important;
+}
+
+::ng-deep .workingHrs {
+    width: 162px !important;
+}
+
+::ng-deep .estimatedHrs {
+    width: 181px !important;
+}
+
+::ng-deep .maxWidthTaskName {
+    min-width: 310px;
+    white-space: break-spaces;
+}
+
+::ng-deep .deadline {
+    width: 124px !important;
+}
+
+table.dataTable thead th {
+    padding: 13px 10px !important;
+}
+
+.divider {
+    height: 3px;
+    background-color: #5AC6C6;
+}

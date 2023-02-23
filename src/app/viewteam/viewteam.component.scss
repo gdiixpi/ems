@@ -1,0 +1,67 @@
+.View-Team-Member {
+    .card {
+        .card-body {
+            h2.card-title.team-page-title {
+                font-size: 25px !important;
+                font-weight: 600;
+                letter-spacing: 0.3px;
+            }
+        }
+    }
+    img.profileViewImage-PS {
+        border: 5px solid #00964c;
+        width: 90px;
+        height: 90px;
+    }
+    h6.profileViewName-PS {
+        border-bottom: 5px solid #00964c;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.0px;
+    }
+    p.profileViewDes-PS {
+        letter-spacing: 0.0px;
+    }
+    img.profileViewImage-You {
+        border: 5px solid #0097a2;
+        width: 90px;
+        height: 90px;
+    }
+    h6.profileViewName-You {
+        border-bottom: 5px solid #0097a2;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.0px;
+    }
+    p.profileViewDes-You {
+        letter-spacing: 0.0px;
+    }
+    img.profileViewImage-SS {
+        border: 5px solid #e65251;
+        width: 90px;
+        height: 90px;
+    }
+    h6.profileViewName-SS {
+        border-bottom: 5px solid #e65251;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.0px;
+    }
+    p.profileViewDes-SS {
+        letter-spacing: 0.0px;
+    }
+    img.profileViewImage {
+        border: 5px solid #5AC6C6;
+        width: 90px;
+        height: 90px;
+    }
+    h6.profileViewName {
+        border-bottom: 5px solid #5AC6C6;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.0px;
+    }
+    p.profileViewDes {
+        letter-spacing: 0.0px;
+    }
+}

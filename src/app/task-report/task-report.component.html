@@ -1,0 +1,117 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+            <div class="row grid-margin">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body table-background project_report">
+                            <form class="forms-sample mb-4" #applyTaskReportFilter="ngForm" (ngSubmit)="onapplyFilterSubmit(applyTaskReportFilter.value,'filter')" id="applyFilterForm">
+                                <div class="row">
+                                    <div class="col-md-4 col-12" *ngIf="userDatas(userData.access_type,'admin&manager')">
+                                        <div class="form-group">
+                                            <label for="employee_name">Employee Name</label>
+                                            <select class="form-control custom-Select" id="employee_name" name="employee_name" #employee_name="ngModel" ngModel>
+                        <option value="" selected>-- Select Employee --</option>
+                        <option *ngFor="let user_Employee of viewemployee;" value="{{ user_Employee.user_id }}">
+                          {{ user_Employee.first_name }} {{ user_Employee.last_name }}
+                        </option>
+                      </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-12 ">
+                                        <div class="form-group">
+                                            <label for="project_name">Project Name</label>
+                                            <select class="form-control custom-Select" id="project_name" name="project_name" #project_name="ngModel" ngModel>
+                        <option value="" selected>-- Select Project --</option>
+                        <option *ngFor="let user_Projects of viewprojects;" value="{{ user_Projects.id }}">{{
+                          user_Projects.project_name }}</option>
+                      </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-12 ">
+                                        <div class="form-group">
+                                            <label for="task_title">Task Type</label>
+                                            <select class="form-control custom-Select" id="task_title" name="task_title" #task_title="ngModel" ngModel>
+                        <option value="" selected>-- Select Task Type --</option>
+                        <option *ngFor="let user_Titles of viewtitles;" value="{{ user_Titles.id }}">{{ user_Titles.name
+                          }}</option>
+                      </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-12 ">
+                                        <div class="form-group mb-md-0">
+                                            <label for="from_date">From Date:</label>
+                                            <input type="text" name="from_date" placeholder="mm/dd/yyyy" autocomplete="off" id="from_date" class="form-control EMS-Form-Controal" bsDatepicker [minDate]="min" [bsConfig]="bsConfig" #from_date="ngModel" ngModel />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-12">
+                                        <div class="form-group mb-md-0">
+                                            <label for="to_date">To Date:</label>
+                                            <input type="text" name="to_date" placeholder="mm/dd/yyyy" id="to_date" autocomplete="off" class="form-control EMS-Form-Controal" bsDatepicker [minDate]="min" [bsConfig]="bsConfig" #to_date="ngModel" ngModel />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-12 align-self-center">
+                                        <div class="form-group text-center mb-0 mt-md-4">
+                                            <button type="submit" class="btn btn-success mr-2">Filter</button>
+                                            <button type="reset" class="btn btn-warning" (click)="reset(applyTaskReportFilter)">Reset</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="divider mb-4"></div>
+                            <div class="table-responsive">
+                                <table datatable [dtOptions]="dtOptions" class="table CustomTableViewEmployee" data-page-length='25'>
+                                    <thead>
+                                        <tr>
+                                            <th class="w-60 text-center sorting_asc_disabled sorting_desc_disabled">#</th>
+                                            <th>Employee Name</th>
+                                            <th>Project Name</th>
+                                            <th class="nameWidth">Task Name</th>
+                                            <th class="timeWidth">Estimated time</th>
+                                            <th class="hrsWidth">Working Hours</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="taskTableList?.length != 0">
+                                        <tr *ngFor="let user_taskReportList of taskTableList; let i = index;">
+                                            <td class="text-center">{{i+1}}</td>
+                                            <td>{{ user_taskReportList.username }}</td>
+                                            <td>{{ user_taskReportList.project_name }}</td>
+                                            <td>{{ user_taskReportList.task_name }}</td>
+                                            <td>{{ user_taskReportList.estimated_time }}</td>
+                                            <td class="TotalHoursCount">{{ user_taskReportList.total_hours }}</td>
+                                            <td class="TotalHoursCount">
+                                                <label *ngIf="user_taskReportList.status == 1" class="badge badge-warning w-95-c">Open</label>
+                                                <label *ngIf="user_taskReportList.status == 2" class="badge badge-info w-95-c">Done</label>
+                                                <label *ngIf="user_taskReportList.status == 3" class="badge badge-danger w-95-c">Re-open</label>
+                                                <label *ngIf="user_taskReportList.status == 4" class="badge badge-success w-95-c">Completed</label>
+                                                <label *ngIf="user_taskReportList.status == 5" class="badge badge-cancel w-95-c">Cancelled</label>
+                                                <label *ngIf="user_taskReportList.status == 6" class="badge badge-primary w-95-c">On-hold</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3"></td>
+                                            <td colspan="1"><b>Total</b> </td>
+                                            <td colspan="1"><b>{{totalEstimate}}</b> </td>
+                                            <td colspan="1"><b>{{total}}</b> </td>
+                                            <td colspan="1"></td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="taskTableList?.length == 0">
+                                        <tr>
+                                            <td colspan="7" class="text-center">No matching records found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

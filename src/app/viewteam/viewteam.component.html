@@ -1,0 +1,142 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100 View-Team-Member">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card table-background">
+                        <div class="card-body">
+                            <h2 class="card-title team-page-title text-center" *ngIf="userDatas(userData.access_type,'all') && userData.count_id > 0">Your Team</h2>
+                            <h2 class="card-title team-page-title text-center" *ngIf="userDatas(userData.access_type,'all') && userData.count_id == 0">Your Superior</h2>
+                            <ng-container *ngIf="viewTeam != false; else NoTeamMember">
+                                <div class="row justify-content-center mb-4" *ngIf="viewTeam">
+                                    <div class="col-lg-3 col-md-3 col-sm-5 col-12 mb-3" placement="top" ngbTooltip="Primary Superior">
+                                        <div class="row">
+                                            <div class="col-md-4 col-lg-4 col-sm-5 col-12 p-0 text-center">
+                                                <img src="{{PSprofileImage}}" class="img-fluid animated bounce profileViewImage-PS rounded-circle">
+                                            </div>
+                                            <div class="col-md-8 col-lg-8 col-sm-7 col-12 pl-0 pr-2" *ngIf="viewTeam.primary_sup_name">
+                                                <h6 class="profileViewName-PS mb-0 pb-2 pt-3 pl-1">
+                                                    {{viewTeam.primary_sup_name.first_name}} {{viewTeam.primary_sup_name.last_name}}
+                                                </h6>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 1">Administrator</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 2">HR</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 3">Project Manager</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 4">Team Lead</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 5">Sr. Software Engineer</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 6">Associate Software engineer</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 7">Tester</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 8">Designer</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 9">Trainee</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 10">BDE</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 11">SEO Executive</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 12">Software Engineer</p>
+                                                <p class="profileViewDes-PS pt-1 mb-2 pl-1" *ngIf="viewTeam.primary_sup_name.role_id == 13">Frontend Developer</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-4 mt-3">
+                                    <div *ngFor="let secondary_superior of viewTeamSecondarySup" class="col-lg-3 col-md-3 col-sm-5 col-12 mb-3" placement="top" ngbTooltip="Secondary Superior">
+                                        <div class="row">
+                                            <div class="col-md-4 col-lg-4 col-sm-5 col-12 p-0 text-center">
+                                                <img src="{{secondary_superior.new_profile_pic}}" class="img-fluid animated bounce profileViewImage-SS rounded-circle">
+                                            </div>
+                                            <div class="col-md-8 col-lg-8 col-sm-7 col-12 pl-0 pr-2">
+                                                <h6 class="profileViewName-SS mb-0 pb-2 pt-3 pl-1" *ngIf="viewTeam.primary_sup_name.first_name">
+                                                    {{secondary_superior.ss_first_name}} {{secondary_superior.ss_last_name}}
+                                                </h6>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 1">Administrator</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 2">HR</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 3">Project Manager</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 4">Team Lead</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 5">Sr. Software Engineer</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 6">Associate Software engineer</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 7">Tester</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 8">Designer</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 9">Trainee</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 10">BDE</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 11">SEO Executive</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 12">Software Engineer</p>
+                                                <p class="profileViewDes-SS pt-1 mb-2 pl-1" *ngIf="secondary_superior.ss_role_id == 13">Frontend Developer</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-4" *ngIf="viewTeam">
+                                    <div class="col-lg-3 col-md-3 col-sm-5 col-12 mb-3" placement="top" ngbTooltip="You">
+                                        <div class="row">
+                                            <div class="col-md-4 col-lg-4 col-sm-5 col-12 p-0 text-center">
+                                                <img src="{{UserProfileImage}}" class="img-fluid animated bounce profileViewImage-You rounded-circle">
+                                            </div>
+                                            <div class="col-md-8 col-lg-8 col-sm-7 col-12 pl-0 pr-2">
+                                                <h6 class="profileViewName-You mb-0 pb-2 pt-3 pl-1" *ngIf="viewTeam.user_name">
+                                                    {{viewTeam.user_name}}
+                                                </h6>
+                                                <p class="profileViewDes-You pt-1 mb-2 pl-1">
+                                                    {{userData.role_name}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-4 mt-3">
+                                    <div *ngFor="let primary_superior_team_member of viewTeamMemberofPu" class="col-lg-3 col-md-3 col-sm-5 col-12" placement="top" ngbTooltip="Team Member">
+                                        <div class="row">
+                                            <div class="col-md-4 col-lg-4 col-sm-5 col-12 mb-4 p-0 text-center">
+                                                <img src="{{primary_superior_team_member.new_profile_pic_team}}" class="img-fluid animated bounce profileViewImage rounded-circle">
+                                            </div>
+                                            <div class="col-md-8 col-lg-8 col-sm-7 col-12 pl-0 pr-2">
+                                                <h6 class="profileViewName profileViewName mb-0 pb-2 pt-3 pl-1" *ngIf="primary_superior_team_member.team_user_name">
+                                                    {{primary_superior_team_member.team_user_name}}
+                                                </h6>
+                                                <!-- <p class="profileViewDes pt-1 mb-2 pl-1">
+                                                {{primary_superior_team_member.team_role_id}}
+                                            </p> -->
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 1">Administrator</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 2">HR</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 3">Project Manager</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 4">Team Lead</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 5">Sr. Software Engineer</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 6">Associate Software engineer</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 7">Tester</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 8">Designer</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 9">Trainee</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 10">BDE</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 11">SEO Executive</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 12">Software Engineer</p>
+                                                <p class="profileViewDes pt-1 mb-2 pl-1" *ngIf="primary_superior_team_member.team_role_id == 13">Frontend Developer</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-template #NoTeamMember>
+                                <div class="row justify-content-center mb-4">
+                                    <div class="col-lg-3 col-md-3 col-sm-5 col-12 mb-3" placement="top" ngbTooltip="You">
+                                        <div class="row">
+                                            <div class="col-md-4 col-lg-4 col-sm-5 col-12 p-0 text-center">
+                                                <img src="{{UserProfileImage}}" class="img-fluid profileViewImage-You rounded-circle">
+                                            </div>
+                                            <div class="col-md-8 col-lg-8 col-sm-7 col-12 pl-0 pr-2">
+                                                <h6 class="profileViewName-You mb-0 pb-2 pt-3 pl-1">
+                                                    {{userDataFirstName}} {{userDataLastName}}
+                                                </h6>
+                                                <p class="profileViewDes-You pt-1 mb-2 pl-1">
+                                                    {{userData.role_name}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

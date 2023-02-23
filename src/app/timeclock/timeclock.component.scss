@@ -1,0 +1,5 @@
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
+::ng-deep .ngb-tp-chevron::before {
+    color: #5AC6C6 !important;
+}

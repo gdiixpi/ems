@@ -1,0 +1,198 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+  <app-sidebar></app-sidebar>
+  <div class="main-panel w-100">
+    <div class="content-wrapper">
+      <!-- Custom Code Start -->
+      <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle"
+        [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+      <div class="row grid-margin">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body table-background project_report">
+              <form class="forms-sample mb-4" #applyFilter="ngForm"
+                (ngSubmit)="onapplyFilterSubmit(applyFilter.value,'filter')" id="applyFilterForm">
+                <div class="row">
+                  <div class="col-md-3 col-12">
+                    <div class="form-group mb-md-0">
+                      <label for="from_date">From Date</label>
+                      <input type="text" name="start_date" placeholder="mm/dd/yyyy" id="start_date" autocomplete="off"
+                        class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #start_date="ngModel"
+                        ngModel />
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-12">
+                    <div class="form-group mb-md-0">
+                      <label for="to_date">To Date</label>
+                      <input type="text" name="end_date" placeholder="mm/dd/yyyy" id="end_date" autocomplete="off"
+                        class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #end_date="ngModel"
+                        ngModel />
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-12 align-self-center">
+                    <div class="form-group text-center mb-0 mt-md-4">
+                      <button type="submit" class="btn btn-success mr-3">Filter</button>
+                      <button type="reset" class="btn btn-warning mr-3" (click)="reset(applyFilter)">Reset</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div class="divider my-4"></div>
+              <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" class="table CustomTableViewEmployee" id="ViewEmployeeTable">
+                  <thead>
+                    <tr>
+                      <th class="w-15 text-center sorting_asc_disabled sorting_desc_disabled">#</th>
+                      <th class="maxWidth">Employee Name</th>
+                      <th class="maxWidth">Start Date</th>
+                      <th class="maxWidth">End Date</th>
+                      <th class="maxWidthReason">Reason</th>
+                      <th>Status</th>
+                      <th class="text-center" colspan="2">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="wfhList?.length != 0">
+                    <tr *ngFor="let wfh_detail of wfhList; let i = index;">
+                      <td>{{i+1}}</td>
+                      <td class="project-title">
+                        {{wfh_detail.user_name }}
+                      </td>
+                      <td>{{ wfh_detail.start_date }}</td>
+                      <td>{{ wfh_detail.end_date }}</td>
+                      <td class="text-capitalize">
+                        <span [innerHTML]=" wfh_detail.reason" class="EMS_user_viewTaskDetail text-wrap"></span>
+                      </td>
+                      <td class="text-center">
+                        <label *ngIf="wfh_detail.status == 0" class="badge badge-warning">Pending</label>
+                        <label *ngIf="wfh_detail.status == 1" class="badge badge-success">Approved</label>
+                        <label *ngIf="wfh_detail.status == 2" class="badge badge-danger">Rejected</label>
+                        <label *ngIf="wfh_detail.status == 3" class="badge badge-cancel">Cancel</label>
+                      </td>
+                      <td class="text-center"
+                        *ngIf="userDatas(userData.access_type,'admin&manager') && wfh_detail.user_id != userData.user_id">
+                        <span *ngIf="wfh_detail.status == 0">
+                          <span>
+                            <a href="javascript:;"
+                              (click)="openApproveModal(approveWfh, wfh_detail.work_from_home_id, wfh_detail.user_id)"
+                              class="Leave_Approved" placement="left" ngbTooltip="Approve Work From Home">
+                              <i class="mdi mdi-thumb-up Leave_Approved"></i>
+                            </a>
+                          </span> &nbsp; &nbsp;
+                          <span *ngIf="wfh_detail.status == 0">
+                            <a href="javascript:;"
+                              (click)="openRejectModal(rejectWfh, wfh_detail.work_from_home_id, wfh_detail.user_id, wfh_detail.user_name)"
+                              class="Leave_Rejected" placement="left" ngbTooltip="Reject Work From Home">
+                              <i class="mdi mdi-thumb-down Leave_Rejected"></i>
+                            </a>
+                          </span>
+                        </span>
+                      </td>
+                      <td class="project-actions text-center" *ngIf="wfh_detail.user_id == userData.user_id">
+                        <span *ngIf="wfh_detail.status == 0">
+                          <a routerLink="/edit-wfh-details/{{ wfh_detail.work_from_home_id }}" class="Leave_Edit"
+                            placement="left" ngbTooltip="Edit Details">
+                            <i class="mdi mdi-pen Leave_Edit"></i>
+                          </a>
+                        </span> &nbsp;
+                        <span *ngIf="wfh_detail.status == 0">
+                          <a href="javascript:;"
+                            (click)="openDeleteModal(deleteWfhDetail, wfh_detail.work_from_home_id)" class="Leave_View"
+                            placement="left" ngbTooltip="Delete Details">
+                            <i class="mdi mdi-delete ml-2 Leave_Rejected"></i>
+                          </a>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="wfhList?.length == 0">
+                    <tr>
+                      <td colspan="7" class="text-center">No matching records found</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Delete modal start -->
+      <ng-template #deleteWfhDetail>
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Timesheet</h5>
+          <button type="button" class="close pull-right SaveCardTemplateClose TaskDeleteClose" aria-label="Close"
+            (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure want to delete report?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning token-purchase text-white" (click)="confirm()">Yes</button>
+          <button type="button" class="btn btn-primary" (click)="declineApprove()">No</button>
+        </div>
+      </ng-template>
+      <!-- Delete modal end -->
+      <!-- Approve leave modal start -->
+      <ng-template #approveWfh>
+        <div class="modal-header">
+          <h5 class="modal-title">Work From Home Approval</h5>
+          <button type="button" class="close pull-right approveWfhClose" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure want to approve Work From Home ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning token-purchase text-white"
+            (click)="confirmApprove()">Yes</button>
+          <button type="button" class="btn btn-primary" (click)="declineApprove()">No</button>
+        </div>
+      </ng-template>
+      <!-- Approve leave modal end -->
+
+      <!-- Reject leave modal start -->
+      <ng-template #rejectWfh>
+        <div class="modal-header">
+          <h5 class="modal-title">Work From Home Reject</h5>
+          <button type="button" class="close pull-right rejectWfhClose" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="forms-sample" #rejectWfhForm="ngForm" (ngSubmit)="onRejectSubmit(rejectWfhForm.value)"
+            id="rejectWfhForm">
+            <div class="form-group row">
+              <label for="user_name" class="col-sm-4 col-form-label">User Name</label>
+              <div class="col-sm-8">
+                <input type="hidden" name="wfh_id" id="wfh_id" class="form-control EMS-Form-Controal" #wfh_id="ngModel"
+                  ngModel="{{ rejectWfhId }}" />
+                <input type="hidden" name="wfh_uid" id="wfh_uid" class="form-control EMS-Form-Controal"
+                  #wfh_uid="ngModel" ngModel="{{ rejectWfhUserId }}" />
+                <input type="text" name="user_name" autocomplete="off" placeholder="User name" readonly id="user_name"
+                  class="form-control EMS-Form-Controal" #reason="ngModel" ngModel="{{ rejectWfhUserName }}" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="user_name" class="col-sm-4 col-form-label">Reason</label>
+              <div class="col-sm-8">
+                <textarea class="form-control EMS-Form-Controal" id="reason" name="reason" placeholder="Reason"
+                  #reason="ngModel" required ngModel></textarea>
+                <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="alert-danger">
+                  <div *ngIf="reason.errors.required" class="alert alert-danger p-2" role="alert">Please enter work from
+                    home reject reason.</div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success mr-2" [disabled]="!rejectWfhForm.form.valid">Submit</button>
+            <button type="button" class="btn btn-light cancelBtn rejectLeaveClose" aria-label="Close"
+              (click)="modalRef.hide()">Cancel</button>
+          </form>
+        </div>
+      </ng-template>
+      <!-- Reject leave modal end -->
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
