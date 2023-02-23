@@ -1,0 +1,188 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+  <app-sidebar></app-sidebar>
+  <div class="main-panel w-100">
+    <div class="content-wrapper">
+      <!-- Custom Code Start -->
+      <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle"
+        [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+      <form class="KRA-Form" [formGroup]="KRAForm" (ngSubmit)="saveForm()">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card kraFormCard">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4 col-12">
+                    <div class="form-group mb-md-0">
+                      <label for="name" class="d-block">Name</label>
+                      <input type="text" class="form-control" formControlName="name" readonly autocomplete="off">
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-12">
+                    <div class="form-group mb-md-0">
+                      <label for="financial_year" class="d-block">Financial Year</label>
+                      <select class="form-control custom-Select-2" formControlName="financial_year">
+                        <option value="" selected>-- Select Financial Year --</option>
+                        <option value="1">2022-2023</option>
+                        <option value="2">2023-2024</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-12">
+                    <div class="form-group mb-md-0">
+                      <label for="department" class="d-block">Department</label>
+                      <input type="text" class="form-control" readonly formControlName="department">
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-md-4 col-12">
+                    <div class="form-group mb-md-0">
+                      <label for="employee_code" class="d-block">Employee Code</label>
+                      <input type="text" class="form-control" readonly formControlName="employee_code">
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-12">
+                    <div class="form-group mb-md-0">
+                      <label for="designation" class="d-block">Designation</label>
+                      <input type="text" class="form-control" readonly formControlName="designation">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card kraFormCard mt-4">
+              <div class="card-body">
+                <div class="d-flex justify-content-between mb-4">
+                  <div class="tabs">
+                    <input type="radio" id="radio-1" name="tabs" checked />
+                    <label class="tab mb-0" for="radio-1">KRA Library</label>
+                    <input type="radio" id="radio-2" name="tabs" />
+                    <label class="tab mb-0" for="radio-2">View My KRA</label>
+                    <span class="glider"></span>
+                  </div>
+                  <button type="button" class="addKRABtn" (click)="addKRA(addKRAContent);">Add My KRA</button>
+                </div>
+                <table class="table table-bordered mb-4">
+                  <thead>
+                    <tr>
+                      <th rowspan="2" class="nowidth">No.</th>
+                      <th rowspan="2" class="krawidth">Key Result Area</th>
+                      <th colspan="2" scope="colgroup">2022 - 2023</th>
+                    </tr>
+                    <tr>
+                      <th scope="col" class="weightage">Weightage</th>
+                      <th scope="col">Goal / Expectation</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="goals">
+                    <tr [formGroupName]="i" *ngFor="let goal of goalsFromselectedOrder.controls; let i = index">
+
+                      <td>
+                        {{i+1}}
+                      </td>
+                      <td>
+                        <div class="d-flex justify-content-between">
+
+                          <div class="font-16 maxWidthKRA">{{addKRAArray[i].description}}</div>
+                          <i class="mdi mdi-close" (click)="removeRow(i)"></i>
+
+                        </div>
+                      </td>
+                      <td>
+                        <input type="text" formControlName="weightage" class="form-control" placeholder="0">
+                      </td>
+                      <td>
+                        <input type="text" formControlName="goal_expectation" class="form-control" placeholder="text">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="d-flex justify-content-between" *ngIf="addKRAArray.length != 0">
+                  <label class="d-flex align-items-start align-items-center">
+                    <input type="checkbox" formControlName="finalCheckBox" [checked]="addKRAArray[0].checked" class="
+                      form-control checkbox width-20 m-auto">
+                    The KRA and the target have been discussed with the employee.
+                  </label>
+                  <div>
+                    <button class="closeModal mr-3" (click)="closeModal()">
+                      Close
+                    </button>
+                    <button type="submit" class="submitGoalBtn" [disabled]="!KRAForm.valid">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <ng-template #addKRAContent>
+        <div class="modal-body" *ngIf="goalsList.length > 0">
+          <!-- <div class="d-flex">
+            <select class="form-control select mr-2">
+              <option selected value="role">Role</option>
+            </select>
+            <select class="form-control select mr-2">
+              <option selected value="KRA">KRA</option>
+            </select>
+            <select class="form-control select">
+              <option selected value="Category">KRA Category</option>
+            </select>
+          </div> -->
+          <div class="mt-5">
+            <form [formGroup]="createGoalsForm">
+              <table class="table table-bordered mb-4">
+                <thead>
+                  <tr>
+                    <td></td>
+                    <td>Role</td>
+                    <td>KRA</td>
+                    <td>KRA category </td>
+                    <td>KRA Title</td>
+                    <td>KRA Description</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr formArrayName="orders" *ngFor="let order of ordersFormArray.controls; let i = index">
+                    <td>
+                      <input type="checkbox" [formControlName]="i" [checked]="goalsList[i].checked"
+                        class="form-control checkbox">
+                    </td>
+                    <td>
+                      {{goalsList[i].role_id}}
+                    </td>
+                    <td>
+                      {{goalsList[i].name}}
+                    </td>
+                    <td>
+                      {{goalsList[i].category}}
+                    </td>
+                    <td>
+                      {{goalsList[i].title}}
+                    </td>
+                    <td>
+                      {{goalsList[i].description}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="d-flex justify-content-end">
+                <button class="closeModal mr-3" (click)="closeModal()">
+                  Close
+                </button>
+                <button type="submit" class="submitGoalBtn" (click)="saveGoalList()">
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
