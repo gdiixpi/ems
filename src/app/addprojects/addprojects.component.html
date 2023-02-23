@@ -1,0 +1,161 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath">
+            </app-breadcrumbs>
+            <div class="row">
+                <div class="col-md-12 col-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body table-background">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card addEmployeeMainDiv">
+                                            <div class="card-header">
+                                                <h5 class="title" *ngIf="!project_id">Add Project</h5>
+                                                <h5 class="title" *ngIf="project_id">Edit Project</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <form class="forms-sample" #addProject="ngForm" (ngSubmit)="onAddProject(addProject.value)" id="addProjectForm">
+                                                    <div class="row">
+                                                        <div class="col-md-6 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="project_name">Project Name <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" name="project_name" autocomplete="off" id="project_name" class="form-control EMS-Form-Controal" placeholder="Project Name *" #project_name="ngModel" required ngModel="{{ Project_Edit.project_name }}" />
+                                                                <div *ngIf="project_name.invalid && (project_name.dirty || project_name.touched)" class="alert-danger">
+                                                                    <div *ngIf="project_name.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please enter project name.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div [ngClass]="totalHours == 'fixedcost' ? 'col-md-4' : 'col-md-6'">
+                                                            <div class="form-group">
+                                                                <label for="project_type">Project Type <span
+                                                                        class="text-danger">*</span></label>
+                                                                <select class="form-control custom-Select" id="project_type" name="project_type" #project_type="ngModel" required ngModel="{{ Project_Edit.type }}" (change)="getProjectType($event.target.value)">
+                                                                    <option selected value="">-- Select Project Type --
+                                                                    </option>
+                                                                    <option value="fixedcost">Fixed Cost</option>
+                                                                    <option value="support">Support</option>
+                                                                    <option value="internal">Internal</option>
+                                                                </select>
+                                                                <div *ngIf="project_type.invalid && (project_type.dirty || project_type.touched)" class="alert-danger">
+                                                                    <div *ngIf="project_type.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please select project type.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 pl-1" *ngIf="totalHours == 'fixedcost'">
+                                                            <div class="form-group">
+                                                                <label for="total_hours">Total Hours<span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="number" name="total_hours" autocomplete="off" id="total_hours" min="0" class="form-control EMS-Form-Controal" placeholder="Total Hours" #total_hours="ngModel" required ngModel="{{ Project_Edit.total_hours }}" />
+                                                                <div *ngIf="total_hours.invalid && (total_hours.dirty || total_hours.touched)" class="alert-danger">
+                                                                    <div *ngIf="total_hours.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please enter total hours.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label>Project Description<span class="text-danger">*</span></label>
+                                                                <ck-editor id="project_description" [config]="config" name="project_description" id="project_description_text" placeholder="Project Description *" #project_description_text="ngModel" required [(ngModel)]="project_description" skin="moono-lisa" language="en"
+                                                                    [fullPage]="false"></ck-editor>
+                                                                <div *ngIf="project_description_text.invalid && (project_description_text.dirty || project_description_text.touched)" class="alert-danger">
+                                                                    <div *ngIf="project_description_text.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please enter project description.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="project_start_date">Project Start
+                                                                    Date <span class="text-danger">*</span></label>
+                                                                <input type="text" name="project_start_date" autocomplete="off" placeholder="mm/dd/yyyy" id="project_start_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #project_start_date="ngModel" required ngModel="{{Project_Edit.start_date}}"
+                                                                />
+                                                                <div *ngIf="project_start_date.invalid && (project_start_date.dirty || project_start_date.touched)" class="alert-danger">
+                                                                    <div *ngIf="project_start_date.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please enter project start date.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 pl-1">
+                                                            <div class="form-group">
+                                                                <label for="project_end_date">Project End Date<span class="text-danger">*</span></label>
+                                                                <input type="text" name="project_end_date" autocomplete="off" placeholder="mm/dd/yyyy" id="project_end_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #project_end_date="ngModel" required ngModel="{{Project_Edit.end_date}}"
+                                                                />
+                                                                <div *ngIf="project_end_date.invalid && (project_end_date.dirty || project_end_date.touched)" class="alert-danger">
+                                                                    <div *ngIf="project_end_date.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please enter project end date.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="project_document_link">Project Document Link
+                                                                    <span class="text-danger">*</span></label>
+                                                                <input type="text" name="project_document_link" autocomplete="off" id="project_document_link" class="form-control EMS-Form-Controal" placeholder="Project Document Link *" #project_document_link="ngModel" required ngModel="{{ Project_Edit.document_link }}"
+                                                                />
+                                                                <div *ngIf="project_document_link.invalid && (project_document_link.dirty || project_document_link.touched)" class="alert-danger">
+                                                                    <div *ngIf="project_document_link.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please enter project document link.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="mb-2">Assign Team <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngFor="let project_viewdepartment of viewdepartment">
+                                                                    <h6 class="mb-2 font-weight-bold">
+                                                                        {{ project_viewdepartment.dept_name }}</h6>
+                                                                    <div class="row mb-4">
+                                                                        <ng-container *ngFor="let project_viewemployee of viewemployee">
+                                                                            <div class="col-md-2 col-12 pr-1" *ngIf=" project_viewdepartment.id == project_viewemployee.dept_id && project_viewemployee.user_status == 1">
+
+                                                                                <label class="pr-2 cursor-pointer">
+                                                                                    <input type="checkbox" name="users[]"
+                                                                                    data-value="{{project_viewemployee.user_id}}"
+                                                                                    class="mr-1 projectViewemployee"
+                                                                                    [checked]="project_viewemployee.checked"
+                                                                                    required>
+                                                                                    {{ project_viewemployee.first_name }}
+                                                                                    {{ project_viewemployee.last_name }}
+                                                                                </label>
+                                                                            </div>
+                                                                        </ng-container>
+                                                                    </div>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-center">
+                                                            <button type="submit" class="btn btn-success mr-2" [disabled]="!addProject.form.valid">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

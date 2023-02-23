@@ -1,0 +1,63 @@
+@import "../../styles.scss";
+.page-body-wrapper {
+  padding-top: 0 !important;
+}
+
+.card-title {
+  font-family: $type-2;
+  font-weight: 600;
+  color: #156ba3;
+  margin-bottom: 22px;
+  font-size: 25px !important;
+  text-transform: capitalize;
+  .rtl & {
+    text-align: right;
+  }
+}
+
+.cursorPointer {
+  cursor: pointer;
+}
+
+span i.mdi.mdi-eye {
+  font-size: 18px;
+}
+
+.customInput .input-group-append {
+  border: 1px solid #ced4da !important;
+  border-top-right-radius: 2px;
+  border-left: none !important;
+}
+
+.customInput .form-control {
+  border-right: none !important;
+}
+
+.customInput .input-group-append .input-group-text {
+  border-color: #fff !important;
+}
+
+.mdi-eye-off {
+  font-size: 18px !important;
+}
+
+.mdi-eye-off:before {
+  color: #156ba3 !important;
+}
+.customInput input {
+  height: 41px;
+}
+
+.customInput .input-group-append {
+  height: 48px;
+}
+
+.HR-Management-login .img-fluid {
+  max-width: 250px !important;
+}
+
+@media screen and(max-width:1450px) {
+  .customInput .input-group-append {
+    height: 41px;
+  }
+}

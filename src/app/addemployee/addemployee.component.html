@@ -1,0 +1,188 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <!-- Custom Code Start -->
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+            <div class="row grid-margin">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body table-background">
+
+                            <div class="content">
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="card addEmployeeMainDiv">
+                                            <div class="card-header">
+                                                <h5 class="title">Add Employee</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <form class="forms-sample" #addEmployee="ngForm" (ngSubmit)="onAddEmployee(addEmployee.value)" id="addEmployeeForm">
+                                                    <div class="row">
+                                                        <div class="col-md-6 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="first_name">First Name <span class="text-danger">*</span></label>
+                                                                <input type="text" name="first_name" autocomplete="off" id="first_name" class="form-control EMS-Form-Controal" placeholder="First Name *" #first_name="ngModel" required ngModel />
+                                                                <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)" class="alert-danger">
+                                                                    <div *ngIf="first_name.errors.required" class="alert alert-danger p-2" role="alert">Please enter first name.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 pl-1">
+                                                            <div class="form-group">
+                                                                <label for="last_name">Last Name <span class="text-danger">*</span></label>
+                                                                <input type="text" name="last_name" autocomplete="off" id="last_name" class="form-control EMS-Form-Controal" placeholder="Last Name *" #last_name="ngModel" required ngModel />
+                                                                <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)" class="alert-danger">
+                                                                    <div *ngIf="last_name.errors.required" class="alert alert-danger p-2" role="alert">Please enter last name.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-5 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="exampleInputEmail1">Email Address <span class="text-danger">*</span></label>
+                                                                <input type="email" name="email" id="email" class="form-control EMS-Form-Controal" placeholder="Email *" #email="ngModel" required ngModel />
+                                                                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert-danger">
+                                                                    <div *ngIf="email.errors.required" class="alert alert-danger p-2" role="alert">Please enter email address.</div>
+                                                                    <div *ngIf="email.errors.email" class="alert alert-danger p-2" role="alert">Please enter valid email address.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 px-1">
+                                                            <div class="form-group">
+                                                                <label>Mobile Number <span class="text-danger">*</span></label>
+                                                                <input type="number" name="mobile_number" id="mobile_number" min="0" class="form-control EMS-Form-Controal" placeholder="Mobile Number *" #mobile_number="ngModel" required ngModel pattern="[0-9]{10}" />
+                                                                <div *ngIf="mobile_number.invalid && (mobile_number.dirty || mobile_number.touched)" class="alert-danger">
+                                                                    <div *ngIf="mobile_number.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please enter mobile number.
+                                                                    </div>
+                                                                    <div *ngIf="mobile_number.errors.pattern" class="alert alert-danger p-2" role="alert">
+                                                                        Enter 10 digits number only.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 pl-1">
+                                                            <div class="form-group">
+                                                                <label for="department">Employee Department <span class="text-danger">*</span></label>
+                                                                <select class="form-control custom-Select" id="department" name="department" #department="ngModel" ngModel>
+                                                                            <option value="" selected>-- Select Department --</option>
+                                                                            <option *ngFor="let user_Department of uesrDepartment;" value="{{ user_Department.id }}">{{ user_Department.dept_name }}
+                                                                            </option>
+                                                                        </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label>Address</label>
+                                                                <textarea rows="4" cols="80" id="address" name="address" placeholder="Address" class="form-control EMS-Form-Controal textarea" #address="ngModel" ngModel></textarea>
+                                                                <!-- <textarea class="form-control EMS-Form-Controal" id="reason" name="reason" placeholder="Leave Reason" #reason="ngModel" required ngModel></textarea>
+                                                                <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="alert-danger">
+                                                                    <div *ngIf="reason.errors.required" class="alert alert-danger p-2" role="alert">Please enter leave reject reason.</div>
+                                                                </div> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="gender">Gender <span class="text-danger">*</span></label>
+                                                                <select class="form-control custom-Select" id="gender" name="gender" #gender="ngModel" ngModel>
+                                                                                <option selected value="">-- Select Gender --</option>
+                                                                                <option value="Male">Male</option>
+                                                                                <option value="Female">Female</option>
+                                                                            </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 px-1">
+                                                            <div class="form-group">
+                                                                <label for="user_role">User Role <span class="text-danger">*</span></label>
+                                                                <select class="form-control custom-Select" id="user_role" name="userrole" #userrole="ngModel" ngModel>
+                                                                                        <option value="" selected>-- Select Role --</option>
+                                                                                        <option *ngFor="let user_Role of userRoles;" value="{{ user_Role.id }}">{{ user_Role.role_name }}
+                                                                                        </option>
+                                                                                    </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 pl-1">
+                                                            <div class="form-group">
+                                                                <label for="joining_date">Joining Date</label>
+                                                                <input type="text" name="joining_date" autocomplete="off" placeholder="mm/dd/yyyy" id="joining_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #joining_date="ngModel" required ngModel />
+                                                                <div *ngIf="joining_date.invalid && (joining_date.dirty || joining_date.touched)" class="alert-danger">
+                                                                    <div *ngIf="joining_date.errors.required" class="alert alert-danger p-2" role="alert">Please enter date of joining.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="dob">Birth Date</label>
+                                                                <input type="text" name="dob" autocomplete="off" placeholder="mm/dd/yyyy" id="dob" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #dob="ngModel" required ngModel />
+                                                                <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="alert-danger">
+                                                                    <div *ngIf="dob.errors.required" class="alert alert-danger p-2" role="alert">Please enter date of Birth.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 px-1">
+                                                            <div class="form-group">
+                                                                <label for="service_status">Service Status <span class="text-danger">*</span></label>
+                                                                <select class="form-control custom-Select" id="service_status" name="service_status" #service_status="ngModel" ngModel>
+                                                                                                        <option value="" selected>-- Select Service Status --</option>
+                                                                                                        <option *ngFor="let user_Service of userService;let i = index" [disabled]="disabled(i)" value="{{ user_Service.id }}">{{ user_Service.name }}
+                                                                                                        </option>
+                                                                                                    </select>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="service_status && service_status.value == '1'" class="col-md-4 pl-1">
+                                                            <div class="form-group">
+                                                                <label for="probation_date">Probation Date</label>
+                                                                <input type="text" name="probation_date" autocomplete="off" placeholder="mm/dd/yyyy" id="probation_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #probation_date="ngModel" required ngModel />
+                                                                <div *ngIf="probation_date.invalid && (probation_date.dirty || probation_date.touched)" class="alert-danger">
+                                                                    <div *ngIf="probation_date.errors.required" class="alert alert-danger p-2" role="alert">Please enter date of probation.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="service_status && service_status.value == '2'" class="col-md-4 pl-1">
+                                                            <div class="form-group">
+                                                                <label for="confirmation_date">Confirmation Date</label>
+                                                                <input type="text" name="confirmation_date" autocomplete="off" placeholder="mm/dd/yyyy" id="confirmation_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #confirmation_date="ngModel" required ngModel />
+                                                                <div *ngIf="confirmation_date.invalid && (confirmation_date.dirty || confirmation_date.touched)" class="alert-danger">
+                                                                    <div *ngIf="confirmation_date.errors.required" class="alert alert-danger p-2" role="alert">Please enter date of confirmation.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 pl-1">
+                                                            <div class="form-group">
+                                                                <label for="appraisal_date">Appraisal Date</label>
+                                                                <input type="text" name="appraisal_date" autocomplete="off" placeholder="mm/dd/yyyy" id="appraisal_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #appraisal_date="ngModel" ngModel />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-center">
+                                                            <button type="submit" class="btn btn-success mr-2" [disabled]="!addEmployee.form.valid">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Code End -->
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

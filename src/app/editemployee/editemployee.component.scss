@@ -1,0 +1,70 @@
+.card.card-user.addEmployeeMainDiv {
+    border-radius: 12px;
+    .image {
+        height: 130px;
+        overflow: hidden;
+        img {
+            border-radius: 12px
+        }
+    }
+    .author {
+        text-align: center;
+        text-transform: none;
+        margin-top: -77px;
+        .avatar {
+            width: 125px;
+            height: 125px;
+            border: 3px solid #fff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        h5.title {
+            font-weight: 700;
+            font-size: 1.57em;
+            line-height: 1.0em;
+            color: #0268bf;
+        }
+    }
+    p.description {
+        color: #9a9a9a;
+        font-size: 1.14em;
+        margin-bottom: 0;
+    }
+    .card-footer {
+        padding: 0 1.25rem .75rem;
+        background-color: transparent;
+        border: 0;
+    }
+    small.General-Small {
+        font-weight: 600;
+        font-size: 18px;
+        position: relative;
+        top: 5px;
+        color: #0268bf;
+    }
+}
+
+.modal .modal-dialog .modal-content .modal-body {
+    align-self: center;
+}
+
+.p-viewer,
+.p-viewer2 {
+    float: right;
+    margin-top: -55px;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.fa-eye {
+    color: #000;
+}
+
+.Bold-Title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}

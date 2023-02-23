@@ -1,0 +1,177 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath">
+            </app-breadcrumbs>
+            <div class="row">
+                <div class="col-md-12 col-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body table-background">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card addEmployeeMainDiv">
+                                            <div class="card-header">
+                                                <h5 class="title" *ngIf="!task_id">Add Task</h5>
+                                                <h5 class="title" *ngIf="task_id">Edit Task</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <form class="forms-sample" #addTask="ngForm" (ngSubmit)="onAddTask(addTask.value)" id="addTaskForm">
+                                                    <div class="row">
+                                                        <div class="col-md-6 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="project_name">Project Name <span class="text-danger">*</span></label>
+                                                                <select class="form-control custom-Select-2" (change)="onChange($event.target.value)" id="project_name" name="project_name" #project_name="ngModel" required ngModel="{{ Task_Edit.project_id }}">
+                                                                    <option value="" disabled selected>-- Select --</option>
+                                                                    <ng-container *ngFor="let projectList of viewprojects;">
+                                                                        <option *ngIf="projectList.status == 0" value="{{ projectList.id }}">
+                                                                        {{ projectList.project_name }}</option>
+                                                                    </ng-container>
+                                                                    </select>
+                                                                <div *ngIf="project_name.invalid && (project_name.dirty || project_name.touched)" class="alert-danger">
+                                                                    <div *ngIf="project_name.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please select project name.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1 pl-1 pr-1" *ngIf="projectType == 'fixedcost'">
+                                                            <div class="form-group">
+                                                                <label for="total_hours">Total Hours</label>
+                                                                <input type="text" name="total_hours" id="total_hours" [value]="totalHours" autocomplete="off" class="form-control EMS-Form-Controal" disabled placeholder="Task Name *" #total_hours="ngModel" required [(ngModel)]="totalHours" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="pl-1" [ngClass]="projectType == 'fixedcost' ? 'col-md-5' : 'col-md-6'">
+                                                            <div class="form-group">
+                                                                <label for="task_name">Task Name <span class="text-danger">*</span></label>
+                                                                <input type="text" name="task_name" id="task_name" autocomplete="off" class="form-control EMS-Form-Controal" placeholder="Task Name *" #task_name="ngModel" required ngModel="{{ Task_Edit.task_name }}" />
+                                                                <div *ngIf="task_name.invalid && (task_name.dirty || task_name.touched)" class="alert-danger">
+                                                                    <div *ngIf="task_name.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please enter task name.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="status">Status <span class="text-danger">*</span></label>
+                                                                <select class="form-control custom-Select-2" autocomplete="off" id="status" name="status" #status="ngModel" required ngModel="{{ Task_Edit.status }}">
+                                                                  <option value="" disabled selected>-- Select --</option>
+                                                                  <option value="1">Open</option>
+                                                                  <option value="2">Done</option>
+                                                                  <option value="3">Re-open</option>
+                                                                  <option value="4">Completed</option>
+                                                                  <option value="5">Cancelled</option>
+                                                                  <option value="6">On-hold</option>
+                                                                </select>
+                                                                <div *ngIf="status.invalid && (status.dirty || status.touched)" class="alert-danger">
+                                                                    <div *ngIf="status.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please select status.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 pl-1">
+                                                            <div class="form-group">
+                                                                <label for="priority">Priority <span class="text-danger">*</span></label>
+                                                                <select class="form-control custom-Select-2" autocomplete="off" id="priority" name="priority" #priority="ngModel" required ngModel="{{ Task_Edit.priority }}">
+                                                                  <option value="" disabled selected>-- Select --</option>
+                                                                  <option value="1">Low</option>
+                                                                  <option value="2">Medium</option>
+                                                                  <option value="3">High</option>
+                                                                  <option value="4">Urgent</option>
+                                                                </select>
+                                                                <div *ngIf="priority.invalid && (priority.dirty || priority.touched)" class="alert-danger">
+                                                                    <div *ngIf="priority.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please select priority.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="label">Label <span class="text-danger">*</span></label>
+                                                                <select class="form-control custom-Select-2" autocomplete="off" id="label" name="label" #label="ngModel" required ngModel="{{ Task_Edit.label }}">
+                                                                      <option value="" disabled selected>-- Select --</option>
+                                                                      <option value="1">Task</option>
+                                                                      <option value="2">Bug</option>
+                                                                      <option value="3">Change</option>
+                                                                  </select>
+                                                                <div *ngIf="label.invalid && (label.dirty || label.touched)" class="alert-danger">
+                                                                    <div *ngIf="label.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please select label.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 pl-1">
+                                                            <div class="form-group">
+                                                                <label for="estimated_time">Estimated Time</label>
+                                                                <input type="number" name="estimated_time" autocomplete="off" id="estimated_time" min="0" class="form-control EMS-Form-Controal" placeholder="Estimate Time *" #estimated_time="ngModel" ngModel="{{ Task_Edit.estimated_time }}" />
+                                                                <!-- <div *ngIf="estimated_time.invalid && (estimated_time.dirty || estimated_time.touched)" class="alert-danger">
+                                                                    <div *ngIf="estimated_time.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please enter estimated time.</div>
+                                                                </div> -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="deadline">Deadline Time</label>
+                                                                <input type="text" name="deadline" autocomplete="off" placeholder="mm/dd/yyyy" id="deadline" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #deadline="ngModel" required ngModel="{{Task_Edit.deadline}}">
+                                                                <div *ngIf="deadline.invalid && (deadline.dirty || deadline.touched)" class="alert-danger">
+                                                                    <div *ngIf="deadline.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please enter Deadline time.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="mb-2">Assign Team <span class="text-danger">*</span></label>
+                                                                <div class="row mb-4">
+                                                                    <ng-container *ngFor="let project_viewemployee of viewAssignemployee">
+                                                                        <div class="col-md-2 col-12 pr-1">
+                                                                            <!-- <input type="checkbox" name="users[]" data-value="{{project_viewemployee.user_id}}" class="mr-1 projectViewemployee" [checked]="project_viewemployee.checked" ngModel required> -->
+                                                                            <label class="pr-2 cursor-pointer"> 
+                                                                                <input type="checkbox" name="users[]" autocomplete="off" data-value="{{project_viewemployee.user_id}}" class="mr-1 projectViewemployee" [checked]="project_viewemployee.checked" required>
+                                                                                {{ project_viewemployee.first_name }} {{ project_viewemployee.last_name }} </label>
+                                                                        </div>
+                                                                    </ng-container>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label>Task Description</label>
+                                                                <ck-editor id="task_description" [config]="config" autocomplete="off" name="task_description" id="task_description_text" placeholder="Project Description *" #task_description_text="ngModel" required [(ngModel)]="task_description" skin="moono-lisa" language="en"
+                                                                    [fullPage]="false"></ck-editor>
+                                                                <div *ngIf="task_description_text.invalid && (task_description_text.dirty || task_description_text.touched)" class="alert-danger">
+                                                                    <div *ngIf="task_description_text.errors.required" class="alert alert-danger p-2" role="alert">Please enter task description.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-center">
+                                                            <button type="submit" class="btn btn-success mr-2" [disabled]="!addTask.form.valid">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

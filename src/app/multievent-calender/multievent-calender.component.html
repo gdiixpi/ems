@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-body new-ui-ems-clock-calendar table-background">
+    <div>
+      <h2 class="card-title Event-Calendar">Event Calendar</h2>
+      <div class="colorLabels d-flex my-3">
+        <p class="mr-3"><span class="mr-2 colorBox walnutHull"></span>Birthday</p>
+        <p class="mr-3"><span class="mr-2 colorBox fieldMaple"></span>Holiday</p>
+        <p class="mr-3"><span class="mr-2  colorBox darkBrown"></span>Work From Home</p>
+        <p class="mr-3"><span class="mr-2  colorBox pendingLeave"></span>Pending Leave</p>
+        <p class="mr-3"><span class="mr-2  colorBox ApprovedLeave"></span>Approved Leave</p>
+        <p class="mr-3"><span class="mr-2  colorBox RejectedLeave"></span>Rejected Leave</p>
+        <p class="mr-3"><span class="mr-2  colorBox blueColor"></span>Probation</p>
+        <p class="mr-3"><span class="mr-2  colorBox pinkColor"></span>Notice</p>
+        <p class="mr-3" *ngIf="!show"><span class="mr-2  colorBox pixiePowder"></span>Appraisal</p>
+      </div>
+      <full-calendar #calendar defaultView="dayGridMonth" displayEventTime="false" [plugins]="calendarPlugins"
+        [showNonCurrentDates]="false" [fixedWeekCount]="false" [weekends]="true" [events]="event">
+      </full-calendar>
+    </div>
+  </div>

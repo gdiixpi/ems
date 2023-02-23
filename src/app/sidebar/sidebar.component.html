@@ -1,0 +1,426 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+
+    <ul class="nav sidebarMenu">
+        <li class="nav-item nav-profile">
+            <div class="nav-link">
+                <div class="user-wrapper mb-0 mt-2">
+                    <div class="profile-image">
+                        <img src="{{profileImage}}" alt="profile image" class="profile_pic_sidebar">
+                    </div>
+                    <div class="text-wrapper">
+                        <p class="profile-name font-weight-bold" *ngIf="userData">
+                            {{userData.first_name}} {{userData.last_name}}
+                        </p>
+                        <div>
+                            <small class="designation text-muted" *ngIf="userData"> {{userData.role_name}} </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/dashboard">
+                <i class="menu-icon mdi mdi-television"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/timeclock">
+                <i class="menu-icon mdi mdi-calendar"></i>
+                <span class="menu-title">TimeClock</span>
+            </a>
+        </li>
+
+        <li class="nav-item" *ngIf="userDatas(userData.access_type,'all')">
+            <a class="nav-link" routerLink="/departmentteams">
+                <i class="menu-icon mdi mdi-file-tree"></i>
+                <span class="menu-title">Department Wise Team</span>
+            </a>
+        </li>
+
+        <ngb-accordion [closeOthers]="true" class="accordion">
+            <ngb-panel id="static-2">
+                <ng-template ngbPanelTitle>
+                    <a>
+                        <i class="menu-icon mdi mdi-calendar-edit"></i>
+                        <span class="menu-title">Timesheet Management</span>
+                    </a>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <a class="nav-link" routerLink="/addtimesheet" routerLinkActive="active" *ngIf="userDatas(userData.access_type,'all')">
+                        <span class="menu-title">Add Timesheet</span>
+                    </a>
+                    <a class="nav-link" routerLink="/Viewtimesheet" routerLinkActive="active">
+                        <span class="menu-title">View Timesheet</span>
+                    </a>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+        <ng-container *ngIf="userData">
+            <ngb-accordion [closeOthers]="true" class="accordion" *ngIf="userDatas(userData.access_type,'onlyAdmin')">
+                <ngb-panel id="static-1">
+                    <ng-template ngbPanelTitle>
+                        <a>
+                            <i class="menu-icon mdi mdi-account-multiple"></i>
+                            <span class="menu-title">EMP Management</span>
+                        </a>
+                    </ng-template>
+                    <ng-template ngbPanelContent>
+                        <a class="nav-link" routerLink="/addemployee">
+                            <span class="menu-title">Add Employee</span>
+                        </a>
+                        <a class="nav-link" routerLink="/viewemployee">
+                            <span class="menu-title">View Employee</span>
+                        </a>
+                        <a class="nav-link" routerLink="/departmentteams">
+                            <span class="menu-title">Department Wise Team</span>
+                        </a>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </ng-container>
+
+        <ngb-accordion [closeOthers]="true" class="accordion">
+            <ngb-panel id="static-2">
+                <ng-template ngbPanelTitle>
+                    <a>
+                        <i class="menu-icon mdi mdi-lock"></i>
+                        <span class="menu-title">Superior Management</span>
+                    </a>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <a (click)="openModalSuperior(AddSuperiorTemplate, 'add')" class="nav-link AddSuperiorAtag" *ngIf="userDatas(userData.access_type,'onlyAdmin')">
+                        <span class="menu-title">Add Superior</span>
+                    </a>
+                    <a *ngIf="userDatas(userData.access_type,'onlyAdmin')" class="nav-link" routerLink="/viewsuperior">
+                        <span class="menu-title">View Superior</span>
+                    </a>
+                    <a *ngIf="userDatas(userData.access_type,'all') && userData.count_id > 0" class="nav-link" routerLink="/viewteam" routerLinkActive="active">
+                        <span class="menu-title">View Your Team</span>
+                    </a>
+                    <a *ngIf="userDatas(userData.access_type,'all') && userData.count_id == 0" class="nav-link" routerLink="/viewteam" routerLinkActive="active">
+                        <span class="menu-title">View Your Superior</span>
+                    </a>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+        <ngb-accordion [closeOthers]="true" class="accordion">
+            <ngb-panel id="static-3">
+                <ng-template ngbPanelTitle>
+                    <a>
+                        <i class="menu-icon mdi mdi-walk"></i>
+                        <span class="menu-title">Leave Management</span>
+                    </a>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <a (click)="openModalLeave(ApplyLeaveTemplate, 'add')" class="nav-link AddSuperiorAtag" *ngIf="userDatas(userData.access_type,'all')">
+                        <span class="menu-title">Apply Leave</span>
+                    </a>
+                    <a *ngIf="userDatas(userData.access_type,'onlyAdmin')" class="nav-link" routerLink="/viewleaves" routerLinkActive="active">
+                        <span class="menu-title">View Leaves</span>
+                    </a>
+                    <a *ngIf="userDatas(userData.access_type,'all') && userData.count_id > 0" class="nav-link" routerLink="/viewleaves" routerLinkActive="active">
+                        <span class="menu-title">View Your Team Leaves</span>
+                    </a>
+                    <a *ngIf="userDatas(userData.access_type,'all')" class="nav-link" routerLink="/viewownleaves" routerLinkActive="active">
+                        <span class="menu-title">View Own Leaves</span>
+                    </a>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/hiring-process">
+                <i class="menu-icon mdi mdi-file-tree"></i>
+                <span class="menu-title">Hiring Process</span>
+            </a>
+        </li>
+
+        <ngb-accordion [closeOthers]="true" class="accordion">
+            <ngb-panel id="static-4">
+                <ng-template ngbPanelTitle>
+                    <a>
+                        <i class="menu-icon mdi mdi-format-list-bulleted"></i>
+                        <span class="menu-title">Project Management</span>
+                    </a>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <a class="nav-link" routerLink="/addprojects" routerLinkActive="active" *ngIf="userDatas(userData.access_type,'admin&manager')">
+                        <span class="menu-title">Add Project</span>
+                    </a>
+                    <a class="nav-link" routerLink="/viewprojects" routerLinkActive="active">
+                        <span class="menu-title">View Projects</span>
+                    </a>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+        <ngb-accordion [closeOthers]="true" class="accordion">
+            <ngb-panel id="static-4">
+                <ng-template ngbPanelTitle>
+                    <a>
+                        <i class="menu-icon fa fa-tasks"></i>
+                        <span class="menu-title">Task Management</span>
+                    </a>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <a class="nav-link" routerLink="/addtask" routerLinkActive="active" *ngIf="userDatas(userData.access_type,'admin&manager')">
+                        <span class="menu-title">Add Task</span>
+                    </a>
+                    <a class="nav-link" routerLink="/viewtasklist" routerLinkActive="active">
+                        <span class="menu-title">View Task List</span>
+                    </a>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+        <ngb-accordion [closeOthers]="true" class="accordion">
+            <ngb-panel id="static-4">
+                <ng-template ngbPanelTitle>
+                    <a>
+                        <i class="menu-icon mdi mdi-chart-bar"></i>
+                        <span class="menu-title">Report Management</span>
+                    </a>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <!-- <a class="nav-link" routerLink="/addreports" routerLinkActive="active">
+                        <span class="menu-title">Add Report</span>
+                    </a>
+                    <a class="nav-link" routerLink="/viewreports" routerLinkActive="active">
+                        <span class="menu-title">View Reports</span>
+                    </a> -->
+                    <a class="nav-link" routerLink="/projectreports" routerLinkActive="active">
+                        <span class="menu-title">Project Reports</span>
+                    </a>
+                    <a class="nav-link" routerLink="/taskreports" routerLinkActive="active">
+                        <span class="menu-title">Task Reports</span>
+                    </a>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+        <!-- <li class="nav-item">
+            <a class="nav-link" routerLink="/calendar">
+                <i class="menu-icon mdi mdi-calendar"></i>
+                <span class="menu-title">Event Calendar</span>
+            </a>
+        </li> -->
+        <ngb-accordion [closeOthers]="true" class="accordion">
+            <ngb-panel id="static-4">
+                <ng-template ngbPanelTitle>
+                    <a>
+                        <i class="menu-icon mdi mdi-home textBlue"></i>
+                        <span class="menu-title">Work From Home</span>
+                    </a>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <a class="nav-link" routerLink="/work-from-home" routerLinkActive="active" *ngIf="userDatas(userData.access_type,'all')">
+                        <span class="menu-title">Add WFH Details</span>
+                    </a>
+                    <a class="nav-link" routerLink="/wfh-details" routerLinkActive="active">
+                        <span class="menu-title">View WFH Details</span>
+                    </a>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+        <li class="nav-item d-block d-sm-none" *ngIf="userData">
+            <a class="nav-link" routerLink="/editprofile">
+                <i class="menu-icon mdi mdi-account-edit"></i>
+                <span class="menu-title">Edit Profile</span>
+            </a>
+        </li>
+
+        <li class="nav-item d-block d-sm-none">
+            <a class="nav-link cursor-pointer" (click)="LogOut()">
+                <i class="menu-icon mdi mdi-logout"></i>
+                <span class="menu-title">Sign Out</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<!-- Add superior modal start -->
+<ng-template #AddSuperiorTemplate>
+    <div class="modal-header">
+        <h2 class="modal-title pull-left">Add Superior</h2>
+        <button type="button" class="close pull-right SuperiorClose" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="forms-sample" #addSuperior="ngForm" (ngSubmit)="addSuperior.form.valid && onSubmit(addSuperior.value)" id="addSuperiorForm">
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <label for="assignEmployee" class="col-form-label">Select Employee <span
+                            class="text-danger">*</span></label>
+                    <select class="form-control custom-Select-2" id="assignEmployee" name="assignEmployee" #assignEmployee="ngModel" ngModel [ngClass]="{ 'is-invalid': addSuperior.submitted && assignEmployee.invalid }" required>
+                        <option value="" selected>-- Select --</option>
+                        <option *ngFor="let assign_Non_Employee of userNonSuperiors;"
+                            value="{{ assign_Non_Employee.id }}">{{ assign_Non_Employee.first_name }}
+                            {{ assign_Non_Employee.last_name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <label for="primarySuperior" class="col-form-label">Select Primary Superior <span
+                            class="text-danger">*</span></label>
+                    <select (change)="onChange($event.target.value)" class="form-control custom-Select-2" id="primarySuperior" name="primarySuperior" #primarySuperior="ngModel" ngModel [ngClass]="{ 'is-invalid': addSuperior.submitted && primarySuperior.invalid }" required>
+                        <option value="" disabled selected>-- Select --</option>
+                        <option *ngFor="let primary_Superior of uesrSuperiors;" value="{{ primary_Superior.id }}">
+                            {{ primary_Superior.first_name }} {{ primary_Superior.last_name }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12 d-none" id="second_div">
+                    <label for="secondarySuperior" class="col-form-label">Select Secondary Superior <span
+                            class="text-danger">*</span></label>
+                    <select multiple class="form-control custom-Select-Multiple" id="secondarySuperior" name="secondarySuperior" #secondarySuperior="ngModel" ngModel [ngClass]="{ 'is-invalid': addSuperior.submitted && secondarySuperior.invalid }" required>
+                        <option value="" disabled selected>-- Select --</option>
+                        <option *ngFor="let primary_Superior of uesrSuperiorsSecond;" value="{{ primary_Superior.id }}">
+                            {{ primary_Superior.first_name }} {{ primary_Superior.last_name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success mr-2" [disabled]="!addSuperior.form.valid">Submit</button>
+            <button type="button" class="btn btn-light SuperiorClose cancelBtn" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
+        </form>
+    </div>
+</ng-template>
+<!-- Add Superior modal end -->
+
+<!-- Apply leave modal start -->
+<ng-template #ApplyLeaveTemplate>
+    <div class="modal-header">
+        <h2 class="modal-title pull-left">Apply Leave</h2>
+        <button type="button" class="close pull-right ApplyLeaveModalClose" aria-label="Close" (click)="modalRefAddLeave.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="forms-sample" #applyLeave="ngForm" (ngSubmit)="applyLeave.form.valid && onApplyLeaveSubmit(applyLeave.value)" id="applyLeaveForm">
+            <div class="form-group row">
+                <input type="hidden" class="form-control" id="EmployeeId" name="EmployeeId" #EmployeeId="ngModel" ngModel="{{userData.user_id}}" />
+                <div class="col-sm-12">
+                    <label for="EmployeeName" class="col-form-label">Employee Name <span
+                            class="text-danger">*</span></label>
+                    <input type="text" class="form-control disabledColor" readonly id="EmployeeName" name="EmployeeName" #EmployeeName="ngModel" ngModel="{{userData.first_name}} {{userData.last_name}}" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <label for="full_half" class="col-form-label">Leave Type <span class="text-danger">*</span></label>
+                    <select class="form-control custom-Select-2" id="full_half" name="leave_type" #full_half="ngModel" required ngModel>
+                        <option value="" selected>-- Select --</option>
+                        <option value="1">Full Day</option>
+                        <option value="0">Half Day</option>
+                    </select>
+                    <div *ngIf="full_half.invalid && (full_half.dirty || full_half.touched)" class="alert alert-danger p-2" role="alert">
+                        <div *ngIf="full_half.errors.required">Please select leave type.</div>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="full_half.value == '1'">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="startdate" class="col-form-label">Start Date <span
+                                class="text-danger">*</span></label>
+                        <input type="text" name="startdate" autocomplete="off" placeholder="mm/dd/yyyy" id="startdate" class="form-control EMS-Form-Controal StartEndDate" bsDatepicker [bsValue]="bsValue" [bsConfig]="bsConfig" (bsValueChange)="onValueChange($event)" [minDate]="minDatestartDate"
+                            [maxDate]="maxDatestartDate" #startdate="ngModel" [daysDisabled]="[6,0]" required ngModel />
+                        <div *ngIf="startdate.invalid && (startdate.dirty || startdate.touched)" class="alert-danger">
+                            <div *ngIf="startdate.errors.required" class="alert alert-danger p-2" role="alert">Please enter start date.</div>
+                        </div>
+                    </div>
+                    <!-- </div>
+                <div class="form-group row"> -->
+                    <div class="col-sm-6">
+                        <label for="enddate" class="col-form-label">End Date <span class="text-danger">*</span></label>
+                        <input type="text" name="enddate" autocomplete="off" placeholder="mm/dd/yyyy" id="enddate" class="form-control EMS-Form-Controal StartEndDate" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="show_days($event, 'end')" [minDate]="minDateendDate" [maxDate]="maxDateendDate"
+                            #enddate="ngModel" [daysDisabled]="[6,0]" required ngModel />
+                        <div *ngIf="enddate.invalid && (enddate.dirty || enddate.touched)" class="alert-danger">
+                            <div *ngIf="enddate.errors.required" class="alert alert-danger p-2" role="alert">Please enter end date.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12" id="day_div">
+                        <label for="total_days" class="col-form-label">Total Days </label>
+                        <input type="text" class="form-control disabledColor" id="total_days" name="total_days" #EmployeeName="ngModel" ngModel="{{userLeaveCount}}" readonly />
+                        <!-- <input type="text" class="form-control" id="total_days" name="total_days" readonly /> -->
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="full_half.value == '0'">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="first_second" class="col-form-label">Select Half <span
+                                class="text-danger">*</span></label>
+                        <select class="form-control custom-Select-2" id="full_half" name="half_leave_type" #first_second="ngModel" ngModel required>
+                            <option value="" selected>-- Select --</option>
+                            <option value="0">First Half</option>
+                            <option value="1">Second Half</option>
+                        </select>
+                    </div>
+                    <!-- </div>
+                <div class="form-group row"> -->
+                    <div class="col-sm-6">
+                        <label for="leavedate" class="col-form-label">Half Leave Date <span
+                                class="text-danger">*</span></label>
+                        <input type="text" name="from_dt" autocomplete="off" placeholder="mm/dd/yyyy" id="leavedate" class="form-control EMS-Form-Controal StartEndDate" bsDatepicker [bsConfig]="bsConfig" [minDate]="minDatestartDate" [maxDate]="maxDateHalfDate" #leavedate="ngModel"
+                            required ngModel />
+                        <!-- <input type="text" name="startdate" placeholder="mm/dd/yyyy" id="startdate" readonly class="form-control EMS-Form-Controal StartEndDate" bsDatepicker [bsValue]="bsValue" [bsConfig]="bsConfig" (bsValueChange)="onValueChange($event)" [minDate]="minDatestartDate"
+                            [maxDate]="maxDatestartDate" #startdate="ngModel" required ngModel /> -->
+                        <div *ngIf="leavedate.invalid && (leavedate.dirty || leavedate.touched)" class="alert-danger">
+                            <div *ngIf="leavedate.errors.required" class="alert alert-danger p-2" role="alert">Please enter half leave date.</div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <label for="reason" class="col-form-label">Leave Reason <span class="text-danger">*</span></label>
+                    <textarea id="reason" class="form-control" name="reason" #reason="ngModel" placeholder="Leave Reason" required ngModel></textarea>
+                    <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="alert alert-danger p-2" role="alert">
+                        <div *ngIf="reason.errors.required">
+                            Reason is required.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success mr-2" [disabled]="!applyLeave.form.valid">Submit</button>
+            <button type="button" class="btn btn-light applyLeaveClose cancelBtn" aria-label="Close" (click)="modalRefAddLeave.hide()">Cancel</button>
+        </form>
+    </div>
+</ng-template>
+<button type="button" class="btn btn-primary d-none AddLeaveConfirmationButton" (click)="AddLeaveConfirmayionOpenModal(AddLeaveConfirmation)">Open modal</button>
+<!-- Add leave confirm modal start -->
+<ng-template #AddLeaveConfirmation>
+    <div class="modal-header">
+        <h5 class="modal-title">Apply Leave</h5>
+        <button type="button" class="close pull-right SaveCardTemplateClose EmployeeDeleteClose" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <!-- <h6 class="text-center Total_paid_unpaid">Available Leave Balance : <span class="text-primary">{{EmpNoOfPaidLeave}}</span></h6> -->
+        <h6 class="text-center Total_paid_unpaid">Are you sure you want to add leave?</h6>
+        <h6 class="text-center Total_paid_unpaid">Total Days :
+            <span class="text-primary" *ngIf="AddLeaveValue.leave_type == 1">{{AddLeaveValue.total_days}}</span>
+            <span class="text-primary" *ngIf="AddLeaveValue.leave_type == 0">0.5</span>
+        </h6>
+        <!-- <h6 class="text-center Total_paid_unpaid">Paid Leaves : <span class="text-success">{{TotalPaidLeave}}</span>
+        </h6>
+        <h6 class="text-center Total_paid_unpaid">Unpaid Leaves : <span class="text-danger">{{TotalUnpaidLeave}}</span>
+        </h6> -->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning token-purchase text-white" (click)="confirmAddLeave()">Ok</button>
+        <button type="button" class="btn btn-primary" (click)="declineAddLeave()">Cancel</button>
+    </div>
+</ng-template>
+<!-- Add leave confirm modal end -->

@@ -1,0 +1,277 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath">
+            </app-breadcrumbs>
+            <!-- Custom Code Start -->
+            <div class="row grid-margin table-background mr-md-0 ml-md-0 pt-4">
+                <div class="col-lg-12 col-md-12 col-12 mb-4">
+                    <h3 class="mt-0 mb-3 TaskDetailTitle">Task Detail</h3>
+                    <table class="table table-bordered table-sm">
+                        <tbody>
+                            <tr>
+                                <th scope="row" class="w-13-33">Task Name:</th>
+                                <td *ngIf="taskDetail" class="w-20 TaskName">{{ taskDetail.task_name }}</td>
+                                <th scope="row" class="w-13-33">Task Description:</th>
+                                <td *ngIf="taskDetail" class="w-20">
+                                    <span>
+                    <a href="javascript:;" (click)="openTaskDescriptionModal(taskDescription)" class="Leave_View"
+                      placement="top" ngbTooltip="Task Description">
+                      <i class="fa fa-eye ml-2 Leave_Edit"></i>
+                    </a>
+                  </span>
+                                </td>
+                                <th scope="row" class="w-13-33">Project:</th>
+                                <td *ngIf="taskDetail" class="w-20">{{taskDetail.project_name}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="w-13-33">Label:</th>
+                                <td *ngIf="taskDetail" class="w-20">
+                                    <span *ngIf="taskDetail.label == 1">Task</span>
+                                    <span *ngIf="taskDetail.label == 2">Bug</span>
+                                    <span *ngIf="taskDetail.label == 3">Change</span>
+                                </td>
+                                <th scope="row" class="w-13-33">Status:</th>
+                                <td *ngIf="taskDetail" class="w-20">
+                                    <span *ngIf="taskDetail.status == 1">Open</span>
+                                    <span *ngIf="taskDetail.status == 2">Done</span>
+                                    <span *ngIf="taskDetail.status == 3">Re-open</span>
+                                    <span *ngIf="taskDetail.status == 4">Completed</span>
+                                    <span *ngIf="taskDetail.status == 5">Cancelled</span>
+                                    <span *ngIf="taskDetail.status == 6">On-hold</span>
+                                </td>
+                                <th scope="row" class="w-13-33">Priority:</th>
+                                <td *ngIf="taskDetail" class="w-20">
+                                    <span *ngIf="taskDetail.priority == 1">Low</span>
+                                    <span *ngIf="taskDetail.priority == 2">Medium</span>
+                                    <span *ngIf="taskDetail.priority == 3">High</span>
+                                    <span *ngIf="taskDetail.priority == 4">Urgent</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="w-13-33">Working Hours:</th>
+                                <td *ngIf="taskDetail" class="w-20">
+                                    <span *ngIf="taskDetail.working_hours; else NoDetailWorkingHours">
+                    {{ taskDetail.working_hours }}
+                  </span>
+                                    <ng-template #NoDetailWorkingHours>
+                                        -
+                                    </ng-template>
+                                </td>
+                                <th scope="row" class="w-13-33">Created By:</th>
+                                <td *ngIf="taskDetail" class="w-20">
+                                    {{ taskDetail.assign_by.first_name }} {{ taskDetail.assign_by.last_name }}
+                                </td>
+                                <th scope="row" class="w-13-33">Created Date:</th>
+                                <td *ngIf="taskDetail" class="w-20">{{ taskDetail.created_at | date : 'MMM d, yyyy h:mm a' }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Assign To:</th>
+                                <td colspan="5" class="maxWidthComment">
+                                    <ul class="list-unstyled team-info mb-0">
+                                        <ng-container *ngFor="let user_taskAssign of taskAssignUsers">
+                                            <li placement="top" ngbTooltip="{{user_taskAssign.first_name}} {{user_taskAssign.last_name}}">
+                                                <img alt="Team Member" class="img-fluid" src="{{ user_taskAssign.new_profile_pic }}">
+                                            </li>
+                                        </ng-container>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-12 col-md-12 col-12 pb-3">
+                    <button class="btn btn-primary" (click)="openModalAddComment(AddCommentTemplate, '', '', '', '')"><i
+                class="mdi mdi-comment-plus-outline"></i>Add Comment</button>
+                </div>
+                <div class="col-lg-12 col-md-12 col-12 pl-lg-3 pr-lg-3">
+                    <div class="card bg-transparent">
+                        <div class="card-body EMS-CustomCardBody bg-transparent project_report">
+                            <div class="table-responsive">
+                                <table datatable [dtOptions]="dtOptions" class="table CustomTableViewEmployee" id="ViewEmployeeTable">
+                                    <thead>
+                                        <tr>
+                                            <th class="w-15 text-center sorting_asc_disabled sorting_desc_disabled">#</th>
+                                            <th>Comment</th>
+                                            <!-- <th>Working Hours</th> -->
+                                            <th>Status</th>
+                                            <th>Comment By</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="taskComments?.length > 0">
+                                        <tr *ngFor="let UserComments of taskComments; let i = index;">
+                                            <td>{{i+1}}</td>
+                                            <td>
+                                                <p class="mb-0 EMS-CommentDescription" [innerHTML]="UserComments.description"></p>
+                                            </td>
+                                            <!-- <td class="TotalHoursCount" *ngIf="UserComments.working_hours != null; else NoWorkingHours">
+                                                {{ UserComments.working_hours }}</td>
+                                            <ng-template #NoWorkingHours>
+                                                <td class="TotalHoursCount">-</td>
+                                            </ng-template> -->
+                                            <td *ngIf="UserComments.status; else NoCommentStatus">
+                                                <span *ngIf="UserComments.status == 1">Open</span>
+                                                <span *ngIf="UserComments.status == 2">Done</span>
+                                                <span *ngIf="UserComments.status == 3">Re-open</span>
+                                            </td>
+                                            <ng-template #NoCommentStatus>
+                                                <td>-</td>
+                                            </ng-template>
+                                            <td>
+                                                <h6 class="EMS-UserName">{{ UserComments.first_name }} {{ UserComments.last_name }}</h6>
+                                                <small>{{ UserComments.updated_at | date : 'MMM d, yyyy h:mm a' }}</small>
+                                            </td>
+                                            <td>
+                                                <span *ngIf="UserComments.memeber_id == loginUserId; else NoCommentAction">
+                                                    <span>
+                                                        <a (click)="openModalAddComment(AddCommentTemplate, UserComments.comment_id, UserComments.description, UserComments.working_hours, UserComments.status )"
+                                                        class="Leave_Edit cursor-pointer" placement="left" ngbTooltip="Edit Comment">
+                                                        <i class="mdi mdi-pen Leave_Edit"></i>
+                                                        </a>
+                                                    </span>
+                                                <span>
+                                                        <a href="javascript:;" (click)="openDeleteModal(deleteComment, UserComments.comment_id)"
+                                                        class="Leave_View" placement="left" ngbTooltip="Delete Comment">
+                                                        <i class="mdi mdi-delete ml-2 Leave_Rejected"></i>
+                                                        </a>
+                                                    </span>
+                                                </span>
+                                                <ng-template #NoCommentAction>
+                                                    <p class="mb-0 text-center">-</p>
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="taskComments?.length == 0">
+                                        <tr>
+                                            <td colspan="6" class="text-center">No matching records found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- <ng-template #NoFilterData>
+                  <table datatable class="table CustomTableViewEmployee">
+                    <thead>
+                      <tr>
+                        <th class="w-15 text-center sorting_asc_disabled sorting_desc_disabled">#</th>
+                        <th>Comment</th>
+                        <th>Working Hours</th>
+                        <th>Status</th>
+                        <th>Comment By</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="6" class="text-center">No matching records found</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </ng-template> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Delete Task confirm modal start -->
+            <ng-template #deleteTask>
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Task</h5>
+                    <button type="button" class="close pull-right SaveCardTemplateClose TaskDeleteClose" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure want to delete task?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning token-purchase text-white" (click)="confirm()">Yes</button>
+                    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+                </div>
+            </ng-template>
+
+            <!-- Leave filter modal start -->
+            <ng-template #AddCommentTemplate>
+                <div class="modal-header">
+                    <h2 class="modal-title pull-left">{{ CommentPopupTitle }}</h2>
+                    <button type="button" class="close pull-right AddCommentClose" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <form class="forms-sample" #AddComment="ngForm" (ngSubmit)="onAddComment(AddComment.value)" id="AddCommentForm">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Task Comment <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" name="task_comment" #task_comment_text="ngModel" placeholder="Task Comment" required ngModel={{task_comment}}></textarea>
+                                    <div *ngIf="task_comment_text.invalid && (task_comment_text.dirty || task_comment_text.touched)" class="alert-danger">
+                                        <div *ngIf="task_comment_text.errors.required" class="alert alert-danger p-2" role="alert">Please enter comment.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 pr-1">
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select class="form-control custom-Select-2" id="status" name="status" #status="ngModel" ngModel={{userCommentsStatus}}>
+                    <option value="" selected>-- Select --</option>
+                    <option value="1">Open</option>
+                    <option value="2">Done</option>
+                    <option value="3">Re-open</option>
+                  </select>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-6 pl-1">
+                                <div class="form-group">
+                                    <label for="working_hours">Working Hours</label>
+                                    <input type="number" name="working_hours" id="working_hours" min="0" class="form-control EMS-Form-Controal" placeholder="Working Hours" #working_hours="ngModel" ngModel="{{userCommentsWorkinH}}" />
+                                    <input type="hidden" name="comment_id" id="comment_id" class="form-control EMS-Form-Controal" #comment_id="ngModel" ngModel="{{userCommentsData}}" />
+                                </div>
+                            </div> -->
+                        </div>
+                        <button type="submit" class="btn btn-success mr-2" [disabled]="!AddComment.form.valid">{{ CommentPopupTitle }}</button>
+                        <button type="button" class="btn cancelBtn btn-light HolidayClose" aria-label="Close" (click)="modalRef.hide()">Cancel</button>
+                    </form>
+                </div>
+            </ng-template>
+            <!-- Delete Comment confirm modal start -->
+            <ng-template #deleteComment>
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Comment</h5>
+                    <button type="button" class="close pull-right SaveCardTemplateClose CommentDeleteClose" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure want to delete comment?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning token-purchase text-white" (click)="confirm()">Yes</button>
+                    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+                </div>
+            </ng-template>
+
+            <!-- Delete Comment confirm modal start -->
+            <ng-template #taskDescription>
+                <div class="modal-header">
+                    <h5 class="modal-title">Task Description</h5>
+                    <button type="button" class="close pull-right SaveCardTemplateClose CommentDeleteClose" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="EMS-TaskName">
+                        <span class="EMS-ProjectNameDevider EMS-ProjectDescription" *ngIf="taskDetail">
+              <span class="TaskDescription" [innerHTML]="taskDetail.description"></span>
+                        </span>
+                    </h5>
+                </div>
+            </ng-template>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

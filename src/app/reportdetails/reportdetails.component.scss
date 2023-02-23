@@ -1,0 +1,97 @@
+h6.project-Name {
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0.3px;
+}
+
+.w-135 {
+    width: 135px !important;
+}
+
+.w-90 {
+    width: 90px !important;
+}
+
+.w-15 {
+    width: 15px !important;
+}
+
+.project-detail-main {
+    border-radius: 10px !important;
+    .project-detail-body {
+        color: #444;
+        padding: 20px;
+        font-weight: 400;
+        .progress.progress-xs {
+            height: 5px;
+            .l-green {
+                background: linear-gradient(45deg, #9ce89d, #cdfa7e) !important;
+            }
+        }
+        h6.project-title {
+            color: #277FD6;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .table-project-detail {
+            border: 2px solid #277FD6;
+            tbody {
+                tr {
+                    td {
+                        font-size: 16px !important;
+                        padding: 15px 10px !important;
+                    }
+                    td.title-odd {
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+        .sticker-Type {
+            position: absolute;
+            top: 0;
+            left: 0;
+            .sticker-Type-Image {
+                width: 50px;
+            }
+        }
+    }
+    .project-detail-body-two {
+        color: #444;
+        padding: 20px;
+        font-weight: 400;
+        h6.project-title-description {
+            color: #000000;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .team-info {
+            li {
+                transition: all .25s ease;
+                -webkit-transition: all .25s ease;
+                -o-transition: all .25s ease;
+                -moz-transition: all .25s ease;
+                display: inline-block;
+                &:hover {
+                    -webkit-transform: translateY(-4px) scale(1.02);
+                    -moz-transform: translateY(-4px) scale(1.02);
+                    -ms-transform: translateY(-4px) scale(1.02);
+                    -o-transform: translateY(-4px) scale(1.02);
+                    transform: translateY(-4px) scale(1.02);
+                    z-index: 999;
+                }
+                img {
+                    width: 80px;
+                    margin-right: 10px;
+                    border-radius: 50%;
+                    border: 2px solid #fff;
+                    height: 80px;
+                    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.2);
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}

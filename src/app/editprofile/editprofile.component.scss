@@ -1,0 +1,86 @@
+.card.card-user.addEmployeeMainDiv {
+    border-radius: 12px;
+    .image {
+        height: 130px;
+        overflow: hidden;
+        img {
+            border-radius: 12px
+        }
+    }
+    .author {
+        text-align: center;
+        text-transform: none;
+        margin-top: -77px;
+        .author-propoc {
+            position: relative;
+            width: 125px;
+            height: 125px;
+            margin: 0 auto 20px;
+        }
+        .avatar {
+            width: 125px;
+            height: 125px;
+            border: 3px solid #fff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        h5.title {
+            font-weight: 700;
+            font-size: 1.57em;
+            line-height: 1.0em;
+            color: #156BA3;
+        }
+    }
+    p.description {
+        color: #9a9a9a;
+        font-size: 1.14em;
+        margin-bottom: 0;
+    }
+    .card-footer {
+        padding: 0 1.25rem .75rem;
+        background-color: transparent;
+        border: 0;
+    }
+    small.General-Small {
+        font-weight: 600;
+        font-size: 18px;
+        position: relative;
+        top: 5px;
+        color: #156BA3;
+    }
+}
+
+span.upload_propic {
+    input.InputAvtarImage {
+        display: none;
+    }
+    input[type="file"] {
+        display: none;
+    }
+}
+
+.propic {
+    background: #156BA3;
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    border: 2px solid #ffffff;
+    padding: 4px;
+    cursor: pointer;
+    position: absolute;
+    top: 80px;
+    right: 0;
+    z-index: 1;
+    color: #ffffff;
+}
+
+.Custom-Note {
+    font-size: 15px;
+    letter-spacing: 0.3px;
+}
+
+.mdi-map-marker-radius:before {
+    color: #156BA3 !important;
+}

@@ -1,0 +1,58 @@
+span.colorBox {
+  padding: 0px 9px;
+}
+
+.skyblueColor {
+  background-color: #3caacc;
+}
+
+.pinkColor {
+  background-color: #f56093;
+}
+
+.orangeColor {
+  background-color: #ff7e5a;
+}
+
+.blueColor {
+  background-color: #4169e1;
+}
+
+.pendingLeave {
+  background-color: #ffaf00;
+}
+
+.ApprovedLeave {
+  background-color: #00ce68;
+}
+
+.RejectedLeave {
+  background-color: #e65251;
+}
+
+.darkGreenColor {
+  background-color: #5f9ea0;
+}
+
+.fieldMaple {
+  background-color: #80884e;
+}
+
+.walnutHull {
+  background-color: #5d5242;
+}
+
+.pixiePowder {
+  background-color: #391285;
+}
+.racingGreen {
+  background-color: #014600;
+}
+
+.darkBrown {
+  background-color: #1d0200;
+}
+
+::ng-deep .fc-content .fc-time {
+  display: none !important;
+}

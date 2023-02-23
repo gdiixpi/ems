@@ -1,0 +1,90 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+            <!-- Custom Code Start -->
+            <div class="row grid-margin">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body table-background project_report">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="card project-detail-main">
+                                        <div class="body project-detail-body text-left pro-img">
+                                            <div class="table-responsive">
+                                                <table class="table table-project-detail">
+                                                    <tbody>
+                                                        <tr *ngIf="viewTaskData">
+                                                            <td class="title-odd bg-one">Employee Name</td>
+                                                            <td class="title-even bg-two">{{viewTaskData.username}}</td>
+                                                        </tr>
+                                                        <tr *ngIf="viewTaskData">
+                                                            <td class="title-odd bg-one">Timesheet Date</td>
+                                                            <td class="title-even bg-two">{{viewTaskData.date | date : 'd MMM, yyyy'}}</td>
+                                                        </tr>
+                                                        <tr *ngIf="viewTaskData">
+                                                            <td class="title-odd bg-one">Total Hours</td>
+                                                            <td class="title-even bg-two">{{viewTaskData.hours}}.{{viewTaskData.minutes}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <h6 class="project-Name mt-4 mb-3">Task Details</h6>
+                                <table class="table CustomTableViewEmployee" id="ViewEmployeeTable">
+                                    <thead>
+                                        <tr>
+                                            <th class="w-15 text-center">#</th>
+                                            <th>Project Name</th>
+                                            <th>Task Name</th>
+                                            <th>Task Title</th>
+                                            <th>Working Hours</th>
+                                            <th>Description</th>
+                                            <!-- <th>Action</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let user_viewTaskDetail of viewTaskDetail; let i = index;">
+                                            <td>{{i+1}}</td>
+                                            <td class="project-title">
+                                                {{user_viewTaskDetail.project_name}}
+                                            </td>
+                                            <td class="project-title">
+                                                {{user_viewTaskDetail.task_name}}
+                                            </td>
+                                            <td>{{user_viewTaskDetail.name}}</td>
+                                            <td>{{user_viewTaskDetail.hours}}.{{user_viewTaskDetail.minutes}}</td>
+                                            <td>
+                                                <span [innerHTML]="user_viewTaskDetail.details" class="EMS_user_viewTaskDetail"></span>
+                                            </td>
+                                            <!-- <td>
+                                                <span>
+                                                    <a href="javascript:;" class="Leave_Edit" placement="top" ngbTooltip="Copy To Clipboard">
+                                                        <i class="mdi mdi-content-copy Leave_Edit"></i>
+                                                    </a>
+                                                    <a class="Leave_Edit" 
+                                                        placement="top" 
+                                                        ngbTooltip="Copy To Clipboard" 
+                                                        ngxClipboard [cbContent]="user_viewTaskDetail.details">
+                                                            <i class="mdi mdi-content-copy Leave_Edit"></i>
+                                                    </a>
+                                                </span>
+                                            </td> -->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

@@ -1,0 +1,645 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100 hiringProcessModule">
+  <app-sidebar></app-sidebar>
+  <div class="main-panel w-100">
+    <div class="content-wrapper hiringProcessMain">
+      <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath">
+      </app-breadcrumbs>
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-12 grid-margin">
+          <div class="card">
+            <div class="card-body table-background">
+              <div class="mb-4">
+                <a href="javascript:;" class="btn btn-success AddEmployeeBtn mr-2"
+                  *ngIf="userData && userDatas(userData.access_type,'admin&hm')"
+                  (click)="openAddEmployeeForm(AddEmployeeDetails,'','add')"><i class="mdi mdi-plus-circle-outline"></i>
+                  Add Candidate
+                </a>
+                <li class="nav-item dropdown d-none d-xl-inline-block"
+                  *ngIf="userData && userDatas(userData.access_type,'admin&hm')" placement="bottom" ngbTooltip="Filter"
+                  (click)="filterShow = !filterShow">
+                  <a class="btn btn-primary AddEmployeeBtn"><i class="mdi mdi-filter"></i></a>
+                </li>
+              </div>
+              <form class="forms-sample mb-4" *ngIf="filterShow" [formGroup]="applyFilter"
+                (ngSubmit)="onapplyFilterSubmit()">
+                <div class="row">
+                  <div class="col-md-3 col-12">
+                    <div class="form-group">
+                      <label for="expected_ctc">Expected CTC</label>
+                      <input type="number" min="0" oninput="this.value=this.value.replace(/[^\d]/,'')"
+                        class="form-control custom-Select" placeholder="200000" formControlName="expected_ctc">
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-12">
+                    <div class="form-group">
+                      <label for="current_ctc">Current CTC</label>
+                      <input type="number" min="0" oninput="this.value=this.value.replace(/[^\d]/,'')"
+                        class="form-control custom-Select" placeholder="100000" formControlName="current_ctc">
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-12">
+                    <div class="form-group">
+                      <label for="mode">Mode</label>
+                      <input type="text" class="form-control custom-Select" formControlName="mode">
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-12">
+                    <div class="form-group">
+                      <label for="totalExperience">Total Experience</label>
+                      <input type="number" min="0" placeholder="5" class="form-control custom-Select"
+                        formControlName="totalExperience">
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-12">
+                    <div class="form-group">
+                      <label for="technology">Technology</label>
+                      <input type="text" class="form-control custom-Select" formControlName="technology">
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-12">
+                    <div class="form-group">
+                      <label for="reviewStatus"> Review Status</label>
+                      <select class="form-control custom-Select" formControlName="reviewStatus">
+                        <option selected>-- Select Review Status --</option>
+                        <option value=0>Pending</option>
+                        <option value=1>Review</option>
+                        <option value=9>Accept</option>
+                        <option value=11>On hold</option>
+                        <option value=10>Reject</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-12">
+                    <div class="form-group">
+                      <label for="joiningStatus">Joining Status</label>
+                      <select class="form-control custom-Select" formControlName="joiningStatus">
+                        <option selected>-- Select Joining Status --</option>
+                        <option value=1> Offer Inprogress</option>
+                        <option value=2> Offer shared </option>
+                        <option value=3> Offer rejected </option>
+                        <option value=4> Not processed </option>
+                        <option value=5> Joined </option>
+                        <option value=6> Not shown up </option>
+                        <option value=7> Future Reference</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-12">
+                    <div class="form-group">
+                      <label for="NoticePeriod">Notice Period</label>
+                      <select class="form-control custom-Select" formControlName="NoticePeriod">
+                        <option selected>-- Select Notice Period --</option>
+                        <option value=1>Immediate Joiner</option>
+                        <option value=2>15 days</option>
+                        <option value=3>1 Months</option>
+                        <option value=4>2 Months</option>
+                        <option value=5>3 Months</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-12">
+                    <div class="form-group mb-md-0">
+                      <label for="start_date">From Date</label>
+                      <input type="text" formControlName="start_date" autocomplete="off" placeholder="mm/dd/yyyy"
+                        class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" />
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-12">
+                    <div class="form-group mb-md-0">
+                      <label for="end_date">To Date</label>
+                      <input type="text" formControlName="end_date" autocomplete="off" placeholder="mm/dd/yyyy"
+                        class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" />
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-md-3 col-12 align-self-center">
+                    <div class="form-group text-center mb-0 mt-md-4">
+                      <button type="submit" class="btn btn-success mr-3">Filter</button>
+                      <button type="reset" class="btn btn-warning mr-3" (click)="applyFilterreset()">Reset</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="divider my-4"></div>
+              </form>
+              <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" class="table CustomTableViewEmployee row-border hover"
+                  id="ViewEmployeeTable">
+                  <thead>
+                    <tr>
+                      <th class="text-center sorting_asc_disabled sorting_desc_disabled"> # </th>
+                      <th class="text-center">Candidate Name</th>
+                      <th class="text-center">Technology</th>
+                      <th class="text-center"> Interviewer Name</th>
+                      <th class="text-center">Schedule</th>
+                      <th class="text-center sorting_asc_disabled sorting_desc_disabled">Resume</th>
+                      <th class="text-center ">Notice Period </th>
+                      <th class="text-center"> Review Status </th>
+                      <th *ngIf="userData && userDatas(userData.access_type,'admin&hm')" class="text-center"> Joining
+                        Status </th>
+                      <th class="text-center sorting_asc_disabled sorting_desc_disabled"> Action</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="HireEmployeeList.length > 0">
+                    <tr *ngFor="let admin_addemployee of HireEmployeeList; let i = index;">
+                      <td class="text-center">{{i+1}}</td>
+                      <td class="text-center">{{admin_addemployee.name }}</td>
+                      <td class="text-center">{{admin_addemployee.technology }}</td>
+                      <td class="text-center">{{admin_addemployee.assign_person}}</td>
+                      <td class="text-center" *ngIf="admin_addemployee.time.length < 15">{{admin_addemployee.date |
+                        date: 'yyyy-MM-dd'}},
+                        {{admin_addemployee.time}}</td>
+                      <td class="text-center" *ngIf="admin_addemployee.time.length > 15">{{admin_addemployee.date |
+                        date: 'yyyy-MM-dd'}},
+                        {{admin_addemployee.time | date: 'h:mm:ss a'}}</td>
+                      <td class="text-center"><a href={{empResume}}{{admin_addemployee.resume}} id="resume"
+                          ngbTooltip="View Resume" placement="left" class="cursorPointer text-black decoration"
+                          target="_blank"><i class="mdi mdi-file-pdf"></i></a></td>
+                      <!-- <td class="text-center">{{admin_addemployee.notice_period}}</td> -->
+                      <td *ngIf="admin_addemployee.notice_period == 0" class="text-center">-
+                      </td>
+                      <td *ngIf=" admin_addemployee.notice_period==1" class="text-center">Immediate Joiner</td>
+                      <td *ngIf="admin_addemployee.notice_period == 2" class="text-center">15 days</td>
+                      <td *ngIf="admin_addemployee.notice_period == 3" class="text-center">1 Months</td>
+                      <td *ngIf="admin_addemployee.notice_period == 4" class="text-center">2 Months</td>
+                      <td *ngIf="admin_addemployee.notice_period == 5" class="text-center">3 Months</td>
+                      <td class="text-center">
+                        <label *ngIf="admin_addemployee.status == 0" class="badge badge-warning">Pending</label>
+                        <label *ngIf="admin_addemployee.status == 1" class="badge badge-primary">Review</label>
+                        <label *ngIf="admin_addemployee.status == 9" class="badge badge-success">Accepted</label>
+                        <label *ngIf="admin_addemployee.status == 10" class="badge badge-danger">Reject</label>
+                        <label *ngIf="admin_addemployee.status == 11" class="badge badge-warning">On hold</label>
+                      </td>
+                      <td *ngIf="userDatas(userData.access_type,'admin&hm')" class="text-center">
+                        <select [disabled]="admin_addemployee.status=='0'" class="custom-Select-2 hr_status"
+                          (change)="changeJoinStatus(admin_addemployee.hiring_id, $event)">
+                          <option [value]="null" selected> Select status </option>
+                          <option [selected]="admin_addemployee.join_status == 1" [value]=1> Offer Inprogress</option>
+                          <option [selected]="admin_addemployee.join_status == 2" [value]=2> Offer shared </option>
+                          <option [selected]="admin_addemployee.join_status == 3" [value]=3> Offer rejected </option>
+                          <option [selected]="admin_addemployee.join_status == 4" [value]=4> Not processed </option>
+                          <option [selected]="admin_addemployee.join_status == 5" [value]=5> Joined </option>
+                          <option [selected]="admin_addemployee.join_status == 6" [value]=6> Not shown up </option>
+                          <option [selected]="admin_addemployee.join_status == 7" [value]=7> Future Reference</option>
+                        </select>
+                      </td>
+
+                      <td class="text-center">
+                        <!--Open view Review Model-->
+                        <ng-container *ngIf="admin_addemployee.status != 0">
+                          <a href="javascript:;"
+                            (click)="openEmpReviewForm(ReviewEmployee,admin_addemployee,'viewReview')"
+                            class="Leave_View text-center" ngbTooltip="View Review" placement="left">
+                            <i class="mdi mdi-eye"></i>
+                          </a> &nbsp;
+                          <a href="javascript:;"
+                            (click)="openEmpReviewForm(ReviewEmployee, admin_addemployee,'editReview')"
+                            class="editReview" placement="left" ngbTooltip="Edit Review"
+                            *ngIf="userDatas(userData.access_type,'admin&hm')">
+                            <i class="mdi mdi-pen reviewEdit"></i>
+                          </a>
+                        </ng-container>
+                        <!--Open Add Review Model-->
+                        <ng-container *ngIf="userData && userDatas(userData.access_type,'allHrNone')">
+                          <a href="javascript:;"
+                            (click)="openEmpReviewForm(ReviewEmployee,admin_addemployee,'addReview');"
+                            *ngIf="admin_addemployee.status == 0" class="Leave_View" placement="left"
+                            ngbTooltip="Add Review text-center">
+                            <i class="mdi mdi-pen Leave_Edit customEdit"></i>
+                          </a>
+                        </ng-container> &nbsp;
+                        <!--Delet user Model-->
+                        <ng-container *ngIf="userData && userDatas(userData.access_type,'admin&hm')">
+                          <a href="javascript:;"
+                            (click)="opendeleteUserModal(deleteEmployee, admin_addemployee.hiring_id)"
+                            class="Leave_Rejected text-center" placement="left" ngbTooltip="Delete candidate">
+                            <i class="mdi mdi-delete Leave_Rejected"></i>
+                          </a>
+                        </ng-container> &nbsp;
+                        <!--Edit Employee Form-->
+                        <ng-container *ngIf="userData && userDatas(userData.access_type,'admin&hm')">
+                          <a href="javascript:;"
+                            (click)="openAddEmployeeForm(AddEmployeeDetails,admin_addemployee,'edit')"
+                            class="Leave_Edit text-center" placement="left" ngbTooltip="Edit candidate"
+                            *ngIf="admin_addemployee.status == 0">
+                            <i class="mdi mdi-pen Leave_Edit"></i>
+                          </a>
+                        </ng-container> &nbsp;
+                        <!--Edit Review Form-->
+                        <ng-container
+                          *ngIf="admin_addemployee.status == 1 && userData && userDatas(userData.access_type,'admin&hm')">
+                          <a href="javascript:;"
+                            (click)="openEmpReviewForm(ReviewEmployee, admin_addemployee,'editReview')"
+                            class="editReview text-center" placement="left" ngbTooltip="Edit Review">
+                            <i class="mdi mdi-pen reviewEdit"></i>
+                          </a>
+                        </ng-container> &nbsp;
+                        <!--approve and Reject Employee-->
+                        <ng-container
+                          *ngIf="admin_addemployee.status == 1 && userDatas(userData.access_type,'admin&hm')">
+                          <a href="javascript:;" (click)="openAcceptEmpModal(acceptReview,admin_addemployee.hiring_id)"
+                            class="Leave_Approved text-center" placement="left" ngbTooltip="Accept Review">
+                            <i class="mdi mdi-thumb-up Leave_Approved"></i>
+                          </a>
+                        </ng-container> &nbsp;
+                        <ng-container
+                          *ngIf="admin_addemployee.status == 1 && userDatas(userData.access_type,'admin&hm')">
+                          <a href="javascript:;" (click)="openRejectEmpModal(rejectReview,admin_addemployee.hiring_id)"
+                            class="Leave_Rejected text-center" placement="left" ngbTooltip="Reject Review">
+                            <i class="mdi mdi-thumb-down Leave_Rejected"></i>
+                          </a>
+                        </ng-container> &nbsp;
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="HireEmployeeList.length == 0">
+                    <tr>
+                      <td colspan="10" class="text-center dataTables_empty">There are no candidate records.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add employee modal start -->
+      <ng-template #AddEmployeeDetails let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{FormTitle}}
+          </h5>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+            <ng-container class="hiring-module-form">
+
+              <!--Add candidate-->
+              <div class="mb-3">
+                <input type="hidden" id="hiringId" formControlName="hiringId">
+                <label For="name">Candidate Name</label>
+                <input type="text" class="form-control" autocomplete="off" id="name" formControlName="name"
+                  placeholder="Please enter candidate name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                <div *ngIf="submitted && f.name.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                  role="alert">
+                  <div *ngIf="f.name.errors.required">Please enter a candidate name</div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 pr-1">
+
+                  <label for="mobile_no">Phone no</label>
+                  <input type="tel" formControlName="mobile_no" max="10" autocomplete="off" id="mobile_no"
+                    placeholder="Please enter Phone no" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.mobile_no.errors }" />
+                  <div *ngIf="submitted && f.mobile_no.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                    role="alert">
+                    <div *ngIf="f.mobile_no.errors.required">Please enter a Phone no</div>
+                  </div>
+                </div>
+                <div class="col-md-6 pr-1">
+
+                  <label for="email">Email Id</label>
+                  <input type="email" formControlName="email" autocomplete="off" id="email"
+                    placeholder="Please enter Email Id" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                  <div *ngIf="submitted && f.email.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                    role="alert">
+                    <div *ngIf="f.email.errors.required">Please enter a Email Id</div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 pr-1">
+
+                  <label for="mode">Mode</label>
+                  <input type="text" formControlName="mode" autocomplete="off" id="mode" placeholder="Please enter Mode"
+                    class="form-control" [ngClass]="{ 'is-invalid': submitted && f.mode.errors }" />
+                  <div *ngIf="submitted && f.mode.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                    role="alert">
+                    <div *ngIf="f.mode.errors.required">Please enter a Mode</div>
+                  </div>
+                </div>
+                <div class="col-md-6 pr-1">
+
+                  <label for="total_experience">Total Experience</label>
+                  <input type="number" min="0" formControlName="total_experience" autocomplete="off"
+                    id="total_experience" placeholder="Please enter Total Experience" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.total_experience.errors }" />
+                  <div *ngIf="submitted && f.total_experience.errors"
+                    class="invalid-feedback alert alert-danger p-2 mt-0" role="alert">
+                    <div *ngIf="f.total_experience.errors.required">Please enter a Total Experience</div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 pr-1">
+
+                  <label for="current_ctc">Current CTC</label>
+                  <input type="number" formControlName="current_ctc" autocomplete="off" id="current_ctc"
+                    placeholder="Please enter Current CTC" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.current_ctc.errors }" />
+                  <div *ngIf="submitted && f.current_ctc.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                    role="alert">
+                    <div *ngIf="f.current_ctc.errors.required">Please enter a Current CTC</div>
+                  </div>
+                </div>
+                <div class="col-md-6 pr-1">
+                  <label for="expected_ctc">Expected CTC</label>
+                  <input type="number" formControlName="expected_ctc" autocomplete="off" id="expected_ctc"
+                    placeholder="Please enter Expected CTC" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.expected_ctc.errors }" />
+                  <div *ngIf="submitted && f.expected_ctc.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                    role="alert">
+                    <div *ngIf="f.expected_ctc.errors.required">Please enter a Expected CTC</div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <!--Add technology-->
+              <div class="mb-3">
+                <label For="technology">Technology</label>
+                <input type="text" class="form-control" autocomplete="off" id="technology" formControlName="technology"
+                  placeholder="Please enter technology"
+                  [ngClass]="{ 'is-invalid': submitted && f.technology.errors }" />
+                <div *ngIf="submitted && f.technology.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                  role="alert">
+                  <div *ngIf="f.technology.errors.required">Please enter a technology</div>
+                </div>
+              </div>
+
+              <!--select Assigner name-->
+              <div class="row mb-3">
+                <div class="col-md-6 pr-1">
+                  <div class="mb-3">
+                    <label For="employeeList">Select Interviewer</label>
+                    <select class="form-control custom-Select-2" id="EmployeeList" formControlName="employeeList"
+                      [ngClass]="{ 'is-invalid': submitted && f.employeeList.errors }">
+                      <option [value]="null" hidden>
+                        Please select interviewer name
+                      </option>
+                      <ng-container *ngFor="let admin_viewemployee of viewEmployeeList; let i = index;">
+                        <option *ngIf="admin_viewemployee.user_status == 1" [value]='admin_viewemployee.user_id'>
+                          {{admin_viewemployee.first_name }}
+                          {{admin_viewemployee.last_name }}
+                        </option>
+                      </ng-container>
+                    </select>
+                    <div *ngIf="submitted && f.employeeList.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                      role="alert">
+                      <div *ngIf="f.employeeList.errors.required">Please select interviewer name</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 pr-1">
+                  <label for="notice_period">Notice Period</label>
+                  <select class="form-control custom-Select-2" formControlName="notice_period"
+                    [ngClass]="{ 'is-invalid': submitted && f.notice_period.errors }">
+                    <option selected>-- Select Notice Period --</option>
+                    <option value=1>Immediate Joiner</option>
+                    <option value=2>15 days</option>
+                    <option value=3>1 Months</option>
+                    <option value=4>2 Months</option>
+                    <option value=5>3 Months</option>
+                  </select>
+                  <div *ngIf="submitted && f.notice_period.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                    role="alert">
+                    <div *ngIf="f.notice_period.errors.required">Please enter a Notice</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3" *ngIf="onEditView">
+                <div class="col-md-6 pr-1">
+                  <label for="created_at">Created At</label>
+                  <input type="text" formControlName="created_at" disabled readonly autocomplete="off" id="created_at"
+                    class="form-control" />
+                </div>
+                <div class="col-md-6 pr-1">
+                  <label for="updated_at">Updated At</label>
+                  <input type="text" formControlName="updated_at" disabled readonly autocomplete="off" id="updated_at"
+                    class="form-control" />
+                </div>
+              </div>
+
+              <!--Candidate details-->
+              <div class="mb-3">
+                <label For="candidateDetails">Candidate detail</label>
+                <ck-editor id="details" [config]="config" formControlName="candidateDetails" skin="moono-lisa"
+                  language="en" [fullPage]="false" [ngClass]="{ 'is-invalid': submitted && f.candidateDetails.errors }">
+                </ck-editor>
+                <div *ngIf="submitted && f.candidateDetails.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                  role="alert">
+                  <div *ngIf="f.candidateDetails.errors.required">Please enter a candidate details</div>
+                </div>
+              </div>
+
+              <!--Date time-->
+              <div class="row mb-3">
+                <div class="col-md-6 pr-1">
+                  <label For="date">Date call/schedule</label>
+                  <input type="text" placeholder="Please enter date" autocomplete="off"
+                    class="form-control EMS-form-control" bsDatepicker formControlName="date" [minDate]="minDate"
+                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                    [ngClass]="{ 'is-invalid': submitted && f.date.errors }">
+                  <div *ngIf="submitted && f.date.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                    role="alert">
+                    <div *ngIf="f.date.errors.required">Please select a date schedule</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label For="time">Time Schedule</label>
+                <timepicker formControlName="time" [ngClass]="{ 'is-invalid': submitted && f.time.errors }">
+                </timepicker>
+                <div *ngIf="submitted && f.time.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                  role="alert">
+                  <div *ngIf="f.time.errors.required">Please select a time schedule</div>
+                </div>
+              </div>
+
+              <!--Upload file-->
+              <div class="mb-3">
+                <label For="file">Upload File</label>
+                <input type="file" class="form-control" (change)="onFileSelect($event)" formControlName="file"
+                  accept="application/pdf" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
+                <div *ngIf="submitted && f.file.errors" class="invalid-feedback alert alert-danger p-2 mt-0 customFile"
+                  role="alert">
+                  <div *ngIf="f.file.errors.required">Please upload a file</div>
+                </div>
+              </div>
+            </ng-container>
+            <button type="submit" class="btn btn-success mr-2">Submit</button>
+          </form>
+        </div>
+      </ng-template>
+
+      <!-- Add Review modal start -->
+      <ng-template #ReviewEmployee let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{FormTitle}}
+          </h5>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body reviewForm">
+          <!-- View Review-->
+          <div class="reviewShow" *ngIf="displayEmpData">
+            <div class="table-responsive">
+              <table class="table CustomTableViewEmployee CustomTableViewEmployeeAnother">
+                <tbody>
+                  <tr>
+                    <td class="font-weight-bold">Candidate Name</td>
+                    <td>{{viewEmpName}}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-weight-bold">Assigner Name</td>
+                    <td>{{viewEmpAssignerName}}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-weight-bold">Schedule</td>
+                    <td>{{viewEmpDate | date: 'yyyy-MM-dd'}}, {{viewEmpTime | date: 'h:mm:ss a'}}</td>
+                  </tr>
+                  <tr *ngIf="userData && userDatas(userData.access_type,'admin&hm')">
+                    <td class="font-weight-bold">Candidate Details</td>
+                    <td class="OverView">
+                      <div [innerHtml]="viewEmpDetail"></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-weight-bold">Candidate Review</td>
+                    <td class="OverView">
+                      <div [innerHtml]="viewEmpOverview"></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-weight-bold">Rating</td>
+                    <td>{{viewEmpRating}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Add Review-->
+          <form [formGroup]="reviewEmployeeForm" (submit)="onSubmitReview()" *ngIf="displayEmpForm">
+            <ng-container class="hiring-module-form">
+              <div class="mb-3">
+                <input type="hidden" id="reviewId" formControlName="reviewId">
+                <label for="details">Add Review<span class="text-danger">*</span></label>
+                <ck-editor id="details" [config]="config" formControlName="details" skin="moono-lisa" language="en"
+                  [fullPage]="false" [ngClass]="{ 'is-invalid': submitted && review.details.errors }"></ck-editor>
+                <div *ngIf="submitted && review.details.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                  role="alert">
+                  <div *ngIf="review.details.errors.required">Please enter candidate review</div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="d-block" For="rating">Add Ratings</label>
+                <input type="range" min="10" max="100" formControlName="rating" value="30"
+                  [ngClass]="{ 'is-invalid': submitted && review.rating.errors }"
+                  oninput="document.getElementById('tRate').innerHTML = this.value">
+                <label id="tRate" class="ml-2" *ngIf="!tRate">0</label>
+                <label id="tRate" class="ml-2" *ngIf="tRate">{{viewEmpRating}}</label>
+
+                <div *ngIf="submitted && review.rating.errors" class="invalid-feedback alert alert-danger p-2 mt-0"
+                  role="alert">
+                  <div *ngIf="review.rating.errors.required">Please add ratings in percentage</div>
+                </div>
+              </div>
+
+              <!--select Review Status-->
+              <!-- formControlName="reviewStatus" -->
+              <div class="mb-3">
+                <label For="reviewStatus">Select Review</label>
+                <select class="form-control custom-Select-2 new-select" id="reviewStatus" formControlName="reviewStatus"
+                  [ngClass]="{ 'is-invalid': submitted && review.reviewStatus.errors }">
+                  <option [value]=9>
+                    Accept
+                  </option>
+                  <option [value]=10>
+                    Reject
+                  </option>
+                  <option [value]=11>
+                    On hold
+                  </option>
+                </select>
+                <div *ngIf="submitted && review.reviewStatus.errors"
+                  class="invalid-feedback alert alert-danger p-2 mt-0" role="alert">
+                  <div *ngIf="review.reviewStatus.errors.required">Please select review</div>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+            </ng-container>
+          </form>
+
+        </div>
+      </ng-template>
+
+      <!-- Delete User confirm modal start -->
+      <ng-template #deleteEmployee>
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Employee</h5>
+          <button type="button" class="close SaveCardTemplateClose  EmployeeDeleteClose" aria-label="Close"
+            (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this employee?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning token-purchase text-white"
+            (click)="confirmDeleteEmployee()">Yes</button>
+          <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+        </div>
+      </ng-template>
+      <!-- Delete User confirm modal end -->
+
+      <!-- Accept Review modal start -->
+      <ng-template #acceptReview>
+        <div class="modal-header">
+          <h5 class="modal-title">Accept Review</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure want to Accept Review?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning token-purchase text-white" (click)="confirmAccept()">Yes</button>
+          <button type="button" class="btn btn-primary" (click)="declineAccept()">No</button>
+        </div>
+      </ng-template>
+      <!-- Accept Review modal end -->
+
+      <!-- Reject Review modal start -->
+      <ng-template #rejectReview>
+        <div class="modal-header">
+          <h5 class="modal-title">Reject Review</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure want to Reject Review?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning token-purchase text-white" (click)="confirmReject()">Yes</button>
+          <button type="button" class="btn btn-primary" (click)="declineReject()">No</button>
+        </div>
+      </ng-template>
+      <!-- Reject Review modal end -->
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

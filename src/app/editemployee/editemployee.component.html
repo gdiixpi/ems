@@ -1,0 +1,658 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+  <app-sidebar></app-sidebar>
+  <div class="main-panel w-100">
+    <div class="content-wrapper">
+      <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle"
+        [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+      <!-- Custom Code Start -->
+      <div class="row grid-margin">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body table-background">
+              <div class="content">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="card card-user addEmployeeMainDiv">
+                      <div class="image">
+                        <img src="assets/images/damir-bosnjak.jpg" alt="..." class="img-fluid">
+                      </div>
+                      <div class="card-body">
+                        <ng-container *ngIf="EditUserData">
+                          <div class="author">
+                            <img class="avatar border-gray img-fluid" onError="this.src='assets/images/faces/face1.jpg'"
+                              src="{{ EditUserData.new_profile_pic }}" alt="...">
+                            <h5 class="title">{{ EditUserData.first_name }} {{ EditUserData.last_name }}</h5>
+                            <p class="description">
+                              {{ EditUserData.role_name }}
+                            </p>
+                          </div>
+                          <p class="description text-center mb-0">
+                            <i class="mdi mdi-map-marker-radius ProfileSMDIIcons"></i> {{ EditUserData.address }}
+                          </p>
+                        </ng-container>
+                      </div>
+                      <div class="card-footer">
+                        <hr>
+                        <div class="button-container">
+                          <div class="row">
+                            <div class="text-center"
+                              [ngClass]="{'col-lg-12 col-md-12 col-12' : EditUserData.role_id == 1, 'col-lg-6 col-md-6 col-6 pr-1' : EditUserData.role_id !== 1}"
+                              *ngIf="EditUserData">
+                              <h5>TBS{{ EditUserData.user_id }}
+                                <br>
+                                <small class="General-Small">Employee ID</small>
+                              </h5>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-6 text-center" *ngIf="EditUserData.role_id !== 1">
+                              <h5>{{ EditUserData.leaves }}
+                                <br>
+                                <small class="General-Small">Leave Balance</small>
+                              </h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div *ngIf="loginUserRoleId === 1" class="card card-user addEmployeeMainDiv mt-3">
+                      <div class="card-body">
+                        <h4 class="title">Send Salary Slip</h4>
+                        <div class="row">
+                          <div class="col-md-12 pr-1">
+                            <div class="form-group">
+
+                              <select class="form-control custom-Select" id="generateSalarySlip"
+                                (change)="changeSalarySlipValues($event.target.value)" name="generateSalarySlip"
+                                required ngModel="{{ SalarySlipValue }}">
+                                <option [value]="1" selected>Last month</option>
+                                <option [value]="3">Last 3 months</option>
+                                <option [value]="6">Last 6 months</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-12 pr-1">
+                            <div class="form-group">
+                              <a href="javascript:;" (click)="sendSalarySlip(SalarySlipValue)"
+                                class="btn btn-primary btn-sm">
+                                Send
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div *ngIf="loginUserRoleId === 1"
+                      class="card card-user add_updateSalaryMainDiv addEmployeeMainDiv">
+                      <div>
+                        <h5 class="title"><a href="javascript:;"
+                            (click)="AddUpdateEmployeeSalaryModal(AddUpdateEmployeeSalary)">Add/Update Salary</a></h5>
+                      </div>
+                    </div>
+                    <!-- Add Update Employee Salary Modal Start-->
+                    <ng-template #AddUpdateEmployeeSalary>
+                      <div class="modal-header mb-4">
+                        <h5 class="modal-title">Employee Salary</h5>
+                        <button type="button" [disabled]="isViewSalary" (click)="ViewSalaryInfo()"
+                          class="btn btn-primary pull-right" style="margin-left: 55px;">
+                          View Salary
+                        </button>
+                        <button type="button" class="close pull-right AddUpdateEmployeeSalaryClose" aria-label="Close"
+                          (click)="modalRef.hide()">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body" style="width: 98%; margin-top: -40px;">
+                        <form autocomplete="off" class="forms-sample" #editEmployeeSalary="ngForm"
+                          (ngSubmit)="onEditEmployeeSalary(editEmployeeSalary.value)" id="editEmployeeSalaryForm">
+                          <fieldset [disabled]="isDisabled">
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="basic_pay" class="col-form-label">Basic Salary <span
+                                    class="text-danger">*</span></label>
+                                <input numeric decimals="2" [type]="inputType" name="basic_pay" id="basic_pay"
+                                  class="form-control" placeholder="Basic salary" #basic_pay="ngModel" required
+                                  ngModel="{{ EditUserData.basic_pay }}">
+                                <div *ngIf="basic_pay.invalid && (basic_pay.dirty || basic_pay.touched)"
+                                  class="alert-danger">
+                                  <div *ngIf="basic_pay.errors.required" class="alert alert-danger p-2" role="alert">
+                                    Please enter basic salary.</div>
+                                </div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="house_rent_allowence" class="col-form-label">House Rent Allowence <span
+                                    class="text-danger">*</span></label>
+                                <input numeric decimals="2" [type]="inputType" name="house_rent_allowence"
+                                  id="house_rent_allowence" class="form-control" placeholder="House Rent Allowence"
+                                  #house_rent_allowence="ngModel" required
+                                  ngModel="{{ EditUserData.house_rent_allowence }}" />
+                                <div
+                                  *ngIf="house_rent_allowence.invalid && (house_rent_allowence.dirty || house_rent_allowence.touched)"
+                                  class="alert-danger">
+                                  <div *ngIf="house_rent_allowence.errors.required" class="alert alert-danger p-2"
+                                    role="alert">Please enter house rent allowence.</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="conveyance_allowence" class="col-form-label">Conveyance Allowence <span
+                                    class="text-danger">*</span></label>
+                                <input numeric decimals="2" [type]="inputType" name="conveyance_allowence"
+                                  id="conveyance_allowence" class="form-control" placeholder="Conveyance Allowence"
+                                  #conveyance_allowence="ngModel" required
+                                  ngModel="{{ EditUserData.conveyance_allowence }}" />
+                                <div
+                                  *ngIf="conveyance_allowence.invalid && (conveyance_allowence.dirty || conveyance_allowence.touched)"
+                                  class="alert-danger">
+                                  <div *ngIf="conveyance_allowence.errors.required" class="alert alert-danger p-2"
+                                    role="alert">Please enter conveyance allowence.</div>
+                                </div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="medical_allowence" class="col-form-label">Medical Allowence <span
+                                    class="text-danger">*</span></label>
+                                <input numeric decimals="2" [type]="inputType" name="medical_allowence"
+                                  id="medical_allowence" class="form-control" placeholder="Medical Allowence"
+                                  #medical_allowence="ngModel" required
+                                  ngModel="{{ EditUserData.medical_allowence }}" />
+                                <div
+                                  *ngIf="medical_allowence.invalid && (medical_allowence.dirty || medical_allowence.touched)"
+                                  class="alert-danger">
+                                  <div *ngIf="medical_allowence.errors.required" class="alert alert-danger p-2"
+                                    role="alert">Please enter medical allowence.</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="other_allowence" class="col-form-label">Other Allowence <span
+                                    class="text-danger">*</span></label>
+                                <input numeric decimals="2" [type]="inputType" name="other_allowence"
+                                  id="other_allowence" class="form-control" placeholder="Other Allowence"
+                                  #other_allowence="ngModel" required ngModel="{{ EditUserData.other_allowence }}" />
+                                <div
+                                  *ngIf="other_allowence.invalid && (other_allowence.dirty || other_allowence.touched)"
+                                  class="alert-danger">
+                                  <div *ngIf="other_allowence.errors.required" class="alert alert-danger p-2"
+                                    role="alert">Please enter other allowence.</div>
+                                </div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="total_ctc" class="col-form-label">Total CTC <span
+                                    class="text-danger">*</span></label>
+                                <input numeric decimals="2" [type]="inputType" name="total_ctc" id="total_ctc"
+                                  class="form-control" placeholder="Total CTC" #total_ctc="ngModel" required
+                                  ngModel="{{ EditUserData.total_ctc }}" />
+                                <div *ngIf="total_ctc.invalid && (total_ctc.dirty || total_ctc.touched)"
+                                  class="alert-danger">
+                                  <div *ngIf="total_ctc.errors.required" class="alert alert-danger p-2" role="alert">
+                                    Please enter total CTC.</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="professional_tax" class="col-form-label">Professional Tax <span
+                                    class="text-danger">*</span></label>
+                                <input numeric decimals="2" [type]="inputType" name="professional_tax"
+                                  id="professional_tax" class="form-control" placeholder="Professional Tax"
+                                  #professional_tax="ngModel" required ngModel="{{ EditUserData.professional_tax }}" />
+                                <div
+                                  *ngIf="professional_tax.invalid && (professional_tax.dirty || professional_tax.touched)"
+                                  class="alert-danger">
+                                  <div *ngIf="professional_tax.errors.required" class="alert alert-danger p-2"
+                                    role="alert">Please enter professional tax.</div>
+                                </div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="income_tax" class="col-form-label">Income Tax <span
+                                    class="text-danger">*</span></label>
+                                <input numeric decimals="2" [type]="inputType" name="income_tax" id="income_tax"
+                                  class="form-control" placeholder="Income Tax" #income_tax="ngModel" required
+                                  ngModel="{{ EditUserData.income_tax }}" />
+                                <div *ngIf="income_tax.invalid && (income_tax.dirty || income_tax.touched)"
+                                  class="alert-danger">
+                                  <div *ngIf="income_tax.errors.required" class="alert alert-danger p-2" role="alert">
+                                    Please enter income tax.</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="provident_fund" class="col-form-label">Provident Fund <span
+                                    class="text-danger">*</span></label>
+                                <input numeric decimals="2" [type]="inputType" name="provident_fund" id="provident_fund"
+                                  class="form-control" placeholder="Provident Fund" #provident_fund="ngModel" required
+                                  ngModel="{{ EditUserData.provident_fund }}" />
+                                <div *ngIf="provident_fund.invalid && (provident_fund.dirty || provident_fund.touched)"
+                                  class="alert-danger">
+                                  <div *ngIf="provident_fund.errors.required" class="alert alert-danger p-2"
+                                    role="alert">Please enter provident fund.</div>
+                                </div>
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="emp_state_insurance" class="col-form-label">State Insurance <span
+                                    class="text-danger">*</span></label>
+                                <input numeric decimals="2" [type]="inputType" name="emp_state_insurance"
+                                  id="emp_state_insurance" class="form-control" placeholder="State Insurance"
+                                  #emp_state_insurance="ngModel" required
+                                  ngModel="{{ EditUserData.emp_state_insurance }}" />
+                                <div
+                                  *ngIf="emp_state_insurance.invalid && (emp_state_insurance.dirty || emp_state_insurance.touched)"
+                                  class="alert-danger">
+                                  <div *ngIf="emp_state_insurance.errors.required" class="alert alert-danger p-2"
+                                    role="alert">Please enter state insurance.</div>
+                                </div>
+                              </div>
+                            </div>
+                          </fieldset>
+                          <button type="submit" [disabled]="!editEmployeeSalary.form.valid || isDisabled"
+                            class="btn btn-warning token-purchase text-white mr-2">Save</button>
+                          <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Cancel</button>
+                        </form>
+                      </div>
+                    </ng-template>
+                    <!-- Add Update Employee Salary Modal End-->
+                  </div>
+                  <div class="col-md-8  mt-sm-0 mt-3">
+                    <div class="card addEmployeeMainDiv">
+                      <div class="card-header">
+                        <h5 class="title">Edit Employee</h5>
+                      </div>
+                      <div class="card-body">
+                        <form class="forms-sample" #editEmployee="ngForm"
+                          (ngSubmit)="onEditEmployee(editEmployee.value)" id="editEmployeeForm">
+                          <div class="row">
+                            <div class="col-md-4 pr-1">
+                              <div class="form-group">
+                                <label for="first_name">First Name <span class="text-danger">*</span></label>
+                                <ng-container *ngIf="EditUserData">
+                                  <input type="text" name="first_name" id="first_name" autocomplete="off"
+                                    class="form-control EMS-Form-Controal" placeholder="First Name *"
+                                    #first_name="ngModel" required ngModel="{{ EditUserData.first_name }}" />
+                                  <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)"
+                                    class="alert-danger">
+                                    <div *ngIf="first_name.errors.required" class="alert alert-danger p-2" role="alert">
+                                      Please enter first name.</div>
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                            <div class="col-md-4 pl-1 pr-1">
+                              <div class="form-group">
+                                <label for="last_name">Last Name <span class="text-danger">*</span></label>
+                                <ng-container *ngIf="EditUserData">
+                                  <input type="text" name="last_name" id="last_name" autocomplete="off"
+                                    class="form-control EMS-Form-Controal" placeholder="Last Name *"
+                                    #last_name="ngModel" required ngModel="{{ EditUserData.last_name }}" />
+                                  <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)"
+                                    class="alert-danger">
+                                    <div *ngIf="last_name.errors.required" class="alert alert-danger p-2" role="alert">
+                                      Please enter last name.</div>
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                            <div class="col-md-4 pl-1">
+                              <div class="form-group">
+                                <label for="dob">Birth Date <span class="text-danger">*</span></label>
+                                <ng-container *ngIf="EditUserData">
+                                  <input type="text" name="dob" autocomplete="off" placeholder="mm/dd/yyyy" id="dob"
+                                    class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig"
+                                    #dob="ngModel" ngModel="{{ EditUserData.dob }}" required />
+                                  <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="alert-danger">
+                                    <div *ngIf="dob.errors.required" class="alert alert-danger p-2" role="alert">Please
+                                      enter date of joining.</div>
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6 pr-1">
+                              <div class="form-group">
+                                <label for="email">Email Address <span class="text-danger">*</span></label>
+                                <ng-container *ngIf="EditUserData">
+                                  <input type="email" name="email" id="email" disabled
+                                    class="form-control EMS-Form-Controal" placeholder="Email *" #email="ngModel"
+                                    ngModel="{{ EditUserData.email }}" />
+                                </ng-container>
+                              </div>
+                            </div>
+                            <div class="col-md-6 pl-1">
+                              <div class="form-group">
+                                <label for="mobile_number">Mobile Number <span class="text-danger">*</span></label>
+                                <ng-container *ngIf="EditUserData">
+                                  <input type="number" name="mobile_number" id="mobile_number" min="0"
+                                    class="form-control EMS-Form-Controal" placeholder="Mobile Number *"
+                                    #mobile_number="ngModel" required ngModel ngModel="{{ EditUserData.mobile_number }}"
+                                    pattern="[0-9]{10}" />
+                                  <div *ngIf="mobile_number.invalid && (mobile_number.dirty || mobile_number.touched)"
+                                    class="alert-danger">
+                                    <div *ngIf="mobile_number.errors.required" class="alert alert-danger p-2"
+                                      role="alert">
+                                      Please enter mobile number.
+                                    </div>
+                                    <div *ngIf="mobile_number.errors.pattern" class="alert alert-danger p-2"
+                                      role="alert">
+                                      Enter 10 digits number only.
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div
+                              [ngClass]="{'col-lg-12 col-md-12 col-12' : EditUserData.role_id == 1, 'col-lg-6 col-md-6 col-6 pr-1' : EditUserData.role_id !== 1}">
+                              <div class="form-group">
+                                <label for="department">Employee Department <span class="text-danger">*</span></label>
+                                <ng-container *ngIf="EditUserData">
+                                  <select class="form-control custom-Select" id="department" name="department"
+                                    #department="ngModel" required ngModel="{{ EditUserData.department_id }}">
+                                    <option value="" selected>-- Select Department --</option>
+                                    <option *ngFor="let user_Department of uesrDepartment;"
+                                      value="{{ user_Department.id }}">{{ user_Department.dept_name }}
+                                    </option>
+                                  </select>
+                                </ng-container>
+                              </div>
+                            </div>
+                            <div class="col-md-6 pl-1" *ngIf="EditUserData.role_id !== 1">
+                              <div class="form-group">
+                                <label for="leaves">Leave Balance <span class="text-danger">*</span></label>
+                                <ng-container *ngIf="EditUserData">
+                                  <input type="number" name="leaves" id="leaves" min="0"
+                                    class="form-control EMS-Form-Controal" placeholder="Leave Balance *"
+                                    #leaves="ngModel" required ngModel="{{ EditUserData.leaves }}" />
+                                  <div *ngIf="leaves.invalid && (leaves.dirty || leaves.touched)" class="alert-danger">
+                                    <div *ngIf="leaves.errors.required" class="alert alert-danger p-2" role="alert">
+                                      Please enter leave balance.
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label for="address">Address</label>
+                                <ng-container *ngIf="EditUserData">
+                                  <textarea rows="4" cols="80" id="address" name="address" placeholder="Address"
+                                    class="form-control EMS-Form-Controal textarea" #address="ngModel" ngModel
+                                    ngModel="{{ EditUserData.address }}"></textarea>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4 pr-1">
+                              <div class="form-group">
+                                <label for="gender">Gender <span class="text-danger">*</span></label>
+                                <ng-container *ngIf="EditUserData">
+                                  <select class="form-control custom-Select" id="gender" name="gender" #gender="ngModel"
+                                    required ngModel="{{ EditUserData.gender }}">
+                                    <option selected value="">-- Select Gender --</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                  </select>
+                                </ng-container>
+                              </div>
+                            </div>
+                            <div class="col-md-4 px-1">
+                              <div class="form-group">
+                                <label for="user_role">User Role <span class="text-danger">*</span></label>
+                                <ng-container *ngIf="EditUserData">
+                                  <select class="form-control custom-Select" id="user_role" name="userrole"
+                                    #userrole="ngModel" required ngModel="{{ EditUserData.role_id }}">
+                                    <option value="" selected>-- Select Role --</option>
+                                    <option *ngFor="let user_Role of userRoles;" value="{{ user_Role.id }}">{{
+                                      user_Role.role_name }}
+                                    </option>
+                                  </select>
+                                </ng-container>
+                              </div>
+                            </div>
+                            <div class="col-md-4 pl-1">
+                              <div class="form-group">
+                                <label for="joining_date">Joining Date <span class="text-danger">*</span></label>
+                                <ng-container *ngIf="EditUserData">
+                                  <input type="text" name="joining_date" autocomplete="off" placeholder="mm/dd/yyyy"
+                                    id="joining_date" class="form-control EMS-Form-Controal" bsDatepicker
+                                    [bsConfig]="bsConfig" #joining_date="ngModel"
+                                    ngModel="{{ EditUserData.joining_date }}" required />
+                                  <div *ngIf="joining_date.invalid && (joining_date.dirty || joining_date.touched)"
+                                    class="alert-danger">
+                                    <div *ngIf="joining_date.errors.required" class="alert alert-danger p-2"
+                                      role="alert">Please enter date of joining.</div>
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4 pr-1">
+                              <div class="form-group">
+                                <label for="user_status">User Status <span class="text-danger">*</span></label>
+                                <ng-container *ngIf="EditUserData">
+                                  <select class="form-control custom-Select" id="user_status" name="user_status"
+                                    #user_status="ngModel" required ngModel="{{ EditUserData.user_status }}">
+                                    <option selected value="">-- Select User Status --</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                  </select>
+                                </ng-container>
+                              </div>
+                            </div>
+                            <ng-container *ngIf="EditUserData">
+                              <div class="col-md-4 px-1">
+                                <div class="form-group">
+                                  <label for="service_status">Service Status <span class="text-danger">*</span></label>
+                                  <select class="form-control custom-Select" id="service_status" name="service_status"
+                                    #service_status="ngModel" required ngModel="{{ EditUserData.service_status }}"
+                                    (change)="getServiceData($event)">
+                                    <option value="" selected>-- Select Service Status --</option>
+                                    <option *ngFor="let user_Service of userService;" value="{{ user_Service.id }}">{{
+                                      user_Service.name }}
+                                    </option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div *ngIf="service_status.value == '1'" class="col-md-4 pl-1">
+                                <div class="form-group">
+                                  <label for="probation_date">Probation Date</label>
+                                  <input type="text" name="probation_date" autocomplete="off" placeholder="mm/dd/yyyy"
+                                    id="probation_date" class="form-control EMS-Form-Controal" bsDatepicker
+                                    [bsConfig]="bsConfig" #probation_date="ngModel"
+                                    ngModel="{{ EditUserData.probation_date }}" required />
+                                  <div
+                                    *ngIf="probation_date.invalid && (probation_date.dirty || probation_date.touched)"
+                                    class="alert-danger">
+                                    <div *ngIf="probation_date.errors.required" class="alert alert-danger p-2"
+                                      role="alert">Please enter date of probation.</div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div *ngIf="service_status.value == '2'" class="col-md-4 pl-1">
+                                <div class="form-group">
+                                  <label for="confirmation_date">Confirmation Date</label>
+                                  <input type="text" name="confirmation_date" autocomplete="off"
+                                    placeholder="mm/dd/yyyy" id="confirmation_date"
+                                    class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig"
+                                    #confirmation_date="ngModel" required ngModel
+                                    ngModel="{{ EditUserData.confirmation_date }}" />
+                                  <div
+                                    *ngIf="confirmation_date.invalid && (confirmation_date.dirty || confirmation_date.touched)"
+                                    class="alert-danger">
+                                    <div *ngIf="confirmation_date.errors.required" class="alert alert-danger p-2"
+                                      role="alert">Please enter date of confirmation.</div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div *ngIf="service_status.value == '4'" class="col-md-4 pl-1">
+                                <div class="form-group">
+                                  <label for="noticeperiod_date">Notice period Date</label>
+                                  <input type="text" name="noticeperiod_date" autocomplete="off"
+                                    placeholder="mm/dd/yyyy" id="noticeperiod_date"
+                                    class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig"
+                                    #noticeperiod_date="ngModel" required ngModel
+                                    ngModel="{{ EditUserData.noticeperiod_date }}" />
+                                  <div
+                                    *ngIf="noticeperiod_date.invalid && (noticeperiod_date.dirty || noticeperiod_date.touched)"
+                                    class="alert-danger">
+                                    <div *ngIf="noticeperiod_date.errors.required" class="alert alert-danger p-2"
+                                      role="alert">Please enter date of notice period.</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4 pr-1">
+                              <div class="form-group">
+                                <label for="appraisal_date">Appraisal Date</label>
+                                <ng-container *ngIf="EditUserData">
+                                  <input type="text" name="appraisal_date" autocomplete="off" placeholder="mm/dd/yyyy"
+                                    id="appraisal_date" class="form-control EMS-Form-Controal" bsDatepicker
+                                    [bsConfig]="bsConfig" #appraisal_date="ngModel"
+                                    ngModel="{{ EditUserData.appraisal_date }}" />
+                                </ng-container>
+                              </div>
+                            </div>
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label class="mb-2 Bold-Title">Bank Details :</label>
+                                <div class="row">
+                                  <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                      <label for="transaction_type">Transaction Type</label>
+                                      <select class="form-control custom-Select" id="transaction_type"
+                                        name="transaction_type" #transaction_type="ngModel"
+                                        [(ngModel)]="transactionValue">
+                                        <option *ngFor="let tdata of transactionData;" value="{{ tdata.val }}">{{
+                                          tdata.name }}
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                      <label for="bank_email">Personal Email</label>
+                                      <ng-container *ngIf="EditUserData">
+                                        <input type="email" name="bank_email" id="bank_email"
+                                          class="form-control EMS-Form-Controal" placeholder="Personal Email"
+                                          #bank_email="ngModel" ngModel="{{ EditUserData.personal_email }}" />
+                                      </ng-container>
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                      <label for="account_number">Account Number</label>
+                                      <ng-container *ngIf="EditUserData">
+                                        <input type="text" name="account_number" autocomplete="off"
+                                          placeholder="Account Number" id="account_number"
+                                          class="form-control EMS-Form-Controal" #account_number="ngModel"
+                                          ngModel="{{EditUserData.account_number}}" />
+                                        <div
+                                          *ngIf="account_number.invalid && (account_number.dirty || account_number.touched)"
+                                          class="alert-danger">
+                                          <div *ngIf="account_number.errors.minlength" class="alert alert-danger p-2"
+                                            role="alert"> Please enter account number minlength 11 charcters</div>
+                                        </div>
+                                      </ng-container>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                      <label for="ifsc_code">IFSC Code</label>
+                                      <input type="text" name="ifsc_code" autocomplete="off" id="ifsc_code"
+                                        placeholder="IFSC Code" class="form-control EMS-Form-Controal"
+                                        #ifsc_code="ngModel" ngModel="{{EditUserData.ifsc_code}}" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                      <label for="beneficiary_name">Benificiary Name</label>
+                                      <ng-container *ngIf="EditUserData">
+                                        <input type="text" name="beneficiary_name" autocomplete="off"
+                                          placeholder="Benificiary Name" id="beneficiary_name"
+                                          class="form-control EMS-Form-Controal" #beneficiary_name="ngModel"
+                                          ngModel="{{EditUserData.beneficiary_name}}" />
+                                        <!-- <div
+                                          *ngIf="beneficiary_name.invalid && (beneficiary_name.dirty || beneficiary_name.touched)"
+                                          class="alert-danger">
+                                          <div *ngIf="beneficiary_name.errors.minlength" class="alert alert-danger p-2"
+                                            role="alert"> Please enter account number minlength 11 charcters</div>
+                                        </div> -->
+                                      </ng-container>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                      <label for="bank_name">Bank Name</label>
+                                      <input type="text" name="bank_name" autocomplete="off" id="bank_name"
+                                        placeholder="Bank Name" class="form-control EMS-Form-Controal"
+                                        #bank_name="ngModel" ngModel="{{EditUserData.bank_name}}" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                      <label for="pf_number">PF Number</label>
+                                      <ng-container *ngIf="EditUserData">
+                                        <input type="text" name="pf_number" autocomplete="off" placeholder="PF Number"
+                                          id="pf_number" class="form-control EMS-Form-Controal" #pf_number="ngModel"
+                                          ngModel="{{EditUserData.pf}}" />
+                                        <div *ngIf="pf_number.invalid && (pf_number.dirty || pf_number.touched)"
+                                          class="alert-danger">
+                                          <div *ngIf="pf_number.errors.minlength" class="alert alert-danger p-2"
+                                            role="alert"> Please enter PF number minlength 11 charcters</div>
+                                        </div>
+                                      </ng-container>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6 pr-1">
+                                    <div class="form-group">
+                                      <label for="esic_code">ESIC Code</label>
+                                      <input type="text" name="esic_code" autocomplete="off" id="esic_code"
+                                        placeholder="ESIC Code" class="form-control EMS-Form-Controal"
+                                        #esic_code="ngModel" ngModel="{{EditUserData.esic}}" />
+
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 text-center">
+                              <button type="submit" class="btn btn-success mr-2"
+                                [disabled]="!editEmployee.form.valid">Save</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Code End -->
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

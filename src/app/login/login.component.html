@@ -1,0 +1,60 @@
+<div class="container-fluid page-body-wrapper h-100">
+  <div class="main-panel w-100 pl-0">
+    <div class="content-wrapper">
+      <div class="container-fluid">
+        <div class="HR-Management-login">
+          <div class="mb-4">
+            <a href=""><img src="assets/images/ems_new_logo.svg" class="img-fluid mx-auto d-block"></a>
+          </div>
+          <div class="row justify-content-center mx-0">
+            <div class="col-md-6 col-lg-4 col-10 d-flex align-items-stretch grid-margin">
+              <div class="row flex-grow">
+                <div class="col-12 grid-margin">
+                  <div class="card border-custom-main">
+                    <div class="card-body border-custom-sub">
+                      <h4 class="card-title">Login</h4>
+                      <!-- <p class="card-description">
+                                                Basic form layout
+                                            </p> -->
+                      <form class="forms-sample" #f="ngForm" (ngSubmit)="onSubmit(f.value)" id="frmLogin">
+                        <div class="form-group">
+                          <label for="email">Email address</label>
+                          <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"
+                            #email="ngModel" required ngModel />
+                          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert-danger">
+                            <div *ngIf="email.errors.required" class="alert alert-danger p-2" role="alert">Please enter
+                              valid Email Address.</div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPassword1">Password</label>
+                          <div class="input-group customInput">
+                            <input [type]="passwordNew" class="form-control" id="password" name="password"
+                              placeholder="Enter password" #password="ngModel" required ngModel />
+                            <div class="input-group-append">
+                              <span class="input-group-text cursorPointer" (click)="hideShowPassNew()">
+                                <i *ngIf="!show" class="mdi mdi-eye" aria-hidden="true"></i>
+                                <i *ngIf="show" class="mdi mdi-eye-off font18" aria-hidden="true"></i>
+                              </span>
+                            </div>
+                          </div>
+                          <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert-danger">
+                            <div *ngIf="password.errors.required" class="alert alert-danger p-2" role="alert">Please
+                              enter password.</div>
+                          </div>
+                        </div>
+                        <button type="submit" [disabled]="!f.form.valid" class="btn signInBtn mr-2">SIGN IN</button>
+                        <a routerLink="/forgotpassword" class="general-custom-link">Forgot Password</a>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

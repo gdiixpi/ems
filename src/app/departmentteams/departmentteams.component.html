@@ -1,0 +1,47 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body table-background">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4" *ngFor="let project_viewdepartment of viewdepartment">
+                                    <div class="card project-detail-main">
+                                        <div class="body project-detail-body-two text-left pro-img">
+                                            <div class="DepartmentImage">
+                                                <img src="{{ project_viewdepartment.department_image }}" class="img-fluid animated bounce" />
+                                            </div>
+                                            <div class="project-team">
+                                                <h6 class="project-title-description-main mt-3 mb-2">{{ project_viewdepartment.dept_name }}</h6>
+                                                <div class="project_progress">
+                                                    <div class="progress progress-xs">
+                                                        <div class="progress-bar l-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 87%;">
+                                                            <span class="sr-only">60% Complete</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h6 class="project-title-description mt-3 mb-2">Team:</h6>
+                                                <ul class="list-unstyled team-info mb-0">
+                                                    <ng-container *ngFor="let project_viewemployee of viewemployee">
+                                                        <li *ngIf="project_viewdepartment.id == project_viewemployee.dept_id && project_viewemployee.user_status == 1 && project_viewemployee.role_id != 1" placement="top" ngbTooltip="{{project_viewemployee.first_name}} {{project_viewemployee.last_name}}">
+                                                            <img alt="Team Member" class="img-fluid" src="{{ project_viewemployee.new_profile_pic }}">
+                                                        </li>
+                                                    </ng-container>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

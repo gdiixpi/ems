@@ -1,0 +1,215 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+  <app-sidebar></app-sidebar>
+  <div class="main-panel w-100">
+    <div class="content-wrapper">
+      <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath">
+      </app-breadcrumbs>
+      <div class="row">
+        <div class="col-md-12 col-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body table-background">
+              <div class="content">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card addEmployeeMainDiv">
+                      <!-- <div class="card-header">
+                                                <h5 class="title" *ngIf="!task_id">Add Timesheet</h5>
+                                                <h5 class="title" *ngIf="task_id">Edit Timesheet</h5>
+                                            </div> -->
+                      <div class="card-body">
+                        <div class="showNotificationMsg" *ngIf="!showErrorMsg">
+                          <p class="mb-0">Timesheet entry beyond 7 days is not advisable and soon system will restrict
+                            filling timesheet days prior. Ideally it's advise to fill daily for most accurate data /
+                            correctness, keeping it pending beyond
+                            a week will not be allowed.</p>
+                        </div>
+                        <form [formGroup]="addreportForm" class="forms-sample" (ngSubmit)="onAddReport()">
+                          <div class="row">
+                            <div class="col-md-6 col-12">
+                              <div class="form-group">
+                                <label for="report_date">Timesheet Date <span class="text-danger ">*</span></label>
+                                <input formControlName="report_date" type="text" [value]="todayDate" autocomplete="off"
+                                  placeholder="mm/dd/yyyy" class="form-control EMS-Form-Controal" bsDatepicker
+                                  [bsConfig]="bsConfig" [maxDate]="maxDatestartDate" [(ngModel)]="Task_EditDate"
+                                  (bsValueChange)="onDayChange($event)" />
+                                <div class="alert alert-danger p-2" role="alert"
+                                  *ngIf='addreportForm.get("report_date").invalid && addreportForm.get("report_date").touched'>
+                                  Pleas select timesheet date</div>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-12">
+                              <div class="form-group">
+                                <label for="report_day_type">Timesheet Day Type <span
+                                    class="text-danger ">*</span></label>
+                                <select class="form-control custom-Select" formControlName="report_day_type"
+                                  id="report_day_type" [(ngModel)]="Task_Edit.day_type">
+                                  <option value="">-- Select Timesheet Day Type --</option>
+                                  <option value="1">Half Day</option>
+                                  <option value="2">Full Day</option>
+                                </select>
+                                <!-- <div class="alert alert-danger p-2" role="alert" *ngIf='addreportForm.get("report_day_type").invalid && addreportForm.get("report_day_type").touched'>
+                                                                    Pleas select timesheet day type</div> -->
+                              </div>
+                            </div>
+                            <!-- <div class="col-md-4 col-12">
+                                                            <div class="form-group">
+                                                                <label for="user_task_title">User Task Title <span class="text-danger">*</span></label>
+                                                                <ng-multiselect-dropdown [placeholder]="'--Select User Task--'" [(ngModel)]="userTaskId" formControlName="user_task_title" [settings]="dropdownSettings" [data]="userTaskDetails" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                                                                </ng-multiselect-dropdown>
+                                                                <div class="alert alert-danger p-2" role="alert" *ngIf='addreportForm.get("user_task_title").invalid && addreportForm.get("user_task_title").touched'>
+                                                                    Pleas select user task title
+                                                                </div>
+                                                            </div>
+                                                        </div> -->
+                          </div>
+
+                          <!-- Code for dynamic form start -->
+                          <div formArrayName="itemRows">
+                            <div *ngFor="let itemrow of addreportForm.controls.itemRows['controls']; let i=index"
+                              [formGroupName]="i">
+                              <div class="clone">
+                                <div class="row">
+                                  <div class="col-md-3 col-12 ">
+                                    <div class="form-group">
+                                      <label for="project_id">Project Name<span class="text-danger">*</span></label>
+                                      <select class="form-control custom-Select" formControlName="project_id"
+                                        (change)="onChangeProjectName($event.target.value,'changeN')">
+                                        <option value="">-- Select
+                                          Project --</option>
+                                        <ng-container *ngFor="let user_Projects of viewprojects;">
+                                          <option *ngIf="user_Projects.status == 0" value="{{ user_Projects.id }}">
+                                            {{ user_Projects.project_name }}
+                                          </option>
+                                        </ng-container>
+                                      </select>
+                                      <div class="alert alert-danger p-2" role="alert"
+                                        *ngIf='itemrow.get("project_id").invalid && itemrow.get("project_id").touched'>
+                                        Pleas select project name</div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                      <label for="assign_task_id">Task Name<span class="text-danger">*</span></label>
+
+                                      <select class="form-control custom-Select" formControlName="assign_task_id">
+                                        <option value="">-- Select Task Name--</option>
+                                        <ng-container *ngFor="let tasknamelist of mainArray;let j = index">
+                                          <!-- <ng-container *ngFor="let taskname of tasknamelist"> -->
+                                          <!-- <ng-container *ngIf="addreportForm.controls['itemRows'].controls[i].controls.project_id.value == taskname.project_id"> -->
+                                          <option
+                                            *ngIf="addreportForm.controls['itemRows'].controls[i].controls.project_id.value == tasknamelist.project_id"
+                                            value="{{tasknamelist.id}}">
+                                            {{ tasknamelist.task_name }}
+                                          </option>
+                                          <!-- </ng-container> -->
+                                          <!-- </ng-container> -->
+                                        </ng-container>
+                                      </select>
+                                      <div class="alert alert-danger p-2" role="alert"
+                                        *ngIf='itemrow.get("assign_task_id").invalid && itemrow.get("assign_task_id").touched'>
+                                        Pleas select Task name</div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-2 col-12 ">
+                                    <div class="form-group">
+                                      <label for="task_title">Task Type <span class="text-danger">*</span></label>
+                                      <select class="form-control custom-Select" formControlName="task_title">
+                                        <option value="">-- Select Task
+                                          Type --</option>
+                                        <option *ngFor="let user_Titles of viewtitles;" value="{{ user_Titles.id }}">
+                                          {{ user_Titles.name }}</option>
+                                      </select>
+                                      <div class="alert alert-danger p-2" role="alert"
+                                        *ngIf='itemrow.get("task_title").invalid && itemrow.get("task_title").touched'>
+                                        Pleas select task type</div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-2 col-12 ">
+                                    <div class="form-group">
+                                      <label for="working_hours">Working
+                                        Hours</label>
+                                      <select class="form-control custom-Select" formControlName="working_hours">
+                                        <option value="0" selected>0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-2 col-12 ">
+                                    <div class="form-group">
+                                      <label for="working_minutes">Working
+                                        Minutes</label>
+                                      <select class="form-control custom-Select" formControlName="working_minutes">
+                                        <option value="0" selected>0</option>
+                                        <option value="15">15</option>
+                                        <option value="30">30</option>
+                                        <option value="45">45</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <!-- <div class="col-md-4 col-12 ">
+                                                                        <div class="form-group">
+                                                                            <label for="hours">Working Hours <span class="text-danger">*</span></label>
+                                                                            <input type="text" formControlName="hours" placeholder="Working Hours *" class="form-control EMS-Form-Controal" />
+                                                                            <div class="alert alert-danger p-2" role="alert" *ngIf='itemrow.get("hours").invalid && itemrow.get("hours").touched'>Pleas enter workin hours</div>
+                                                                        </div>
+                                                                    </div> -->
+                                </div>
+                                <div class="row ">
+                                  <div class="col-md-12 ">
+                                    <div class="form-group mb-0">
+                                      <label for="details">Task Description</label>
+                                      <!-- <textarea rows="4" cols="80" id="details" formControlName="details" name="details" placeholder="Task Description" class="form-control EMS-Form-Controal textarea"></textarea> -->
+                                      <ck-editor id="details" [config]="config" name="details" formControlName="details"
+                                        skin="moono-lisa" language="en" [fullPage]="false"></ck-editor>
+                                      <div class="alert alert-danger p-2" role="alert"
+                                        *ngIf='itemrow.get("details").invalid && itemrow.get("details").touched'>
+                                        Pleas enter task description</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <button *ngIf="addreportForm.controls.itemRows.controls.length > 1" (click)="deleteRow(i)"
+                                class="btn btn-danger mb-3">Delete</button>
+                            </div>
+                          </div>
+
+                          <button type="button" (click)="addNewRow()" class="btn btn-primary">Add new</button><br>
+                          <!-- Code for dynamic form end -->
+
+                          <div class="row justify-content-center ">
+                            <div class="col-md-2 col-12 text-center ">
+                              <button type="submit " class="btn btn-success" (click)="statusVal(1)"
+                                [disabled]="!addreportForm.valid">Publish</button>
+                            </div>
+                            <div class="col-md-2 col-12 text-center ">
+                              <button type="submit " class="btn btn-warning" (click)="statusVal(0)"
+                                [disabled]="!addreportForm.valid">Draft</button>
+                            </div>
+                          </div>
+                        </form>
+                        <!-- <pre>{{addreportForm.value | json}}</pre> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

@@ -1,0 +1,377 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath">
+            </app-breadcrumbs>
+            <!-- Custom Code Start -->
+            <div class="row grid-margin">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body table-background">
+                            <div class="content">
+                                <form class="forms-sample" #editEmployee="ngForm" (ngSubmit)="onEditEmployee(editEmployee.value)" id="editEmployeeForm">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="card card-user addEmployeeMainDiv">
+                                                <div class="image">
+                                                    <img src="assets/images/damir-bosnjak.jpg" alt="..." class="img-fluid">
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="author">
+                                                        <div class="author-propoc">
+                                                            <div class="text-center propic">
+                                                                <span class="upload_propic">
+                                                                    <i class="fa fa-camera set_font"
+                                                                        (click)="FileOpen()" aria-hidden="true"></i>
+                                                                    <input id="file-input" class="file-upload"
+                                                                        type="file" (change)="readURL($event)" />
+                                                                </span>
+                                                            </div>
+                                                            <img class="avatar border-gray img-fluid" id="ProPic" src="{{ new_profile_pic }}" alt="...">
+                                                        </div>
+                                                        <ng-container *ngIf="uesrLoginData">
+                                                            <h5 class="title">{{ uesrLoginData.first_name }} {{ uesrLoginData.last_name }}</h5>
+                                                            <p class="description">
+                                                                {{ uesrLoginData.role_name }}
+                                                            </p>
+                                                        </ng-container>
+                                                    </div>
+                                                    <p class="description text-center mb-0">
+                                                        <ng-container *ngIf="uesrLoginData">
+                                                            <i class="mdi mdi-map-marker-radius ProfileSMDIIcons"></i> {{ uesrLoginData.address }}
+                                                        </ng-container>
+                                                    </p>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <hr>
+                                                    <div class="button-container">
+                                                        <div class="row">
+                                                            <ng-container *ngIf="uesrLoginData">
+                                                                <div class="text-center" [ngClass]="{'col-lg-12 col-md-12 col-12' : uesrLoginData.role_id == 1, 'col-lg-6 col-md-6 col-6' : uesrLoginData.role_id !== 1}">
+                                                                    <h5>TBS{{ uesrLoginData.user_id }}
+                                                                        <br>
+                                                                        <small class="General-Small">Employee ID</small>
+                                                                    </h5>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-6 text-center" *ngIf="uesrLoginData.role_id !== 1">
+                                                                    <h5>{{ uesrLoginData.leaves }}
+                                                                        <br>
+                                                                        <small class="General-Small">Leave
+                                                                            Balance</small>
+                                                                    </h5>
+                                                                </div>
+                                                            </ng-container>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card card-user addEmployeeMainDiv mt-3">
+                                                <div class="card-body">
+                                                    <h4 class="title">Send Salary Slip</h4>
+                                                    <div class="row">
+                                                        <div class="col-md-12 pr-1">
+                                                            <div class="form-group">
+                                                                <select class="form-control custom-Select" id="generateSalarySlip" (change)="changeSalarySlipValues($event.target.value)" name="generateSalarySlip" required ngModel="{{ SalarySlipValue }}">
+                                                                    <option [value]="1" selected>Last month</option>
+                                                                    <option [value]="3">Last 3 months</option>
+                                                                    <option [value]="6">Last 6 months</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 pr-1">
+                                                            <div class="form-group">
+                                                                <a href="javascript:;" (click)="sendSalarySlip(SalarySlipValue)" class="btn btn-primary btn-sm">
+                                                                    Send
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 mt-sm-0 mt-3">
+                                            <div class="card addEmployeeMainDiv">
+                                                <!-- <div class="card-header">
+                                                    <h5 class="title">Edit Profile</h5>
+                                                </div> -->
+                                                <div class="card-body">
+                                                    <!-- <form class="forms-sample" #editEmployee="ngForm" (ngSubmit)="onEditEmployee(editEmployee.value)" id="editEmployeeForm"> -->
+                                                    <div class="row">
+                                                        <div class="col-md-4 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="first_name">First Name <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <input type="text" name="first_name" id="first_name" class="form-control EMS-Form-Controal" placeholder="First Name *" #first_name="ngModel" required ngModel="{{ uesrLoginData.first_name }}" />
+                                                                    <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)" class="alert-danger">
+                                                                        <div *ngIf="first_name.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                            Please enter first name.</div>
+                                                                    </div>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <input type="hidden" id="hidden_val" name="profile_pic" />
+                                                        </div>
+                                                        <div class="col-md-4 pl-1 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="last_name">Last Name <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <input type="text" name="last_name" id="last_name" class="form-control EMS-Form-Controal" placeholder="Last Name *" #last_name="ngModel" required ngModel="{{ uesrLoginData.last_name }}" />
+                                                                    <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)" class="alert-danger">
+                                                                        <div *ngIf="last_name.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                            Please enter last name.</div>
+                                                                    </div>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 pl-1">
+                                                            <div class="form-group">
+                                                                <label for="dob">Birth Date <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <input type="text" name="dob" autocomplete="off" disabled placeholder="mm/dd/yyyy" id="dob" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #dob="ngModel" ngModel="{{ uesrLoginData.dob }}" required />
+                                                                    <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="alert-danger">
+                                                                        <div *ngIf="dob.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                            Please enter date of joining.</div>
+                                                                    </div>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="email">Email Address <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <input type="email" name="email" id="email" disabled class="form-control EMS-Form-Controal" placeholder="Email *" #email="ngModel" ngModel="{{ uesrLoginData.email }}" />
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 pl-1">
+                                                            <div class="form-group">
+                                                                <label for="mobile_number">Mobile Number <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <input type="number" name="mobile_number" id="mobile_number" min="0" class="form-control EMS-Form-Controal" placeholder="Mobile Number *" #mobile_number="ngModel" required ngModel="{{ uesrLoginData.mobile_number }}" pattern="[0-9]{10}" />
+                                                                    <div *ngIf="mobile_number.invalid && (mobile_number.dirty || mobile_number.touched)" class="alert-danger">
+                                                                        <div *ngIf="mobile_number.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                            Please enter mobile number.
+                                                                        </div>
+                                                                        <div *ngIf="mobile_number.errors.pattern" class="alert alert-danger p-2" role="alert">
+                                                                            Enter 10 digits number only.
+                                                                        </div>
+                                                                    </div>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" *ngIf="uesrLoginData">
+                                                        <div [ngClass]="{'col-lg-12 col-md-12 col-12' : uesrLoginData.role_id == 1, 'col-lg-6 col-md-6 col-6 pr-1' : uesrLoginData.role_id !== 1}">
+                                                            <div class="form-group">
+                                                                <label for="department">Employee Department <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <select class="form-control custom-Select" disabled id="department" name="department" #department="ngModel" ngModel="{{ uesrLoginData.dept_id }}">
+                                                                        <option value="" selected>-- Select Department
+                                                                            --</option>
+                                                                        <option
+                                                                            *ngFor="let user_Department of uesrDepartment;"
+                                                                            value="{{ user_Department.id }}">
+                                                                            {{ user_Department.dept_name }}
+                                                                        </option>
+                                                                    </select>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 pl-1" *ngIf="uesrLoginData.role_id !== 1">
+                                                            <div class="form-group">
+                                                                <label for="leaves">Leave Balance <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <input type="number" name="leaves" id="leaves" disabled min="0" class="form-control EMS-Form-Controal" placeholder="Leave Balance *" #leaves="ngModel" ngModel="{{ uesrLoginData.leaves }}" />
+                                                                    <!-- <div *ngIf="leaves.invalid && (leaves.dirty || leaves.touched)" class="alert-danger">
+                                                                    <div *ngIf="leaves.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                        Please enter leave balance.
+                                                                    </div>
+                                                                </div> -->
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="address">Address <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <textarea rows="4" cols="80" id="address" name="address" placeholder="Address" class="form-control EMS-Form-Controal textarea" #address="ngModel" required ngModel="{{ uesrLoginData.address }}"></textarea>
+                                                                    <div *ngIf="address.invalid && (address.dirty || address.touched)" class="alert-danger">
+                                                                        <div *ngIf="address.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                            Please enter address.
+                                                                        </div>
+                                                                    </div>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="gender">Gender <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <select class="form-control custom-Select" disabled id="gender" name="gender" #gender="ngModel" required ngModel="{{ uesrLoginData.gender }}">
+                                                                        <option selected value="">-- Select Gender --
+                                                                        </option>
+                                                                        <option value="Male">Male</option>
+                                                                        <option value="Female">Female</option>
+                                                                    </select>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 px-1">
+                                                            <div class="form-group">
+                                                                <label for="user_role">User Role <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <select class="form-control custom-Select" disabled id="user_role" name="userrole" #userrole="ngModel" ngModel="{{ uesrLoginData.role_id }}">
+                                                                        <option value="" selected>-- Select Role --
+                                                                        </option>
+                                                                        <option *ngFor="let user_Role of userRoles;"
+                                                                            value="{{ user_Role.id }}">
+                                                                            {{ user_Role.role_name }}
+                                                                        </option>
+                                                                    </select>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 pl-1">
+                                                            <div class="form-group">
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <label for="joining_date">Joining Date <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text" name="joining_date" disabled autocomplete="off" placeholder="mm/dd/yyyy" id="joining_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #joining_date="ngModel" ngModel="{{ uesrLoginData.joining_date }}"
+                                                                    />
+                                                                    <!-- <div *ngIf="joining_date.invalid && (joining_date.dirty || joining_date.touched)" class="alert-danger">
+                                                                    <div *ngIf="joining_date.errors.required" class="alert alert-danger p-2" role="alert">Please enter date of joining.</div>
+                                                                </div> -->
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4 pr-1">
+                                                            <div class="form-group">
+                                                                <label for="user_status">User Status <span
+                                                                        class="text-danger">*</span></label>
+                                                                <ng-container *ngIf="uesrLoginData">
+                                                                    <select class="form-control custom-Select" id="user_status" disabled name="user_status" #user_status="ngModel" ngModel="{{ uesrLoginData.user_status }}">
+                                                                        <option selected value="">-- Select User Status
+                                                                            --</option>
+                                                                        <option value="1">Active</option>
+                                                                        <option value="0">Inactive</option>
+                                                                    </select>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                        <ng-container *ngIf="uesrLoginData">
+                                                            <div class="col-md-4 px-1">
+                                                                <div class="form-group">
+                                                                    <label for="service_status">Service Status <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <select class="form-control custom-Select" id="service_status" disabled name="service_status" #service_status="ngModel" ngModel="{{ uesrLoginData.service_status }}">
+                                                                        <option value="" selected>-- Select Service
+                                                                            Status --</option>
+                                                                        <option
+                                                                            *ngFor="let user_Service of userService;"
+                                                                            value="{{ user_Service.id }}">
+                                                                            {{ user_Service.name }}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngIf="service_status.value == '1'" class="col-md-4 pl-1">
+                                                                <div class="form-group">
+                                                                    <label for="probation_date">Probation Date</label>
+                                                                    <input type="text" name="probation_date" autocomplete="off" placeholder="mm/dd/yyyy" disabled id="probation_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #probation_date="ngModel" ngModel="{{ uesrLoginData.probation_date }}"
+                                                                    />
+                                                                    <div *ngIf="probation_date.invalid && (probation_date.dirty || probation_date.touched)" class="alert-danger">
+                                                                        <div *ngIf="probation_date.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                            Please enter date of probation.</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngIf="service_status.value == '2'" class="col-md-4 pl-1">
+                                                                <div class="form-group">
+                                                                    <label for="confirmation_date">Confirmation
+                                                                        Date</label>
+                                                                    <input type="text" name="confirmation_date" autocomplete="off" placeholder="mm/dd/yyyy" disabled id="confirmation_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #confirmation_date="ngModel" ngModel="{{ uesrLoginData.confirmation_date }}"
+                                                                    />
+                                                                    <div *ngIf="confirmation_date.invalid && (confirmation_date.dirty || confirmation_date.touched)" class="alert-danger">
+                                                                        <div *ngIf="confirmation_date.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                            Please enter date of confirmation.</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngIf="service_status.value == '4'" class="col-md-4 pl-1">
+                                                                <div class="form-group">
+                                                                    <label for="noticeperiod_date">Notice Period
+                                                                        Date</label>
+                                                                    <input type="text" name="noticeperiod_date" autocomplete="off" placeholder="mm/dd/yyyy" disabled id="noticeperiod_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #noticeperiod_date="ngModel" ngModel="{{ uesrLoginData.noticeperiod_date }}"
+                                                                    />
+                                                                    <div *ngIf="noticeperiod_date.invalid && (noticeperiod_date.dirty || noticeperiod_date.touched)" class="alert-danger">
+                                                                        <div *ngIf="noticeperiod_date.errors.required" class="alert alert-danger p-2" role="alert">
+                                                                            Please enter date of notice period.</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="password">Password</label>
+                                                                <input type="password" class="form-control" id="password" name="password" autocomplete="new-password" placeholder="Enter password" #password="ngModel" minlength="8" ngModel pattern="^(?=.*\d)(?=.*[a-zA-Z]).{8,}$" />
+                                                                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert-danger">
+                                                                    <!-- <div *ngIf="password.errors.required" class="alert alert-danger p-2" role="alert">Please enter password.</div> -->
+                                                                    <div *ngIf="password.errors.minlength" class="alert alert-danger p-2" role="alert">
+                                                                        Password must be at least 8 characters long.
+                                                                    </div>
+                                                                    <div *ngIf="password.errors.pattern && !password.errors.minlength" class="alert alert-danger p-2" role="alert">
+                                                                        Password must contain at list one letter and one digit.
+                                                                    </div>
+                                                                </div>
+                                                                <div class="Custom-Note">
+                                                                    <span class="text-danger font-weight-bold">Note:</span> If you want to change the password, then fill the password field.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-center">
+                                                            <button type="submit" class="btn btn-success mr-2" [disabled]="!editEmployee.form.valid">Save</button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- </form> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Code End -->
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

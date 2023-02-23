@@ -1,0 +1,581 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+  <app-sidebar></app-sidebar>
+  <div class="main-panel w-100">
+    <div class="content-wrapper">
+      <!-- Custom Code Start -->
+      <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle"
+        [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+      <div class="row">
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card h-min-content">
+          <div class="card card-statistics">
+            <div class="card-header text-center card-statistics-header p-1">
+              <span class="text-white mb-0">Total Employee</span>
+            </div>
+            <div class="card-body">
+              <div class="clearfix mb-2">
+                <div class="text-center">
+                  <i class="mdi mdi-account-location text-info icon-lg"></i>
+                  <span class="NormalFontHR">{{ users }}</span>
+                </div>
+              </div>
+              <div class="row ml-0 mr-0 mt-3">
+                <div class="col-lg-4 cold-md-4 col-xl-4 col-4 pl-0">
+                  <p class="mb-0 text-left">Probation</p>
+                  <h3 class="font-weight-medium text-left mb-0">{{ probation }}</h3>
+                </div>
+                <div class="col-lg-4 cold-md-4 col-xl-4 col-4 pl-0 pr-0">
+                  <p class="mb-0 text-center">Confirm</p>
+                  <h3 class="font-weight-medium text-center mb-0">{{ users - probation - trainee }}</h3>
+                </div>
+                <div class="col-lg-4 cold-md-4 col-xl-4 col-4 pr-0">
+                  <p class="mb-0 text-right">Trainee</p>
+                  <h3 class="font-weight-medium text-right mb-0">{{ trainee }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="userData">
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card h-min-content"
+            *ngIf="userDatas(userData.access_type,'all')">
+            <div class="card card-statistics">
+              <div class="card-header text-center card-statistics-header p-1">
+                <span class="text-white mb-0">Current Month</span>
+              </div>
+              <div class="card-body">
+                <div class="clearfix mb-2">
+                  <div class="text-center">
+                    <i class="mdi mdi-walk text-danger icon-lg"></i>
+                    <span class="NormalFontHR">Leave Summary</span>
+                  </div>
+                </div>
+                <div class="row ml-0 mr-0 mt-3">
+                  <div class="col-lg-4 cold-md-4 col-xl-4 col-4 pl-0">
+                    <p class="mb-0 text-left">Paid</p>
+                    <h3 class="font-weight-medium text-left mb-0"
+                      *ngIf="ParticularEmpLeave.paid_leave > 0; else ZeroElseOne">
+                      {{ParticularEmpLeave.paid_leave}}
+                    </h3>
+                  </div>
+                  <div class="col-lg-4 cold-md-4 col-xl-4 col-4 pl-0 pr-0">
+                    <p class="mb-0 text-center">Unpaid</p>
+                    <h3 class="font-weight-medium text-center mb-0"
+                      *ngIf="ParticularEmpLeave.unpaid_leave > 0; else ZeroElseTwo">{{ParticularEmpLeave.unpaid_leave}}
+                    </h3>
+                  </div>
+                  <div class="col-lg-4 cold-md-4 col-xl-4 col-4 pr-0">
+                    <p class="mb-0 text-right">Balance</p>
+                    <h3 class="font-weight-medium text-right mb-0"
+                      *ngIf="ParticularEmpLeave.leaves > 0; else ZeroElseThree">{{ParticularEmpLeave.leaves}}</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #ZeroElseOne>
+          <h3 class="font-weight-medium text-left mb-0"> 0 </h3>
+        </ng-template>
+        <ng-template #ZeroElseTwo>
+          <h3 class="font-weight-medium text-center mb-0"> 0 </h3>
+        </ng-template>
+        <ng-template #ZeroElseThree>
+          <h3 class="font-weight-medium text-right mb-0"> 0 </h3>
+        </ng-template>
+        <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 grid-margin stretch-card" [ngClass]="{'offset-md-5' : userDatas(userData.access_type,'onlyAdmin'), 'offset-md-2' : userDatas(userData.access_type,'all')}">
+                    <div class="card bg-transparent">
+                        <div class="card-body EmpOfQuarterMain">
+                            <div class="EmployeeOfQuarterEdit" *ngIf="userDatas(userData.access_type,'onlyAdmin')">
+                                <a href="javascript:;" (click)="EditEmployeeOfQuarterModalOpen(EditEmployeeQuarterModal)" placement="top" ngbTooltip="Add New">
+                                    <i class="mdi mdi-plus Leave_Edit"></i>
+                                </a>
+                            </div>
+                            <div class="EmpOfQuarter text-center">
+                                <img src="{{ new_emp_profile_pic }}" class="img-fluid EmpOfQuarterEmpImage animated bounce" alt="Employee Of Quarter Image">
+                            </div>
+                            <div class="EmpOfQuarterBg1">
+                                <p class="mb-0 EmpOfQuarterBgEmpName text-center" *ngIf="EmployeeOfQuarter">
+                                    {{ EmployeeOfQuarter.emp_name}}
+                                </p>
+                            </div>
+                            <div class="EmpOfQuarterBg" style="background-image: url('assets/images/EmpOfQuarterBg.png');">
+                                <h6 class="mb-0 EmpOfQuarterBgEmpName text-center" *ngIf="EmployeeOfQuarter">
+                                    {{ EmployeeOfQuarter.emp_name}}
+                                </h6>
+                            </div>
+                            <h4 class="font-weight-bold TheBestEmployee text-center mb-2" *ngIf="EmployeeOfQuarter">
+                                {{ EmployeeOfQuarter.description }}
+                            </h4>
+                        </div>
+                    </div>
+
+                </div> -->
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <ng-container *ngIf="holidayData">
+            <app-multievent-calender [holidayData]="holidayData" [workFromhome]="workFromhome" [viewLeaves]="totalLeave"
+              [noticeUserData]="noticeUser" [probationData]="probationData"
+              [appraisalData]="appraisalData"></app-multievent-calender>
+          </ng-container>
+        </div>
+        <!-- Calendar code start -->
+        <!-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 grid-margin stretch-card grid-margin">
+                    <div class="card">
+                        <div class="card-body table-background">
+                            <h4 class="card-title">Event Calendar</h4>
+                            <full-calendar defaultView="dayGridMonth" [plugins]="calendarPlugins" [showNonCurrentDates]="false" [fixedWeekCount]="false" [weekends]="true" [events]="event">
+                            </full-calendar>
+                        </div>
+                    </div>
+                </div> -->
+        <!-- Calendar code end -->
+        <!-- <ng-container *ngIf="userData && userDatas(userData.access_type,'onlyAdmin')">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 grid-margin stretch-card grid-margin">
+                        <div class="card">
+                            <div class="card-body table-background">
+                                <h4 class="card-title">Up Coming Birthday</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">
+                                                    #
+                                                </th>
+                                                <th>
+                                                    Employee name
+                                                </th>
+                                                <th>
+                                                    Birth Date
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="dob.length > 0;  else NoBirthday">
+                                            <tr *ngFor="let user_dob of dob; let i = index;">
+                                                <td class="text-center">{{i+1}}</td>
+                                                <td class="text-capitalize">{{ user_dob.first_name }} {{ user_dob.last_name }}</td>
+                                                <td>{{ user_dob.dob | date : 'MMM d' }}</td>
+                                            </tr>
+                                        </tbody>
+                                        <ng-template #NoBirthday>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="3" class="text-center">There are no any up coming birthday.</td>
+                                                </tr>
+                                            </tbody>
+                                        </ng-template>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container> -->
+        <!-- Show apply leave For All User Show To Admin -->
+        <!-- <ng-container *ngIf="userData">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 grid-margin stretch-card grid-margin" *ngIf="userDatas(userData.access_type,'onlyAdmin')">
+                        <div class="card">
+                            <div class="card-body table-background">
+                                <h4 class="card-title">Leaves
+                                    <a routerLink="/viewleaves" class="AddHolidayAtag">
+                                        <h6 class="pull-right mb-0 AddHoliday">
+                                            <i class="mdi mdi-eye"></i> View All Leaves
+                                        </h6>
+                                    </a>
+                                </h4>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">
+                                                    #
+                                                </th>
+                                                <th>
+                                                    Employee Name
+                                                </th>
+                                                <th>
+                                                    Form Date
+                                                </th>
+                                                <th>
+                                                    End Date
+                                                </th>
+                                                <th>
+                                                    Total Days
+                                                </th>
+                                                <th>
+                                                    Leave Status
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="view_leave.length > 0;  else NoLeave">
+                                            <tr *ngFor="let apply_leave of view_leave; let i=index;">
+                                                <td *ngIf="i < 5" class="text-center">{{ i+1 }}</td>
+                                                <td *ngIf="i < 5 && userDatas(userData.access_type,'onlyAdmin')">{{ apply_leave.first_name}} {{ apply_leave.last_name}}</td>
+                                                <td *ngIf="i < 5 && userDatas(userData.access_type,'all')">{{ apply_leave.user_name}}</td>
+                                                <td *ngIf="i < 5">{{ apply_leave.from_dt | date : 'MMM d, yyyy' }}</td>
+                                                <td *ngIf="i < 5">
+                                                    {{ apply_leave.end_dt | date : 'MMM d, yyyy' }}
+                                                    <span *ngIf="apply_leave.end_dt == null">{{ apply_leave.from_dt | date : 'MMM d, yyyy' }}</span>
+                                                </td>
+                                                <td *ngIf="i < 5">{{ apply_leave.total_days }}</td>
+                                                <td *ngIf="i < 5">
+                                                    <label *ngIf="apply_leave.leave_status == 0" class="badge badge-warning">Pending</label>
+                                                    <label *ngIf="apply_leave.leave_status == 1" class="badge badge-success">Approved</label>
+                                                    <label *ngIf="apply_leave.leave_status == 2" class="badge badge-danger">Rejected</label>
+                                                    <label *ngIf="apply_leave.leave_status == 3" class="badge badge-cancel">Cancel</label>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <ng-template #NoLeave>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="6" class="text-center">There are no any active leave.</td>
+                                                </tr>
+                                            </tbody>
+                                        </ng-template>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container> -->
+        <!-- Show apply leave For All User Show To Admin End -->
+
+        <ng-container *ngIf="userDatas(userData.access_type,'onlyAdmin')">
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 grid-margin stretch-card grid-margin">
+            <div class="card">
+              <div class="card-body table-background">
+                <h4 class="card-title">
+                  Holiday List (Jan - <u>{{CurrentYear}}</u> to Dec - <u>{{CurrentYear}}</u>)
+                  <a (click)="openModalHoliday(AddHolidayTemplate, 'add')" class="AddHolidayAtag" *ngIf="userData">
+                    <h6 class="pull-right mb-0 AddHoliday mt-sm-0 mt-2 mb-sm-0 mb-2"
+                      *ngIf="userDatas(userData.access_type,'onlyAdmin')">
+                      <i class="mdi mdi-plus-circle-outline"></i> Add Holiday
+                    </h6>
+                  </a>
+                </h4>
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th class="text-center">#</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Day</th>
+                        <ng-container *ngIf="userData">
+                          <th *ngIf="userDatas(userData.access_type,'onlyAdmin')">Action</th>
+                        </ng-container>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="holiday.length > 0;  else NoHoliday">
+                      <ng-container *ngFor="let company_holiday of holiday; let i = index;">
+                        <tr class="{{ company_holiday.className }}">
+                          <td class="text-center">{{i+1}}</td>
+                          <td>
+                            {{ company_holiday.h_date | date : 'MMM d, yyyy' }}
+                          </td>
+                          <td>
+                            {{ company_holiday.h_name }}
+                          </td>
+                          <td>
+                            {{ company_holiday.h_day }}
+                          </td>
+                          <td *ngIf="userDatas(userData.access_type,'onlyAdmin')">
+                            <a href="javascript:;" (click)="EditHolidayModalOpen(i)" placement="top"
+                              ngbTooltip="Edit Holiday">
+                              <i class="mdi mdi-pen Leave_Edit"></i>
+                            </a>
+                            <a href="javascript:;" (click)="openModal(deleteHoliday, company_holiday.id)"
+                              placement="top" ngbTooltip="Delete Holiday">
+                              <i class="mdi mdi-delete ml-2 Leave_Rejected"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                    <ng-template #NoHoliday>
+                      <tbody>
+                        <tr>
+                          <td colspan="5" class="text-center">There are no holiday records.</td>
+                        </tr>
+                      </tbody>
+                    </ng-template>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Leave Balance For All User Show To Admin -->
+        <ng-container *ngIf="userData">
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 grid-margin stretch-card grid-margin"
+            *ngIf="userDatas(userData.access_type,'onlyAdmin')">
+            <div class="card">
+              <div class="card-body table-background">
+                <h4 class="card-title">Leave Balance </h4>
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th class="text-center">#</th>
+                        <th>Employee Name</th>
+                        <th>Leave Balance</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="leave_balance.length > 0;  else NoLeaveBalance">
+                      <tr *ngFor="let user_leavebalance of leave_balance; let i = index;">
+                        <td class="text-center">{{i+1}}</td>
+                        <td>
+                          {{ user_leavebalance.first_name }} {{ user_leavebalance.last_name }}
+                        </td>
+                        <td>
+                          {{ user_leavebalance.leaves }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <ng-template #NoLeaveBalance>
+                      <tbody>
+                        <tr>
+                          <td colspan="3" class="text-center">There are no leave balance record.</td>
+                        </tr>
+                      </tbody>
+                    </ng-template>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <!-- Leave Balance For All User Show To Admin End -->
+
+        <!-- Add holiday modal start -->
+        <ng-template #AddHolidayTemplate>
+          <div class="modal-header">
+            <h2 class="modal-title pull-left">Add Holiday</h2>
+            <button type="button" class="close pull-right HolidayClose" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form class="forms-sample" #addHoliday="ngForm" (ngSubmit)="onSubmit(addHoliday.value)" id="addHolidayForm">
+              <div class="form-group row">
+                <label for="holiday_date" class="col-sm-4 col-form-label">Date</label>
+                <div class="col-sm-8">
+                  <input type="hidden" name="add_edit" id="add_edit" />
+                  <input type="text" name="holiday_date" placeholder="mm/dd/yyyy" autocomplete="off" id="holiday_date"
+                    class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig" #holiday_date="ngModel"
+                    required ngModel />
+                  <div *ngIf="holiday_date.invalid && (holiday_date.dirty || holiday_date.touched)"
+                    class="alert-danger">
+                    <div *ngIf="holiday_date.errors.required" class="alert alert-danger p-2" role="alert">Please enter
+                      date of holiday.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="holiday_name" class="col-sm-4 col-form-label">Holiday Name</label>
+                <div class="col-sm-8">
+                  <input type="text" name="holiday_name" placeholder="Holiday name" id="holiday_name"
+                    class="form-control EMS-Form-Controal" #holiday_name="ngModel" required ngModel />
+                  <div *ngIf="holiday_name.invalid && (holiday_name.dirty || holiday_name.touched)"
+                    class="alert-danger">
+                    <div *ngIf="holiday_name.errors.required" class="alert alert-danger p-2" role="alert">Please enter
+                      holiday name.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="holiday_day" class="col-sm-4 col-form-label">Holiday Day</label>
+                <div class="col-sm-8">
+                  <select name="holiday_day" class="form-control EMS-Form-Controal" #holiday_day="ngModel" required
+                    ngModel>
+                    <option selected value>--Select day--</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                  </select>
+                  <!-- <input type="text" name="holiday_day" placeholder="Holiday day" id="holiday_day" class="form-control EMS-Form-Controal" #holiday_day="ngModel" required ngModel />-->
+                  <div *ngIf="holiday_day.invalid && (holiday_day.dirty || holiday_day.touched)" class="alert-danger">
+                    <div *ngIf="holiday_day.errors.required" class="alert alert-danger p-2" role="alert">Please enter
+                      holiday day.</div>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-success mr-2" [disabled]="!addHoliday.form.valid">Submit</button>
+              <button type="button" class="btn btn-light cancelBtn HolidayClose" aria-label="Close"
+                (click)="modalRef.hide()">Cancel</button>
+            </form>
+          </div>
+        </ng-template>
+
+        <!-- Edit quarter employee modal start -->
+        <ng-template #EditEmployeeQuarterModal>
+          <div class="modal-header">
+            <h5 class="modal-title">Add Employee Of Quarter</h5>
+            <button type="button" class="close pull-right EditEmployeeQuarterClose" aria-label="Close"
+              (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form class="forms-sample" #editEmployeeQuarter="ngForm"
+              (ngSubmit)="onAddEmployeeQuarterSubmit(editEmployeeQuarter.value)" id="editEmployeeQuarterForm">
+              <div class="form-group row">
+                <label for="assignEmployee" class="col-sm-3 pr-0 col-form-label">Employee Name</label>
+                <div class="col-sm-9">
+                  <select class="form-control custom-Select-2" id="assignEmployee" name="assignEmployee"
+                    #assignEmployee="ngModel" required ngModel>
+                    <option value="" selected>-- Select --</option>
+                    <option *ngFor="let assign_quarter_employee of EmployeeOfQuarterSelect;"
+                      value="{{ assign_quarter_employee.first_name }} {{ assign_quarter_employee.last_name }}">{{
+                      assign_quarter_employee.first_name }} {{ assign_quarter_employee.last_name }}</option>
+                  </select>
+                  <div *ngIf="assignEmployee.invalid && (assignEmployee.dirty || assignEmployee.touched)"
+                    class="alert-danger">
+                    <div *ngIf="assignEmployee.errors.required" class="alert alert-danger p-2" role="alert">Please
+                      select employee.</div>
+                  </div>
+                  <!-- *ngIf="project_viewemployee.user_status == 1 && project_viewemployee.role_id != 1" -->
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="quarter_description" class="col-sm-3 pr-0 col-form-label">Description</label>
+                <div class="col-sm-9">
+                  <input type="text" name="quarter_description" autocomplete="off" placeholder="Quarter Description"
+                    id="quarter_description" class="form-control EMS-Form-Controal" #quarter_description="ngModel"
+                    required ngModel />
+                  <div *ngIf="quarter_description.invalid && (quarter_description.dirty || quarter_description.touched)"
+                    class="alert-danger">
+                    <div *ngIf="quarter_description.errors.required" class="alert alert-danger p-2" role="alert">Please
+                      enter description.</div>
+                  </div>
+                  <input type="hidden" id="hidden_val" name="profile_pic" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="holiday_day" class="col-sm-3 pr-0 col-form-label">Employee Pic</label>
+                <div class="col-sm-9">
+                  <div class="text-center propic">
+                    <span class="upload_propic">
+                      <img class="avatar border-gray img-fluid rounded-circle" id="ProPic"
+                        src="assets/images/faces/face1.jpg" alt="...">
+                      <i class="fa fa-camera set_font" (click)="FileOpen()" aria-hidden="true"></i>
+                      <!-- <input id="file-input" type="file" (change)="readURL($event)" class="InputAvtarImage"  name="profile_pic" id="profile_pic" #profile_pic="ngModel" ngModel/> -->
+                      <input id="file-input" class="file-upload" type="file" (change)="readURL($event)" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-success mr-2"
+                [disabled]="!editEmployeeQuarter.form.valid">Save</button>
+              <button type="button" class="btn btn-light cancelBtn HolidayClose" aria-label="Close"
+                (click)="modalRef.hide()">Cancel</button>
+            </form>
+          </div>
+        </ng-template>
+        <!-- Edit holiday modal start -->
+        <button style="display: none;" class="btn btn-warning EditHolidayModal" (click)="EditHolidayModal.show()">Open
+          Modal</button>
+
+        <div class="modal fade" bsModal #EditHolidayModal="bs-modal" [config]="{backdrop: 'true'}" tabindex="-1"
+          role="dialog" aria-labelledby="dialog-static-name">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Edit Holiday</h5>
+                <button type="button" class="close EditHolidayClose" data-dismiss="modal" aria-label="Close"
+                  (click)="EditHolidayModal.hide()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form class="forms-sample" #editHoliday="ngForm" (ngSubmit)="onEditSubmit(editHoliday.value)"
+                  id="editHolidayForm">
+                  <div class="form-group row">
+                    <label for="holiday_date" class="col-sm-4 col-form-label">Date</label>
+                    <div class="col-sm-8">
+                      <input type="hidden" name="add_edit" id="add_edit" />
+                      <input type="text" name="holiday_date" placeholder="mm/dd/yyyy" autocomplete="off"
+                        id="holiday_date" class="form-control EMS-Form-Controal" bsDatepicker [bsConfig]="bsConfig"
+                        #holidayDate="ngModel" ngModel="{{ holiday_date }}" required />
+                      <div *ngIf="holidayDate.invalid && (holidayDate.dirty || holidayDate.touched)"
+                        class="alert-danger">
+                        <div *ngIf="holidayDate.errors.required" class="alert alert-danger p-2" role="alert">Please
+                          enter date of holiday.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="holiday_name" class="col-sm-4 col-form-label">Holiday Name</label>
+                    <div class="col-sm-8">
+                      <input type="text" name="holiday_name" autocomplete="off" placeholder="Holiday name"
+                        id="holiday_name" class="form-control EMS-Form-Controal" #holidayName="ngModel"
+                        ngModel="{{ holiday_name }}" required />
+                      <div *ngIf="holidayName.invalid && (holidayName.dirty || holidayName.touched)"
+                        class="alert-danger">
+                        <div *ngIf="holidayName.errors.required" class="alert alert-danger p-2" role="alert">Please
+                          enter holiday name.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="holiday_day" class="col-sm-4 col-form-label">Holiday Day</label>
+                    <div class="col-sm-8">
+                      <select name="holiday_day" class="form-control EMS-Form-Controal" #holidayDay="ngModel"
+                        ngModel="{{ holiday_day }}" required>
+                        <option selected value>--Select day--</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                      </select>
+                      <!-- <input type="text" name="holiday_day" placeholder="Holiday day" id="holiday_day" class="form-control EMS-Form-Controal" #holidayDay="ngModel" ngModel="{{ holiday_day }}" required /> -->
+                      <div *ngIf="holidayDay.invalid && (holidayDay.dirty || holidayDay.touched)" class="alert-danger">
+                        <div *ngIf="holidayDay.errors.required" class="alert alert-danger p-2" role="alert">Please enter
+                          holiday day.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-success mr-2"
+                    [disabled]="!editHoliday.form.valid">Submit</button>
+                  <button type="button" class="btn btn-light cancelBtn HolidayClose" aria-label="Close"
+                    (click)="EditHolidayModal.hide()">Cancel</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Edit holiday modal start -->
+
+        <!-- Delete holiday confirm modal start -->
+        <ng-template #deleteHoliday>
+          <div class="modal-header">
+            <h5 class="modal-title">Delete Holiday</h5>
+            <button type="button" class="close pull-right SaveCardTemplateClose HolidayDeleteClose" aria-label="Close"
+              (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure want to delete holiday?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning token-purchase text-white" (click)="confirm()">Yes</button>
+            <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+          </div>
+        </ng-template>
+        <!-- Delete holiday confirm modal end -->
+      </div>
+      <!-- Custom Code End -->
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

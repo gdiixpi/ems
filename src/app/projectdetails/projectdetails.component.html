@@ -1,0 +1,88 @@
+<app-navbar></app-navbar>
+<div class="container-fluid page-body-wrapper h-100">
+    <app-sidebar></app-sidebar>
+    <div class="main-panel w-100">
+        <div class="content-wrapper">
+            <app-breadcrumbs [childBreadcumbTitle]="parentBreadcumbTitle" [childBreadcumbPath]="parentBreadcumbPath"></app-breadcrumbs>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body table-background">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="card project-detail-main">
+                                        <div class="body project-detail-body text-left pro-img">
+                                            <div class="table-responsive">
+                                                <table class="table table-project-detail">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="title-odd bg-one">Type</td>
+                                                            <td class="title-even bg-two text-danger">{{projectType}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="title-odd bg-one">Name</td>
+                                                            <td class="title-even bg-two">{{projectName}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="title-odd bg-one">Start Date</td>
+                                                            <td class="title-even bg-two">{{startDate | date : 'd MMM, yyyy'}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="title-odd bg-one">Deadline</td>
+                                                            <td class="title-even bg-two">{{endDate | date : 'd MMM, yyyy'}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="title-odd bg-one">Status</td>
+                                                            <td class="title-even bg-two">
+                                                                <label class="badge badge-warning">{{status}}</label>
+                                                                <!-- <label *ngIf="projrctDetails.status == 0" class="badge badge-warning">In progress</label>
+                                                                <label *ngIf="projrctDetails.status == 1" class="badge badge-success">Completed</label> -->
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- <div class="sticker-Type">
+                                                <img src="assets/images/new.png" alt="New" class="sticker-Type-Image" *ngIf="projrctDetails.type == 'new'" />
+                                                <img src="assets/images/new.png" alt="Internal" class="sticker-Type-Image" *ngIf="projrctDetails.type == 'internal'" />
+                                                <img src="assets/images/new.png" alt="Support" class="sticker-Type-Image" *ngIf="projrctDetails.type == 'support'" />
+                                                <div class="bg-danger projectType" *ngIf="projrctDetails.type == 'new'">New</div>
+                                                <div class="bg-danger projectType" *ngIf="projrctDetails.type == 'internal'">Internal</div>
+                                                <div class="bg-danger projectType" *ngIf="projrctDetails.type == 'support'">Support</div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-8 col-md-6 col-sm-12">
+                                    <div class="card project-detail-main">
+                                        <div class="body project-detail-body-two text-left pro-img">
+                                            <div class="project-title-description-main">
+                                                <h6 class="project-title-description">Description</h6>
+                                                <div [innerHTML]="description"></div>
+                                                <h6 class="project-title-description">Document Link</h6>
+                                                <a href="document_link" target="_blank">{{document_link}}</a>
+                                            </div>
+                                            <div class="project-team mt-4">
+                                                <h6 class="project-title-description">Team</h6>
+                                                <ul class="list-unstyled team-info ">
+                                                    <!-- <li placement="top" ngbTooltip="{{projrctDetails.name}}">
+                                                        <img src="assets/images/mike.jpg" alt="Team Member" class="img-fluid">
+                                                    </li> -->
+                                                    <li *ngFor="let user_projrctDetailsTeam of projrctDetailsTeam" placement="top" ngbTooltip="{{user_projrctDetailsTeam.name}}">
+                                                        <img src="{{user_projrctDetailsTeam.new_profile_pic}}" alt="Team Member" class="img-fluid">
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

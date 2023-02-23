@@ -1,0 +1,187 @@
+::ng-deep body.customBody {
+  height: 100vh !important;
+  overflow-x: unset !important;
+}
+
+.hiringProcessModule .main-panel {
+  min-height: calc(100vh - 64px);
+}
+
+.hiringProcessModule .main-panel .content-wrapper {
+  min-height: calc(100vh - 64px);
+}
+
+::ng-deep .myCustomModalClass .form-control[placeholder="MM"],
+::ng-deep .myCustomModalClass .form-control[placeholder="HH"] {
+  font-size: 14px !important;
+}
+
+.form-control {
+  padding: 8px !important;
+  border-radius: 4px;
+  background-color: white;
+}
+
+textarea {
+  padding: 8px !important;
+  border-radius: 4px;
+  background-color: white;
+  border: 1px solid #ced4da !important;
+}
+
+input[type="file"]::file-selector-button {
+  height: 25px !important;
+  width: 100px !important;
+  font-size: 12px !important;
+}
+
+input.form-control[type="file"] {
+  resize: unset !important;
+}
+
+.error_message {
+  font-size: 14px;
+  color: red !important;
+}
+
+.form-control:focus {
+  background-color: white;
+}
+
+input:-internal-autofill-selected {
+  background-color: white !important;
+}
+
+.cursorPointer {
+  cursor: pointer;
+}
+
+.reviewShow {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.Heading {
+  color: #0268bf !important;
+  font-size: 25px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3px !important;
+  margin: 20px 0;
+}
+
+.font15 {
+  font-size: 15px;
+}
+
+.decoration {
+  text-decoration: none;
+}
+
+.decoration:hover {
+  text-decoration: none;
+  color: #000000;
+}
+
+.mdi-file-pdf:before {
+  color: #156ba3 !important;
+  font-size: 20px !important;
+}
+
+ngb-timepicker.changeSize .ngb-tp-input-container {
+  width: 2em;
+}
+
+ngb-timepicker.changeSize .ngb-tp-input {
+  padding: 0;
+  font-size: 10px;
+}
+
+.reviewShow .OverView div {
+  max-width: 100%;
+}
+
+.reviewShow .OverView div ::ng-deep p {
+  font-weight: 500;
+  font-size: 13px;
+  margin-bottom: 0 !important;
+  word-break: break-word !important;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+.editReview:hover {
+  color: #007bff;
+}
+
+.mdi-pencil-box:before {
+  font-size: 20px;
+}
+
+.cstmEye:hover {
+  color: #000000;
+}
+
+::ng-deep .myCustomModalClass .modal-dialog {
+  max-width: 650px !important;
+}
+
+.invalid-feedback.alert.alert-danger.p-2.mt-0.customFile {
+  display: block !important;
+}
+
+th.sorting_asc_disabled.sorting_desc_disabled {
+  cursor: auto !important;
+  pointer-events: none !important;
+}
+
+::ng-deep #ViewEmployeeTable_first {
+  display: none !important;
+}
+
+::ng-deep #ViewEmployeeTable_last {
+  display: none !important;
+}
+
+.customPadding {
+  padding: 10px 20px !important;
+}
+
+body.customBody.modal-open {
+  overflow: hidden;
+  position: fixed !important;
+}
+
+::ng-deep .modal-open {
+  position: fixed;
+}
+
+.hiring-module-form {
+  .invalid-feedback {
+    display: block;
+  }
+}
+
+.new-select {
+  width: 150px;
+}
+
+.hr_status {
+  height: 25px;
+}
+
+::ng-deep .bs-chevron {
+  color: #5ac6c6 !important;
+}
+
+::ng-deep td .btn-default {
+  color: #000000 !important;
+}
+
+.divider {
+  height: 3px;
+  background-color: #5ac6c6;
+}
+
+.d-grid {
+  display: grid;
+}

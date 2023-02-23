@@ -1,0 +1,70 @@
+<nav class="navbar default-layout col-lg-12 col-12 p-0 flex-nowrap fixed-top d-flex flex-row">
+  <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center h-100">
+    <a class="navbar-brand brand-logo" href="#">
+      <img src="assets/images/new-logo.svg" class="img-fluid" alt="logo" />
+    </a>
+    <a class="navbar-brand brand-logo-mini" href="#">
+      <img src="assets/images/new-logo-mini.svg" class="img-fluid" alt="logo" />
+    </a>
+  </div>
+  <div class="navbar-menu-wrapper d-flex align-items-center">
+    <button class="btn btn-light mr-2" (click)="Clockin()" [disabled]="Clockindisabled">Clock-In</button>
+    <button class="btn btn-light mr-2" [disabled]="Clockoutdisabled" (click)="Clockout()">Clock-Out</button>
+    <div class="navbarTime">{{navDetails}}</div>
+    <ul class="navbar-nav navbar-nav-right">
+      <!---->
+      <li class="nav-item dropdown" ngbDropdown>
+        <a (click)="notificationList()" class="nav-link count-indicator dropdown-toggle" id="notificationDropdown"
+          ngbDropdownToggle>
+          <i class="mdi mdi mdi-bell"></i>
+          <span class="count" *ngIf="NotificationCount > 0">{{NotificationCount}}</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list notificationDropdown-preview-list"
+          ngbDropdownMenu aria-labelledby="notificationDropdown">
+          <ng-container *ngIf="NotificationList.length > 0; else NoNotification">
+            <ng-container *ngFor="let user_notification of NotificationList">
+              <a class="dropdown-item preview-item LatestNotoficationOld"
+                [ngClass]="{ 'LatestNotofication': user_notification.status == 0 }">
+                <div class="preview-item-content w-100">
+                  <span class="NewNotificationNew" *ngIf="user_notification.status == 0"></span>
+                  <h6 class="preview-subject font-weight-medium mb-1">{{ user_notification.message }}</h6>
+                  <p class="font-weight-light text-left small-text text-primary mb-0">
+                    {{ user_notification.date }}
+                  </p>
+                </div>
+              </a>
+              <div class="dropdown-divider"></div>
+            </ng-container>
+          </ng-container>
+          <ng-template #NoNotification>
+            <div class="preview-item-content pt-4 pb-3 text-center">
+              <h6 class="preview-subject font-weight-bold thereAreNoNotification">
+                There are no any notification.
+              </h6>
+            </div>
+          </ng-template>
+        </div>
+      </li>
+      <!---->
+      <li class="nav-item dropdown d-none d-xl-inline-block" ngbDropdown>
+        <a class="nav-link dropdown-toggle" id="UserDropdown" ngbDropdownToggle>
+          <span class="profile-text" *ngIf="userData">Hello, {{userData.first_name}}
+            {{userData.last_name}} !</span>
+          <img class="img-xs rounded-circle" src="{{profileImage}}" alt="Profile image">
+        </a>
+        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" ngbDropdownMenu aria-labelledby="UserDropdown">
+          <a routerLink="/editprofile" class="dropdown-item mt-2">
+            Edit Profile
+          </a>
+          <a class="dropdown-item" (click)="LogOut()">
+            Sign Out
+          </a>
+        </div>
+      </li>
+    </ul>
+    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+      (click)="toggleOffcanvas()">
+      <span class="mdi mdi-menu"></span>
+    </button>
+  </div>
+</nav>
